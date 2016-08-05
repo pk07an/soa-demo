@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.meila.soa.product.dal.dao.product.SkuInvOperateLogMapper" >
+  <resultMap id="BaseResultMap" type="com.meila.soa.product.dal.entity.product.SkuInvOperateLog" >
+    <id column="log_id" property="logId" jdbcType="BIGINT" />
+    <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+    <result column="operate_type" property="operateType" jdbcType="VARCHAR" />
+    <result column="archive" property="archive" jdbcType="BIT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    log_id, order_no, operate_type, archive, create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from vdlm_sku_inv_operate_log
+    where log_id = #{logId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from vdlm_sku_inv_operate_log
+    where log_id = #{logId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.meila.soa.product.dal.entity.product.SkuInvOperateLog" >
+    insert into vdlm_sku_inv_operate_log (log_id, order_no, operate_type, 
+      archive, create_time)
+    values (#{logId,jdbcType=BIGINT}, #{orderNo,jdbcType=VARCHAR}, #{operateType,jdbcType=VARCHAR}, 
+      #{archive,jdbcType=BIT}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.meila.soa.product.dal.entity.product.SkuInvOperateLog" >
+    insert into vdlm_sku_inv_operate_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="logId != null" >
+        log_id,
+      </if>
+      <if test="orderNo != null" >
+        order_no,
+      </if>
+      <if test="operateType != null" >
+        operate_type,
+      </if>
+      <if test="archive != null" >
+        archive,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="logId != null" >
+        #{logId,jdbcType=BIGINT},
+      </if>
+      <if test="orderNo != null" >
+        #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="operateType != null" >
+        #{operateType,jdbcType=VARCHAR},
+      </if>
+      <if test="archive != null" >
+        #{archive,jdbcType=BIT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.meila.soa.product.dal.entity.product.SkuInvOperateLog" >
+    update vdlm_sku_inv_operate_log
+    <set >
+      <if test="orderNo != null" >
+        order_no = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="operateType != null" >
+        operate_type = #{operateType,jdbcType=VARCHAR},
+      </if>
+      <if test="archive != null" >
+        archive = #{archive,jdbcType=BIT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where log_id = #{logId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.meila.soa.product.dal.entity.product.SkuInvOperateLog" >
+    update vdlm_sku_inv_operate_log
+    set order_no = #{orderNo,jdbcType=VARCHAR},
+      operate_type = #{operateType,jdbcType=VARCHAR},
+      archive = #{archive,jdbcType=BIT},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where log_id = #{logId,jdbcType=BIGINT}
+  </update>
+  
+  <!-- add -->
+  
+  <select id="selectBySelective" resultMap="BaseResultMap" parameterType="com.meila.soa.product.dal.entity.product.SkuInvOperateLog" >
+    select 
+    <include refid="Base_Column_List" />
+    from vdlm_sku_inv_operate_log
+    <where>
+      <if test="orderNo != null" >
+        order_no = #{orderNo,jdbcType=VARCHAR}
+      </if>
+      <if test="operateType != null" >
+        and operate_type = #{operateType,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+    
+  
+</mapper>

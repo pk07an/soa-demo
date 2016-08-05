@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.meila.soa.product.dal.dao.product.SkuWMSInvMapper" >
+  <resultMap id="BaseResultMap" type="com.meila.soa.product.dal.entity.product.SkuWMSInv" >
+    <id column="sku_inv_id" property="skuInvId" jdbcType="BIGINT" />
+    <result column="sku_id" property="skuId" jdbcType="VARCHAR" />
+    <result column="real_inv" property="realInv" jdbcType="INTEGER" />
+    <result column="lock_inv" property="lockInv" jdbcType="INTEGER" />
+    <result column="archive" property="archive" jdbcType="BIT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    sku_inv_id, sku_id, real_inv, lock_inv, archive, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from vdlm_sku_wms_inv
+    where sku_inv_id = #{skuInvId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from vdlm_sku_wms_inv
+    where sku_inv_id = #{skuInvId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.meila.soa.product.dal.entity.product.SkuWMSInv" >
+    insert into vdlm_sku_wms_inv (sku_inv_id, sku_id, real_inv, 
+      lock_inv, archive, create_time, 
+      update_time)
+    values (#{skuInvId,jdbcType=BIGINT}, #{skuId,jdbcType=VARCHAR}, #{realInv,jdbcType=INTEGER}, 
+      #{lockInv,jdbcType=INTEGER}, #{archive,jdbcType=BIT}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.meila.soa.product.dal.entity.product.SkuWMSInv" >
+    insert into vdlm_sku_wms_inv
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="skuInvId != null" >
+        sku_inv_id,
+      </if>
+      <if test="skuId != null" >
+        sku_id,
+      </if>
+      <if test="realInv != null" >
+        real_inv,
+      </if>
+      <if test="lockInv != null" >
+        lock_inv,
+      </if>
+      <if test="archive != null" >
+        archive,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="skuInvId != null" >
+        #{skuInvId,jdbcType=BIGINT},
+      </if>
+      <if test="skuId != null" >
+        #{skuId,jdbcType=VARCHAR},
+      </if>
+      <if test="realInv != null" >
+        #{realInv,jdbcType=INTEGER},
+      </if>
+      <if test="lockInv != null" >
+        #{lockInv,jdbcType=INTEGER},
+      </if>
+      <if test="archive != null" >
+        #{archive,jdbcType=BIT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.meila.soa.product.dal.entity.product.SkuWMSInv" >
+    update vdlm_sku_wms_inv
+    <set >
+      <if test="skuId != null" >
+        sku_id = #{skuId,jdbcType=VARCHAR},
+      </if>
+      <if test="realInv != null" >
+        real_inv = #{realInv,jdbcType=INTEGER},
+      </if>
+      <if test="lockInv != null" >
+        lock_inv = #{lockInv,jdbcType=INTEGER},
+      </if>
+      <if test="archive != null" >
+        archive = #{archive,jdbcType=BIT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where sku_inv_id = #{skuInvId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.meila.soa.product.dal.entity.product.SkuWMSInv" >
+    update vdlm_sku_wms_inv
+    set sku_id = #{skuId,jdbcType=VARCHAR},
+      real_inv = #{realInv,jdbcType=INTEGER},
+      lock_inv = #{lockInv,jdbcType=INTEGER},
+      archive = #{archive,jdbcType=BIT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where sku_inv_id = #{skuInvId,jdbcType=BIGINT}
+  </update>
+  <update id="updateInv" >
+    update vdlm_sku_wms_inv
+    set real_inv = real_inv + #{changeNum,jdbcType=INTEGER},
+      lock_inv = lock_inv + #{lockNum,jdbcType=INTEGER},
+      update_time = now()
+    where sku_id = #{skuId,jdbcType=VARCHAR}
+  </update>  
+  
+  
+  <!-- add -->
+  
+  <select id="selectByselective" resultMap="BaseResultMap" parameterType="com.meila.soa.product.dal.entity.product.SkuWMSInv" >
+    select 
+    <include refid="Base_Column_List" />
+    from vdlm_sku_wms_inv
+    <where>
+      <if test="skuId != null" >
+        sku_id = #{skuId,jdbcType=VARCHAR}
+      </if>
+      <if test="realInv != null" >
+        and real_inv = #{realInv,jdbcType=INTEGER}
+      </if>
+      <if test="lockInv != null" >
+        and lock_inv = #{lockInv,jdbcType=INTEGER}
+      </if>
+      <if test="archive != null" >
+        and archive = #{archive,jdbcType=BIT}
+      </if>
+    </where>
+  </select>
+  
+  <update id="lockInv">
+    update vdlm_sku_wms_inv
+    set lock_inv = #{record.lockInv}, 
+      update_time = now()
+    where 
+    	sku_id = #{record.skuId,jdbcType=VARCHAR} and
+    	lock_inv = #{params.oriLockInv,jdbcType=INTEGER} 
+  </update>    
+  <update id="unlockInv">
+    update vdlm_sku_wms_inv
+    set lock_inv = lock_inv - #{record.lockInv}, 
+      update_time = now()
+    where 
+    	sku_id = #{record.skuId,jdbcType=VARCHAR}
+  </update>      
+</mapper>

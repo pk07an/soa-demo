@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.meila.soa.product.dal.dao.user.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.meila.soa.product.dal.entity.user.User" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="loginname" property="loginname" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="avatar" property="avatar" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="shop_id" property="shopId" jdbcType="BIGINT" />
+    <result column="archive" property="archive" jdbcType="BIT" />
+    <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+    <result column="admin" property="admin" jdbcType="BIT" />
+    <result column="roles" property="roles" jdbcType="BIGINT" />
+    <result column="id_card_num" property="idCardNum" jdbcType="VARCHAR" />
+    <result column="partner" property="partner" jdbcType="VARCHAR" />
+    <result column="ext_user_id" property="extUserId" jdbcType="VARCHAR" />
+    <result column="withdraw_type" property="withdrawType" jdbcType="INTEGER" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, name, phone, loginname, email, avatar, password, shop_id, archive, created_at, 
+    updated_at, admin, roles, id_card_num, partner, ext_user_id, withdraw_type, code
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.meila.soa.product.dal.entity.user.UserExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from vdlm_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from vdlm_user
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from vdlm_user
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.meila.soa.product.dal.entity.user.UserExample" >
+    delete from vdlm_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.meila.soa.product.dal.entity.user.User" >
+    insert into vdlm_user (id, name, phone, 
+      loginname, email, avatar, 
+      password, shop_id, archive, 
+      created_at, updated_at, admin, 
+      roles, id_card_num, partner, 
+      ext_user_id, withdraw_type, code
+      )
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{loginname,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR}, #{shopId,jdbcType=BIGINT}, #{archive,jdbcType=BIT}, 
+      #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}, #{admin,jdbcType=BIT}, 
+      #{roles,jdbcType=BIGINT}, #{idCardNum,jdbcType=VARCHAR}, #{partner,jdbcType=VARCHAR}, 
+      #{extUserId,jdbcType=VARCHAR}, #{withdrawType,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.meila.soa.product.dal.entity.user.User" >
+    insert into vdlm_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="loginname != null" >
+        loginname,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="avatar != null" >
+        avatar,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="shopId != null" >
+        shop_id,
+      </if>
+      <if test="archive != null" >
+        archive,
+      </if>
+      <if test="createdAt != null" >
+        created_at,
+      </if>
+      <if test="updatedAt != null" >
+        updated_at,
+      </if>
+      <if test="admin != null" >
+        admin,
+      </if>
+      <if test="roles != null" >
+        roles,
+      </if>
+      <if test="idCardNum != null" >
+        id_card_num,
+      </if>
+      <if test="partner != null" >
+        partner,
+      </if>
+      <if test="extUserId != null" >
+        ext_user_id,
+      </if>
+      <if test="withdrawType != null" >
+        withdraw_type,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="loginname != null" >
+        #{loginname,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="avatar != null" >
+        #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="shopId != null" >
+        #{shopId,jdbcType=BIGINT},
+      </if>
+      <if test="archive != null" >
+        #{archive,jdbcType=BIT},
+      </if>
+      <if test="createdAt != null" >
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null" >
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="admin != null" >
+        #{admin,jdbcType=BIT},
+      </if>
+      <if test="roles != null" >
+        #{roles,jdbcType=BIGINT},
+      </if>
+      <if test="idCardNum != null" >
+        #{idCardNum,jdbcType=VARCHAR},
+      </if>
+      <if test="partner != null" >
+        #{partner,jdbcType=VARCHAR},
+      </if>
+      <if test="extUserId != null" >
+        #{extUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="withdrawType != null" >
+        #{withdrawType,jdbcType=INTEGER},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.meila.soa.product.dal.entity.user.UserExample" resultType="java.lang.Integer" >
+    select count(*) from vdlm_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByPrimaryKeySelective" parameterType="com.meila.soa.product.dal.entity.user.User" >
+    update vdlm_user
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="loginname != null" >
+        loginname = #{loginname,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="avatar != null" >
+        avatar = #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="shopId != null" >
+        shop_id = #{shopId,jdbcType=BIGINT},
+      </if>
+      <if test="archive != null" >
+        archive = #{archive,jdbcType=BIT},
+      </if>
+      <if test="createdAt != null" >
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null" >
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="admin != null" >
+        admin = #{admin,jdbcType=BIT},
+      </if>
+      <if test="roles != null" >
+        roles = #{roles,jdbcType=BIGINT},
+      </if>
+      <if test="idCardNum != null" >
+        id_card_num = #{idCardNum,jdbcType=VARCHAR},
+      </if>
+      <if test="partner != null" >
+        partner = #{partner,jdbcType=VARCHAR},
+      </if>
+      <if test="extUserId != null" >
+        ext_user_id = #{extUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="withdrawType != null" >
+        withdraw_type = #{withdrawType,jdbcType=INTEGER},
+      </if>
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.meila.soa.product.dal.entity.user.User" >
+    update vdlm_user
+    set name = #{name,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      loginname = #{loginname,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      avatar = #{avatar,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      shop_id = #{shopId,jdbcType=BIGINT},
+      archive = #{archive,jdbcType=BIT},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      admin = #{admin,jdbcType=BIT},
+      roles = #{roles,jdbcType=BIGINT},
+      id_card_num = #{idCardNum,jdbcType=VARCHAR},
+      partner = #{partner,jdbcType=VARCHAR},
+      ext_user_id = #{extUserId,jdbcType=VARCHAR},
+      withdraw_type = #{withdrawType,jdbcType=INTEGER},
+      code = #{code,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <select id="selectUserByExtUserId" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from vdlm_user
+    where ext_user_id = #{extUserId, jdbcType=VARCHAR} and archive=false limit 1
+  </select>  
+  
+  <select id="loadByLoginname" resultMap="BaseResultMap">
+	select 
+	<include refid="Base_Column_List" />
+	from vdlm_user
+	where loginname = #{0} and archive=false
+  </select>  
+</mapper>

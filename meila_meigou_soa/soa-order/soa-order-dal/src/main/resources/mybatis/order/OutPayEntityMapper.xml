@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.meila.soa.order.dal.dao.order.OutPayEntityMapper" >
+  <resultMap id="BaseResultMap" type="com.meila.soa.order.dal.entity.order.OutPayEntity" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="p_outpay_id" property="pOutpayId" jdbcType="BIGINT" />
+    <result column="request_id" property="requestId" jdbcType="BIGINT" />
+    <result column="for_outpay_id" property="forOutpayId" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="outpay_type" property="outpayType" jdbcType="VARCHAR" />
+    <result column="outpay_type_ex" property="outpayTypeEx" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="DECIMAL" />
+    <result column="out_id" property="outId" jdbcType="VARCHAR" />
+    <result column="out_account_id" property="outAccountId" jdbcType="VARCHAR" />
+    <result column="out_account_name" property="outAccountName" jdbcType="VARCHAR" />
+    <result column="out_status" property="outStatus" jdbcType="VARCHAR" />
+    <result column="out_status_ex" property="outStatusEx" jdbcType="VARCHAR" />
+    <result column="bill_no" property="billNo" jdbcType="VARCHAR" />
+    <result column="trade_no" property="tradeNo" jdbcType="VARCHAR" />
+    <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+    <result column="pay_detail_type" property="payDetailType" jdbcType="VARCHAR" />
+    <result column="partner" property="partner" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.meila.soa.order.dal.entity.order.OutPayEntity" extends="BaseResultMap" >
+    <result column="detail" property="detail" jdbcType="LONGVARBINARY" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, p_outpay_id, request_id, for_outpay_id, user_id, status, outpay_type, outpay_type_ex, 
+    amount, out_id, out_account_id, out_account_name, out_status, out_status_ex, bill_no, 
+    trade_no, created_at, updated_at, pay_detail_type, partner
+  </sql>
+  <sql id="Blob_Column_List" >
+    detail
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from vdlm_outpay
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from vdlm_outpay
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insertSelective" parameterType="com.meila.soa.order.dal.entity.order.OutPayEntity" >
+    insert into vdlm_outpay
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="pOutpayId != null" >
+        p_outpay_id,
+      </if>
+      <if test="requestId != null" >
+        request_id,
+      </if>
+      <if test="forOutpayId != null" >
+        for_outpay_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="outpayType != null" >
+        outpay_type,
+      </if>
+      <if test="outpayTypeEx != null" >
+        outpay_type_ex,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="outId != null" >
+        out_id,
+      </if>
+      <if test="outAccountId != null" >
+        out_account_id,
+      </if>
+      <if test="outAccountName != null" >
+        out_account_name,
+      </if>
+      <if test="outStatus != null" >
+        out_status,
+      </if>
+      <if test="outStatusEx != null" >
+        out_status_ex,
+      </if>
+      <if test="billNo != null" >
+        bill_no,
+      </if>
+      <if test="tradeNo != null" >
+        trade_no,
+      </if>
+      <if test="createdAt != null" >
+        created_at,
+      </if>
+      <if test="updatedAt != null" >
+        updated_at,
+      </if>
+      <if test="payDetailType != null" >
+        pay_detail_type,
+      </if>
+      <if test="partner != null" >
+        partner,
+      </if>
+      <if test="detail != null" >
+        detail,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="pOutpayId != null" >
+        #{pOutpayId,jdbcType=BIGINT},
+      </if>
+      <if test="requestId != null" >
+        #{requestId,jdbcType=BIGINT},
+      </if>
+      <if test="forOutpayId != null" >
+        #{forOutpayId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="outpayType != null" >
+        #{outpayType,jdbcType=VARCHAR},
+      </if>
+      <if test="outpayTypeEx != null" >
+        #{outpayTypeEx,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="outId != null" >
+        #{outId,jdbcType=VARCHAR},
+      </if>
+      <if test="outAccountId != null" >
+        #{outAccountId,jdbcType=VARCHAR},
+      </if>
+      <if test="outAccountName != null" >
+        #{outAccountName,jdbcType=VARCHAR},
+      </if>
+      <if test="outStatus != null" >
+        #{outStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="outStatusEx != null" >
+        #{outStatusEx,jdbcType=VARCHAR},
+      </if>
+      <if test="billNo != null" >
+        #{billNo,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeNo != null" >
+        #{tradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="createdAt != null" >
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null" >
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payDetailType != null" >
+        #{payDetailType,jdbcType=VARCHAR},
+      </if>
+      <if test="partner != null" >
+        #{partner,jdbcType=VARCHAR},
+      </if>
+      <if test="detail != null" >
+        #{detail,jdbcType=LONGVARBINARY},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.meila.soa.order.dal.entity.order.OutPayEntity" >
+    update vdlm_outpay
+    <set >
+      <if test="pOutpayId != null" >
+        p_outpay_id = #{pOutpayId,jdbcType=BIGINT},
+      </if>
+      <if test="requestId != null" >
+        request_id = #{requestId,jdbcType=BIGINT},
+      </if>
+      <if test="forOutpayId != null" >
+        for_outpay_id = #{forOutpayId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="outpayType != null" >
+        outpay_type = #{outpayType,jdbcType=VARCHAR},
+      </if>
+      <if test="outpayTypeEx != null" >
+        outpay_type_ex = #{outpayTypeEx,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="outId != null" >
+        out_id = #{outId,jdbcType=VARCHAR},
+      </if>
+      <if test="outAccountId != null" >
+        out_account_id = #{outAccountId,jdbcType=VARCHAR},
+      </if>
+      <if test="outAccountName != null" >
+        out_account_name = #{outAccountName,jdbcType=VARCHAR},
+      </if>
+      <if test="outStatus != null" >
+        out_status = #{outStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="outStatusEx != null" >
+        out_status_ex = #{outStatusEx,jdbcType=VARCHAR},
+      </if>
+      <if test="billNo != null" >
+        bill_no = #{billNo,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeNo != null" >
+        trade_no = #{tradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="createdAt != null" >
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null" >
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payDetailType != null" >
+        pay_detail_type = #{payDetailType,jdbcType=VARCHAR},
+      </if>
+      <if test="partner != null" >
+        partner = #{partner,jdbcType=VARCHAR},
+      </if>
+      <if test="detail != null" >
+        detail = #{detail,jdbcType=LONGVARBINARY},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <!-- 自定义SQL -->
+  <select id="selectOutPaysByPayNoList" resultMap="BaseResultMap" >
+        select 
+            <include refid="Base_Column_List" />
+        from vdlm_outpay
+        <where>
+            status='SUCCESS' 
+            and bill_no in 
+            <foreach collection="payNoList" index="index" item="payNo" open="(" separator="," close=")">  
+               #{payNo, jdbcType=VARCHAR}
+            </foreach>
+        </where> 
+    </select>
+</mapper>

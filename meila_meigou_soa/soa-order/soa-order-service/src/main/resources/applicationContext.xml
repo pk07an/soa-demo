@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+
+	<!-- 引入属性文件 -->
+	<context:property-placeholder location="classpath:conf/config.properties" />
+
+	<!-- 自动扫描(自动注入) 
+	 排除Controller与RestController
+	 spring-mvc.xml中进行扫描	
+	-->
+	<context:component-scan base-package="com.meila.soa">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+		<context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.RestController"/>
+	</context:component-scan>
+	<!-- 定义aspectj -->
+	<aop:aspectj-autoproxy />     
+	
+	<bean id="threadPoolTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<property name="corePoolSize" value="20" />
+		<property name="maxPoolSize" value="50" />
+	</bean>   
+	<bean id="requestFactory" class="org.springframework.http.client.SimpleClientHttpRequestFactory">
+		<property name="readTimeout" value="10000" />
+		<property name="connectTimeout" value="10000" />
+	</bean>
+	<bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
+		<constructor-arg ref="requestFactory" />
+		<property name="messageConverters">
+			<list>
+				<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+					<property name="supportedMediaTypes">
+						<list>
+							<value>text/html;charset=UTF-8</value>
+							<value>text/plain;charset=UTF-8</value>
+							<value>text/xml;charset=UTF-8</value>
+							<value>application/xml;charset=UTF-8</value>
+						</list>
+					</property>
+					<constructor-arg index="0" value="UTF-8"/>
+				</bean>
+				<bean id="formHttpMessageConverter" class="org.springframework.http.converter.FormHttpMessageConverter" />
+				<bean id="fastJsonHttpMessageConverter"
+					class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+					<property name="supportedMediaTypes">
+						<list>
+							<value>application/json;charset=UTF-8</value>
+							<value>text/html;charset=UTF-8</value>
+							<value>text/plain;charset=UTF-8</value>
+						</list>
+					</property>
+					<property name="features">
+						<list>
+							<value>WriteMapNullValue</value>
+							<value>WriteNullListAsEmpty</value>
+							<value>WriteNullNumberAsZero</value>
+							<value>WriteNullBooleanAsFalse</value>
+							<value>WriteNullStringAsEmpty</value>
+						</list>
+					</property>
+				</bean>
+				<bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter">
+					<property name="supportedMediaTypes">
+						<list>
+							<value>image/jpeg</value>
+						</list>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<import resource="spring-conf/spring-*.xml"></import>
+</beans>

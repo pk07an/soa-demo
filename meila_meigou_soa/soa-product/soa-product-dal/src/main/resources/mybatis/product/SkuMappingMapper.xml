@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.meila.soa.product.dal.dao.product.SkuMappingMapper" >
+  <resultMap id="BaseResultMap" type="com.meila.soa.product.dal.entity.product.SkuMapping" >
+    <id column="id" property="id" />
+    <result column="product_id" property="productId" />
+    <result column="spec_key" property="specKey" jdbcType="VARCHAR" />
+    <result column="spec_name" property="specName" jdbcType="VARCHAR" />
+    <result column="spec_order" property="order" jdbcType="INTEGER" />
+    <result column="archive" property="archive" jdbcType="BIT" />
+    <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, product_id, spec_key, spec_name, spec_order, archive, created_at
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from vdlm_sku_mapping
+    where id = #{id} and archive = false
+    order by spec_order
+  </select>
+  <select id="selectByProductId" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from vdlm_sku_mapping
+    where product_id = #{productId} and archive = false
+     order by spec_order, spec_name
+  </select>  
+  <update id="updateByPrimaryKeySelective" parameterType="com.meila.soa.product.dal.entity.product.SkuMapping" >
+    update vdlm_sku_mapping
+    <set >
+      <if test="specKey != null" >
+        spec_key = #{specKey,jdbcType=VARCHAR},
+      </if>
+      <if test="specName != null" >
+        spec_name = #{specName,jdbcType=VARCHAR},
+      </if>
+		<if test="order != null" >
+        spec_order = #{order,jdbcType=VARCHAR},
+      </if>      
+    </set>
+    where id = #{id}
+  </update>  
+    <insert id="insert" parameterType="com.meila.soa.product.dal.entity.product.SkuMapping" >
+  <selectKey resultType="java.lang.Long" keyProperty="id">
+		SELECT LAST_INSERT_ID() AS id
+	</selectKey>
+    insert into vdlm_sku_mapping (product_id, spec_key, spec_name, spec_order, created_at )
+    values (#{productId}, #{specKey,jdbcType=VARCHAR}, 
+      #{specName,jdbcType=VARCHAR}, #{order,jdbcType=INTEGER}, now()
+      )
+  </insert>
+</mapper>

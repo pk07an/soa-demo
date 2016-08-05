@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meila.soa.product.dal.dao.cart.CartItemMapper">
+	<resultMap id="BaseResultMap" type="com.meila.soa.product.dal.entity.cart.CartItem">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="user_id" jdbcType="BIGINT" property="userId" />
+		<result column="sku_id" jdbcType="BIGINT" property="skuId"/>
+		<result column="product_id" jdbcType="BIGINT" property="productId" />
+		<result column="shop_id" jdbcType="BIGINT" property="shopId" />
+		<result column="seller_id" jdbcType="BIGINT" property="sellerId" />
+		<result column="amount" jdbcType="INTEGER" property="amount" />
+		<result column="status" jdbcType="VARCHAR" property="status" />
+		<result column="archive" jdbcType="BIT" property="archive" />
+		<result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+		<result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+		<result column="from_source" jdbcType="VARCHAR" property="fromSource" />
+	</resultMap>
+	<sql id="Base_Column_List"> id, user_id, sku_id, product_id, shop_id, seller_id, amount, status, archive,from_source, created_at, updated_at
+	</sql>
+
+	<update id="deleteByKeyAndUserId">
+		update vdlm_cart_item set archive=true,updated_at = now()
+		where user_id = #{userId} and sku_id in
+		<foreach collection="ids" item="id" index="index" open="(" separator="," close=")">#{id}</foreach>
+		and status=#{cartType}
+	</update>
+	<update id="updateBySkuSelective">
+		update vdlm_cart_item set updated_at = now(),amount=#{amount}
+		where user_id = #{userId} and sku_id=#{skuId}
+	</update>
+	<select id="selectByUserIdAndCartType" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from vdlm_cart_item where user_id = #{userId} and archive = 0 and status=#{cartType}
+		<if test="skuIds!=null">
+			and sku_id in
+			<foreach collection="skuIds" item="id" index="index" open="(" separator="," close=")">#{id}</foreach>
+		</if>
+		order by updated_at desc
+	</select>
+	<select id="countByUserIdAndCartType" resultType="Integer">
+		select
+		count(1)
+		from vdlm_cart_item where user_id = #{userId} and archive = 0 and
+		status=#{cartType}
+	</select>
+	<select id="selectByUserIdAndSku" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from vdlm_cart_item
+		where user_id = #{userId}
+		and sku_id = #{skuId}
+		and archive = 0
+		and status=#{cartType}
+		limit 0,1;
+	</select>
+	<select id="deleteBySkuAndCartType">
+		update vdlm_cart_item set archive=true,updated_at = now()
+		where user_id = #{userId} and sku_id = #{skuId} and status=#{cartType}
+	</select>
+	<update id="deleteByUserIdAndSkuId">
+		delete vdlm_cart_item where user_id = #{userId} and sku_id = #{skuId} and status=#{cartType}
+	</update>
+	
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from vdlm_cart_item
+    where id = #{id}
+    and archive=false
+  </select>
+
+  <select id="selectCount" resultType="Integer">
+    select count(*)
+    from vdlm_cart_item ci
+    join vdlm_sku s on s.id = ci.sku_id
+    join vdlm_product p on p.id = ci.product_id
+    where s.archive = 0 and s.amount > 0
+    and p.archive = 0 and p.status = 'ONSALE'
+    and ci.user_id = #{userId}
+    and ci.archive = 0
+  </select>
+  
+  <update id="deleteByPrimaryKey">
+    update vdlm_cart_item set archive=true,updated_at = now()
+    where id = #{id}
+  </update>
+  
+  <update id="undeleteByPrimaryKey">
+    update vdlm_cart_item set archive=false,updated_at = now()
+    where id = #{id}
+  </update>
+  
+  <update id="deleteByUserId">
+    update vdlm_cart_item set archive = true,updated_at = now()
+    where user_id = #{userId}
+  </update>
+
+  <insert id="insert" parameterType="com.meila.soa.product.dal.entity.cart.CartItem">
+    <selectKey resultType="Long" keyProperty="id">
+        SELECT LAST_INSERT_ID() AS id
+    </selectKey>
+    insert into vdlm_cart_item (user_id, product_id, 
+      sku_id, shop_id, seller_id, amount, status, from_source,
+      created_at, updated_at
+    )
+    values (#{userId}, #{productId}, 
+      #{skuId},#{shopId},#{sellerId}, 
+      #{amount,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR},#{fromSource,jdbcType=VARCHAR}, now(),now()
+    )
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.meila.soa.product.dal.entity.cart.CartItem">
+    update vdlm_cart_item
+    <set>
+      <if test="userId != null">
+        user_id = #{userId},
+      </if>
+      <if test="productId != null">
+        product_id = #{productId},
+      </if>
+      <if test="skuId != null">
+        sku_id = #{skuId},
+      </if>
+      <if test="amount != null">
+        amount = #{amount,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="archive != null">
+        archive = #{archive,jdbcType=BIT},
+      </if>
+      <if test="fromSource != null">
+        from_source = #{fromSource,jdbcType=VARCHAR},
+      </if>      
+      updated_at = now()
+    </set>
+    where id = #{id} and archive=false
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.meila.soa.product.dal.entity.cart.CartItem">
+    update vdlm_cart_item
+    set user_id = #{userId},
+      product_id = #{productId},
+      sku_id = #{skuId},
+      amount = #{amount,jdbcType=INTEGER},
+      status = #{status,jdbcType=VARCHAR},
+      archive = #{archive,jdbcType=BIT},
+      updated_at = now()
+    where id = #{id} and archive=false
+  </update>
+  
+  <select id="selectByUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from vdlm_cart_item
+    where user_id = #{userId}
+    and archive = 0
+  </select>
+  
+  <select id="selectByUserIdAndShopId" resultMap="BaseResultMap">
+    select 
+    ci.id, ci.user_id, ci.product_id, ci.sku_id, ci.amount, ci.status, ci.archive, ci.created_at, ci.updated_at
+    from vdlm_cart_item ci
+    join vdlm_product p on p.id = ci.product_id
+    where ci.user_id = #{0}
+      and p.shop_id = #{1}
+      and ci.archive = 0
+  </select>
+  	
+</mapper>

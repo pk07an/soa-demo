@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.meila.soa.product.dal.dao.product.SkuBomMapper" >
+  <resultMap id="BaseResultMap" type="com.meila.soa.product.dal.entity.product.SkuBom" >
+    <id column="id" property="id" />
+    <result column="spu_id" property="spuId" />
+    <result column="sub_sku_id" property="subSkuId" />
+    <result column="match_count" property="matchCount" jdbcType="INTEGER" />
+    <result column="clearance_price" property="clearancePrice" jdbcType="DECIMAL" />
+    <result column="archive" property="archive" jdbcType="BIT" />
+    <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+
+  
+  
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, spu_id, sub_sku_id, match_count, clearance_price, archive, created_at, updated_at
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.meila.soa.product.dal.entity.product.SkuBomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from vdlm_sku_bom
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from vdlm_sku_bom
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from vdlm_sku_bom
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.meila.soa.product.dal.entity.product.SkuBomExample" >
+    delete from vdlm_sku_bom
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.meila.soa.product.dal.entity.product.SkuBom" >
+    <selectKey resultType="long" keyProperty="id">
+        SELECT LAST_INSERT_ID() AS id
+    </selectKey>
+    insert into vdlm_sku_bom (spu_id, sub_sku_id, 
+      match_count, clearance_price, archive, created_at, 
+      updated_at)
+    values (#{spuId}, #{subSkuId}, 
+      #{matchCount,jdbcType=INTEGER}, #{clearancePrice,jdbcType=DECIMAL}, #{archive,jdbcType=BIT}, now(), 
+      now())
+  </insert>
+  <insert id="insertSelective" parameterType="com.meila.soa.product.dal.entity.product.SkuBom" >
+    insert into vdlm_sku_bom
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="spuId != null" >
+        spu_id,
+      </if>
+      <if test="subSkuId != null" >
+        sub_sku_id,
+      </if>
+      <if test="matchCount != null" >
+        match_count,
+      </if>
+      <if test="clearancePrice != null" >
+        clearance_price,
+      </if>
+      <if test="archive != null" >
+        archive,
+      </if>
+      <if test="createdAt != null" >
+        created_at,
+      </if>
+      <if test="updatedAt != null" >
+        updated_at,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="spuId != null" >
+        #{spuId,jdbcType=BIGINT},
+      </if>
+      <if test="subSkuId != null" >
+        #{subSkuId,jdbcType=BIGINT},
+      </if>
+      <if test="matchCount != null" >
+        #{matchCount,jdbcType=INTEGER},
+      </if>
+      <if test="clearancePrice != null" >
+        #{clearancePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="archive != null" >
+        #{archive,jdbcType=BIT},
+      </if>
+      <if test="createdAt != null" >
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null" >
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.meila.soa.product.dal.entity.product.SkuBomExample" resultType="java.lang.Integer" >
+    select count(*) from vdlm_sku_bom
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update vdlm_sku_bom
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.spuId != null" >
+        spu_id = #{record.spuId,jdbcType=BIGINT},
+      </if>
+      <if test="record.subSkuId != null" >
+        sub_sku_id = #{record.subSkuId,jdbcType=BIGINT},
+      </if>
+      <if test="record.matchCount != null" >
+        match_count = #{record.matchCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.clearancePrice != null" >
+        clearance_price = #{record.clearancePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.archive != null" >
+        archive = #{record.archive,jdbcType=BIT},
+      </if>
+      <if test="record.createdAt != null" >
+        created_at = #{record.createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedAt != null" >
+        updated_at = #{record.updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update vdlm_sku_bom
+    set id = #{record.id,jdbcType=BIGINT},
+      spu_id = #{record.spuId,jdbcType=BIGINT},
+      sub_sku_id = #{record.subSkuId,jdbcType=BIGINT},
+      match_count = #{record.matchCount,jdbcType=INTEGER},
+      clearance_price = #{record.clearancePrice,jdbcType=DECIMAL},
+      archive = #{record.archive,jdbcType=BIT},
+      created_at = #{record.createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{record.updatedAt,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.meila.soa.product.dal.entity.product.SkuBom" >
+    update vdlm_sku_bom
+    <set >
+      <if test="spuId != null" >
+        spu_id = #{spuId},
+      </if>
+      <if test="subSkuId != null" >
+        sub_sku_id = #{subSkuId},
+      </if>
+      <if test="matchCount != null" >
+        match_count = #{matchCount,jdbcType=INTEGER},
+      </if>
+      <!-- <if test="clearancePrice != null" > -->
+        clearance_price = #{clearancePrice,jdbcType=DECIMAL},
+      <!-- </if> -->
+      <if test="archive != null" >
+        archive = #{archive,jdbcType=BIT},
+      </if>
+      <if test="createdAt != null" >
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null" >
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.meila.soa.product.dal.entity.product.SkuBom" >
+    update vdlm_sku_bom
+    set spu_id = #{spuId,jdbcType=BIGINT},
+      sub_sku_id = #{subSkuId,jdbcType=BIGINT},
+      match_count = #{matchCount,jdbcType=INTEGER},
+      clearance_price = #{clearancePrice,jdbcType=DECIMAL},
+      archive = #{archive,jdbcType=BIT},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+   <select id="selectBomListBySkuIdList" resultMap="BaseResultMap">
+       SELECT 
+           <include refid="Base_Column_List" />
+       FROM vdlm_sku_bom 
+       <where>
+           archive = false 
+           AND sub_sku_id IN
+           <foreach collection="list" item="id" open="(" close=")" separator=",">
+               #{id}
+           </foreach>
+       </where>
+   </select> 
+   <select id="selectBomListBySkuBundleIdList" resultMap="BaseResultMap">
+       SELECT 
+           <include refid="Base_Column_List" />
+       FROM vdlm_sku_bom 
+       <where>
+           archive = false 
+           AND spu_id IN
+           <foreach collection="list" item="id" open="(" close=")" separator=",">
+               #{id}
+           </foreach>
+       </where>
+   </select>      
+</mapper>

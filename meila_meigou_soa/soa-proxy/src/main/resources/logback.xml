@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration scan="true" scanPeriod="3 seconds">
+	<contextName>proxy</contextName>
+	<substitutionProperty name="log.base" value="/ouer/logs" />
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>
+				%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{32} TID:%X{TID} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+	<appender name="logfile"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Encoding>UTF-8</Encoding>
+		<File>${log.base}/proxy.${web_port:-0000}.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${log.base}/%d{yyyy-MM-dd}/proxy.${web_port:-0000}.%i.log
+			</FileNamePattern>
+			<MaxHistory>100</MaxHistory>
+			<TimeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<MaxFileSize>100MB</MaxFileSize>
+			</TimeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%date [%thread] %-5level %logger{80} - TID:%X{TID}|%msg%n</pattern>
+		</layout>
+	</appender>
+	
+	<root level="INFO">
+<!-- 		<appender-ref ref="STDOUT" /> -->
+		<appender-ref ref="logfile"/>
+	</root>
+
+	<logger name="com.meila.soa.proxy" level="DEBUG"  >
+		<appender-ref ref="logfile"/>
+	</logger> 
+</configuration>

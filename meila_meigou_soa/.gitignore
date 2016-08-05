@@ -1,0 +1,36 @@
+# maven ignore
+target/
+bin/
+*.jar
+*.war
+*.zip
+*.tar
+*.tar.gz
+
+# eclipse ignore
+.settings/
+.externalToolBuilders/
+.project
+.classpath
+
+# idea ignore
+.idea/
+*.ipr
+*.iml
+*.iws
+
+# temp ignore
+*.log
+*.cache
+*.diff
+*.patch
+*.tmp
+
+# system ignore
+.DS_Store
+Thumbs.db
+
+build.bat
+
+!soa-dubboapi-core/src/main/resources/META-INF/assembly/bin/
+!soa-openapi/soa-openapi-thrift-core/src/main/resources/META-INF/assembly/bin/

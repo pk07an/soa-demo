@@ -1,0 +1,958 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.meila.soa.product.dal.dao.product.ProductMapper" >
+  <resultMap id="BaseResultMap" type="com.meila.soa.product.dal.entity.product.Product" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="shop_id" property="shopId" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="img" property="img" jdbcType="VARCHAR" />
+    <result column="img_width" property="imgWidth" jdbcType="INTEGER" />
+    <result column="img_height" property="imgHeight" jdbcType="INTEGER" />
+    <result column="desc_img" property="descImg" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="market_price" property="marketPrice" jdbcType="DECIMAL" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="postage" property="postage" jdbcType="DECIMAL" />
+    <result column="amount" property="amount" jdbcType="BIGINT" />
+    <result column="sales" property="sales" jdbcType="BIGINT" />
+    <result column="archive" property="archive" jdbcType="BIT" />
+    <result column="recommend" property="recommend" jdbcType="BIT" />
+    <result column="recommend_at" property="recommendAt" jdbcType="TIMESTAMP" />
+    <result column="discount" property="discount" jdbcType="DECIMAL" />
+    <result column="is_commission" property="isCommission" jdbcType="BIT" />
+    <result column="commission_rate" property="commissionRate" jdbcType="DECIMAL" />
+    <result column="forsale_at" property="forsaleAt" jdbcType="TIMESTAMP" />
+    <result column="onsale_at" property="onsaleAt" jdbcType="TIMESTAMP" />
+    <result column="instock_at" property="instockAt" jdbcType="TIMESTAMP" />
+    <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+    <result column="fake_sales" property="fakeSales" jdbcType="BIGINT" />
+    <result column="isDelay" property="isDelay" jdbcType="BIT" />
+    <result column="delayDays" property="delayDays" jdbcType="INTEGER" />
+    <result column="update_lock" property="updateLock" jdbcType="BIT" />
+    <result column="synchronousFlag" property="synchronousflag" jdbcType="VARCHAR" />
+    <result column="third_item_id" property="thirdItemId" jdbcType="VARCHAR" />
+    <result column="partner_product_id" property="partnerProductId" jdbcType="BIGINT" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.meila.soa.product.dal.entity.product.Product" extends="BaseResultMap" >
+    <result column="description" property="description" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, shop_id, name, img, img_width, img_height, desc_img, status, market_price, 
+    price, postage, amount, sales, archive, recommend, recommend_at, discount, is_commission, 
+    commission_rate, forsale_at, onsale_at, instock_at, created_at, updated_at, fake_sales, 
+    isDelay, delayDays, update_lock, synchronousFlag, third_item_id, partner_product_id, 
+    code
+  </sql>
+  <sql id="Blob_Column_List" >
+    description
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from vdlm_product
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectByKwd" resultMap="BaseResultMap">
+    select
+    <include refid="List_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from vdlm_product
+    <where>
+      <if test="record.shopId != null">
+        shop_id = #{record.shopId,jdbcType=BIGINT}
+      </if>
+      <if test="record.name != null">
+        AND name like concat('%',#{record.name},'%')
+      </if>
+      <if test="record.archive != null">
+        AND archive = #{record.archive,jdbcType=BIT}
+      </if>
+      <if test="params.onSaleAtBegin != null">
+        AND onsale_at <![CDATA[=>]]> #{params.onSaleAtBegin,jdbcType=TIMESTAMP}
+      </if>
+      <if test="params.onSaleAtEnd != null">
+        AND onsale_at <![CDATA[<=]]> #{params.onSaleAtEnd,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+    order by onsale_at desc
+    <if test="params.beginId != null and params.pageSize != null">
+      limit #{params.beginId}, #{params.pageSize}
+    </if>
+  </select>
+
+  <select id="countByKwd" resultType="java.lang.Long">
+    select count(*)
+    from vdlm_product
+    <where>
+      <if test="record.shopId != null">
+        shop_id = #{record.shopId,jdbcType=BIGINT}
+      </if>
+      <if test="record.name != null">
+        AND name like concat('%',#{record.name},'%')
+      </if>
+      <if test="record.archive != null">
+        AND archive = #{record.archive,jdbcType=BIT}
+      </if>
+      <if test="params.onSaleAtBegin != null">
+        AND onsale_at <![CDATA[=>]]> #{params.onSaleAtBegin,jdbcType=TIMESTAMP}
+      </if>
+      <if test="params.onSaleAtEnd != null">
+        AND onsale_at <![CDATA[<=]]> #{params.onSaleAtEnd,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+  
+  <select id="selectBySelective" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from vdlm_product
+    <where>
+      <if test="record.id != null" >
+      	id = #{record.id,jdbcType=BIGINT}
+      </if>
+      <if test="record.code != null" >
+      	AND code = #{record.code,jdbcType=VARCHAR}
+      </if>
+      <if test="record.shopId != null" >
+      	AND shop_id = #{record.shopId,jdbcType=BIGINT}
+      </if>
+      <if test="record.status != null" >
+      	AND status = #{record.status,jdbcType=VARCHAR}
+      </if>
+      <if test="record.recommend != null" >
+      	AND recommend = #{record.recommend,jdbcType=BIT}
+      </if>      
+      <if test="record.isDelay != null" >
+      	AND isDelay = #{record.isDelay,jdbcType=BIT}
+      </if>  
+      <if test="record.archive != null" >
+      	AND archive = #{record.archive,jdbcType=BIT}
+      </if>      
+      <if test="record.name != null" >
+      	AND name like concat('%',#{record.name},'%')   
+      </if>     
+    </where>
+    <if test="page.beginId != null and page.pageSize != null">
+      limit #{page.beginId}, #{page.pageSize}
+    </if>
+  </select>
+  
+    <select id="countBySelective" resultType="java.lang.Long"  >
+    select 
+    count(*)
+    from vdlm_product
+    <where>
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT}
+      </if>
+      <if test="record.code != null" >
+        AND code = #{record.code,jdbcType=VARCHAR}
+      </if>
+      <if test="record.shopId != null" >
+        AND shop_id = #{record.shopId,jdbcType=BIGINT}
+      </if>
+      <if test="record.status != null" >
+        AND status = #{record.status,jdbcType=VARCHAR}
+      </if>
+      <if test="record.recommend != null" >
+        AND recommend = #{record.recommend,jdbcType=BIT}
+      </if>      
+      <if test="record.isDelay != null" >
+        AND isDelay = #{record.isDelay,jdbcType=BIT}
+      </if>  
+      <if test="record.archive != null" >
+        AND archive = #{record.archive,jdbcType=BIT}
+      </if>              
+    </where>
+  </select>
+    
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from vdlm_product
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.meila.soa.product.dal.entity.product.Product" >
+    <selectKey resultType="long" keyProperty="id">
+      SELECT LAST_INSERT_ID() AS id
+    </selectKey>
+    insert into vdlm_product (id, user_id, shop_id, 
+      name, img, img_width, 
+      img_height, desc_img, status, 
+      market_price, price, postage, 
+      amount, sales, archive, recommend, 
+      recommend_at, discount, is_commission, 
+      commission_rate, forsale_at, onsale_at, 
+      instock_at, created_at, updated_at, 
+      fake_sales, isDelay, delayDays, 
+      update_lock, synchronousFlag, third_item_id, 
+      partner_product_id, code, description
+      )
+    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{shopId,jdbcType=BIGINT}, 
+      #{name,jdbcType=VARCHAR}, #{img,jdbcType=VARCHAR}, #{imgWidth,jdbcType=INTEGER}, 
+      #{imgHeight,jdbcType=INTEGER}, #{descImg,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{marketPrice,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL}, #{postage,jdbcType=DECIMAL}, 
+      #{amount,jdbcType=BIGINT}, #{sales,jdbcType=BIGINT}, #{archive,jdbcType=BIT}, #{recommend,jdbcType=BIT}, 
+      #{recommendAt,jdbcType=TIMESTAMP}, #{discount,jdbcType=DECIMAL}, #{isCommission,jdbcType=BIT}, 
+      #{commissionRate,jdbcType=DECIMAL}, #{forsaleAt,jdbcType=TIMESTAMP}, #{onsaleAt,jdbcType=TIMESTAMP}, 
+      #{instockAt,jdbcType=TIMESTAMP}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}, 
+      #{fakeSales,jdbcType=BIGINT}, #{isDelay,jdbcType=BIT}, #{delayDays,jdbcType=INTEGER}, 
+      #{updateLock,jdbcType=BIT}, #{synchronousflag,jdbcType=VARCHAR}, #{thirdItemId,jdbcType=VARCHAR}, 
+      #{partnerProductId,jdbcType=BIGINT}, #{code,jdbcType=VARCHAR}, #{description,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.meila.soa.product.dal.entity.product.Product" >
+    insert into vdlm_product
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="shopId != null" >
+        shop_id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="img != null" >
+        img,
+      </if>
+      <if test="imgWidth != null" >
+        img_width,
+      </if>
+      <if test="imgHeight != null" >
+        img_height,
+      </if>
+      <if test="descImg != null" >
+        desc_img,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="marketPrice != null" >
+        market_price,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="postage != null" >
+        postage,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="sales != null" >
+        sales,
+      </if>
+      <if test="archive != null" >
+        archive,
+      </if>
+      <if test="recommend != null" >
+        recommend,
+      </if>
+      <if test="recommendAt != null" >
+        recommend_at,
+      </if>
+      <if test="discount != null" >
+        discount,
+      </if>
+      <if test="isCommission != null" >
+        is_commission,
+      </if>
+      <if test="commissionRate != null" >
+        commission_rate,
+      </if>
+      <if test="forsaleAt != null" >
+        forsale_at,
+      </if>
+      <if test="onsaleAt != null" >
+        onsale_at,
+      </if>
+      <if test="instockAt != null" >
+        instock_at,
+      </if>
+      <if test="createdAt != null" >
+        created_at,
+      </if>
+      <if test="updatedAt != null" >
+        updated_at,
+      </if>
+      <if test="fakeSales != null" >
+        fake_sales,
+      </if>
+      <if test="isDelay != null" >
+        isDelay,
+      </if>
+      <if test="delayDays != null" >
+        delayDays,
+      </if>
+      <if test="updateLock != null" >
+        update_lock,
+      </if>
+      <if test="synchronousflag != null" >
+        synchronousFlag,
+      </if>
+      <if test="thirdItemId != null" >
+        third_item_id,
+      </if>
+      <if test="partnerProductId != null" >
+        partner_product_id,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="shopId != null" >
+        #{shopId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="img != null" >
+        #{img,jdbcType=VARCHAR},
+      </if>
+      <if test="imgWidth != null" >
+        #{imgWidth,jdbcType=INTEGER},
+      </if>
+      <if test="imgHeight != null" >
+        #{imgHeight,jdbcType=INTEGER},
+      </if>
+      <if test="descImg != null" >
+        #{descImg,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="marketPrice != null" >
+        #{marketPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="postage != null" >
+        #{postage,jdbcType=DECIMAL},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=BIGINT},
+      </if>
+      <if test="sales != null" >
+        #{sales,jdbcType=BIGINT},
+      </if>
+      <if test="archive != null" >
+        #{archive,jdbcType=BIT},
+      </if>
+      <if test="recommend != null" >
+        #{recommend,jdbcType=BIT},
+      </if>
+      <if test="recommendAt != null" >
+        #{recommendAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="discount != null" >
+        #{discount,jdbcType=DECIMAL},
+      </if>
+      <if test="isCommission != null" >
+        #{isCommission,jdbcType=BIT},
+      </if>
+      <if test="commissionRate != null" >
+        #{commissionRate,jdbcType=DECIMAL},
+      </if>
+      <if test="forsaleAt != null" >
+        #{forsaleAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="onsaleAt != null" >
+        #{onsaleAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="instockAt != null" >
+        #{instockAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdAt != null" >
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null" >
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fakeSales != null" >
+        #{fakeSales,jdbcType=BIGINT},
+      </if>
+      <if test="isDelay != null" >
+        #{isDelay,jdbcType=BIT},
+      </if>
+      <if test="delayDays != null" >
+        #{delayDays,jdbcType=INTEGER},
+      </if>
+      <if test="updateLock != null" >
+        #{updateLock,jdbcType=BIT},
+      </if>
+      <if test="synchronousflag != null" >
+        #{synchronousflag,jdbcType=VARCHAR},
+      </if>
+      <if test="thirdItemId != null" >
+        #{thirdItemId,jdbcType=VARCHAR},
+      </if>
+      <if test="partnerProductId != null" >
+        #{partnerProductId,jdbcType=BIGINT},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="addCode">
+    update vdlm_product 
+    set code = #{code}, updated_at = now()
+    where id =#{id,jdbcType=BIGINT}
+  </update>  
+  <update id="updateByPrimaryKeySelective" parameterType="com.meila.soa.product.dal.entity.product.Product" >
+    update vdlm_product
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="shopId != null" >
+        shop_id = #{shopId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="img != null" >
+        img = #{img,jdbcType=VARCHAR},
+      </if>
+      <if test="imgWidth != null" >
+        img_width = #{imgWidth,jdbcType=INTEGER},
+      </if>
+      <if test="imgHeight != null" >
+        img_height = #{imgHeight,jdbcType=INTEGER},
+      </if>
+      <if test="descImg != null" >
+        desc_img = #{descImg,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="marketPrice != null" >
+        market_price = #{marketPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="postage != null" >
+        postage = #{postage,jdbcType=DECIMAL},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=BIGINT},
+      </if>
+      <if test="sales != null" >
+        sales = #{sales,jdbcType=BIGINT},
+      </if>
+      <if test="archive != null" >
+        archive = #{archive,jdbcType=BIT},
+      </if>
+      <if test="recommend != null" >
+        recommend = #{recommend,jdbcType=BIT},
+      </if>
+      <if test="recommendAt != null" >
+        recommend_at = #{recommendAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="discount != null" >
+        discount = #{discount,jdbcType=DECIMAL},
+      </if>
+      <if test="isCommission != null" >
+        is_commission = #{isCommission,jdbcType=BIT},
+      </if>
+      <if test="commissionRate != null" >
+        commission_rate = #{commissionRate,jdbcType=DECIMAL},
+      </if>
+      <if test="forsaleAt != null" >
+        forsale_at = #{forsaleAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="onsaleAt != null" >
+        onsale_at = #{onsaleAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="instockAt != null" >
+        instock_at = #{instockAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdAt != null" >
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null" >
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fakeSales != null" >
+        fake_sales = #{fakeSales,jdbcType=BIGINT},
+      </if>
+      <if test="isDelay != null" >
+        isDelay = #{isDelay,jdbcType=BIT},
+      </if>
+      <if test="delayDays != null" >
+        delayDays = #{delayDays,jdbcType=INTEGER},
+      </if>
+      <if test="updateLock != null" >
+        update_lock = #{updateLock,jdbcType=BIT},
+      </if>
+      <if test="synchronousflag != null" >
+        synchronousFlag = #{synchronousflag,jdbcType=VARCHAR},
+      </if>
+      <if test="thirdItemId != null" >
+        third_item_id = #{thirdItemId,jdbcType=VARCHAR},
+      </if>
+      <if test="partnerProductId != null" >
+        partner_product_id = #{partnerProductId,jdbcType=BIGINT},
+      </if>
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.meila.soa.product.dal.entity.product.Product" >
+    update vdlm_product
+    set user_id = #{userId,jdbcType=BIGINT},
+      shop_id = #{shopId,jdbcType=BIGINT},
+      name = #{name,jdbcType=VARCHAR},
+      img = #{img,jdbcType=VARCHAR},
+      img_width = #{imgWidth,jdbcType=INTEGER},
+      img_height = #{imgHeight,jdbcType=INTEGER},
+      desc_img = #{descImg,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      market_price = #{marketPrice,jdbcType=DECIMAL},
+      price = #{price,jdbcType=DECIMAL},
+      postage = #{postage,jdbcType=DECIMAL},
+      amount = #{amount,jdbcType=BIGINT},
+      sales = #{sales,jdbcType=BIGINT},
+      archive = #{archive,jdbcType=BIT},
+      recommend = #{recommend,jdbcType=BIT},
+      recommend_at = #{recommendAt,jdbcType=TIMESTAMP},
+      discount = #{discount,jdbcType=DECIMAL},
+      is_commission = #{isCommission,jdbcType=BIT},
+      commission_rate = #{commissionRate,jdbcType=DECIMAL},
+      forsale_at = #{forsaleAt,jdbcType=TIMESTAMP},
+      onsale_at = #{onsaleAt,jdbcType=TIMESTAMP},
+      instock_at = #{instockAt,jdbcType=TIMESTAMP},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      fake_sales = #{fakeSales,jdbcType=BIGINT},
+      isDelay = #{isDelay,jdbcType=BIT},
+      delayDays = #{delayDays,jdbcType=INTEGER},
+      update_lock = #{updateLock,jdbcType=BIT},
+      synchronousFlag = #{synchronousflag,jdbcType=VARCHAR},
+      third_item_id = #{thirdItemId,jdbcType=VARCHAR},
+      partner_product_id = #{partnerProductId,jdbcType=BIGINT},
+      code = #{code,jdbcType=VARCHAR},
+      description = #{description,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.meila.soa.product.dal.entity.product.Product" >
+    update vdlm_product
+    set user_id = #{userId,jdbcType=BIGINT},
+      shop_id = #{shopId,jdbcType=BIGINT},
+      name = #{name,jdbcType=VARCHAR},
+      img = #{img,jdbcType=VARCHAR},
+      img_width = #{imgWidth,jdbcType=INTEGER},
+      img_height = #{imgHeight,jdbcType=INTEGER},
+      desc_img = #{descImg,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      market_price = #{marketPrice,jdbcType=DECIMAL},
+      price = #{price,jdbcType=DECIMAL},
+      postage = #{postage,jdbcType=DECIMAL},
+      amount = #{amount,jdbcType=BIGINT},
+      sales = #{sales,jdbcType=BIGINT},
+      archive = #{archive,jdbcType=BIT},
+      recommend = #{recommend,jdbcType=BIT},
+      recommend_at = #{recommendAt,jdbcType=TIMESTAMP},
+      discount = #{discount,jdbcType=DECIMAL},
+      is_commission = #{isCommission,jdbcType=BIT},
+      commission_rate = #{commissionRate,jdbcType=DECIMAL},
+      forsale_at = #{forsaleAt,jdbcType=TIMESTAMP},
+      onsale_at = #{onsaleAt,jdbcType=TIMESTAMP},
+      instock_at = #{instockAt,jdbcType=TIMESTAMP},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      fake_sales = #{fakeSales,jdbcType=BIGINT},
+      isDelay = #{isDelay,jdbcType=BIT},
+      delayDays = #{delayDays,jdbcType=INTEGER},
+      update_lock = #{updateLock,jdbcType=BIT},
+      synchronousFlag = #{synchronousflag,jdbcType=VARCHAR},
+      third_item_id = #{thirdItemId,jdbcType=VARCHAR},
+      partner_product_id = #{partnerProductId,jdbcType=BIGINT},
+      code = #{code,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByIdList" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from vdlm_product
+    where id in
+    <foreach collection="list" index="index" item="item" open="(" separator="," close=")">   
+       	#{item,jdbcType=BIGINT}   
+   	</foreach>    	
+  </select>
+  
+  <select id="selectByCodeList" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from vdlm_product
+    where archive = 0 and code in
+    <foreach collection="list" index="index" item="item" open="(" separator="," close=")">   
+       	#{item,jdbcType=VARCHAR}   
+   	</foreach>    	
+  </select>  
+
+	
+	<!-- 取列表 -->
+	<sql id="List_Column_List">
+		id, shop_id, name,code, sales, fake_sales, amount, img, img_width, img_height, market_price, price,postage, status, discount, onsale_at, forsale_at, created_at, updated_at, update_lock, synchronousFlag 
+	</sql>
+	
+	<select id="selectById" resultMap="ResultMapWithBLOBs">
+		select
+		<include refid="Base_Column_List" />
+    	,
+    	<include refid="Blob_Column_List" />		
+		from vdlm_product
+		where id = #{id} and archive = false
+	</select>
+ 	<update id="refundAmountAndSales" >
+	   	update vdlm_product set amount = amount + #{amount,jdbcType=INTEGER},sales = sales - #{amount,jdbcType=INTEGER},updated_at = now()
+	   	where id = #{id}
+  	</update>  
+  	
+    <update id="updateProductAmountIncludeBom">
+        UPDATE vdlm_product 
+        SET amount = (
+            SELECT 
+                IFNULL(SUM(amount),0)
+            FROM
+                vdlm_sku 
+            WHERE archive = false 
+            AND is_display = 'SHOW' 
+            AND product_id = #{productId}
+        ) , updated_at = now() 
+        <where>
+            id = #{productId}
+        </where>
+    </update>  	
+    <update id="updateProductPriceIncludeBom">
+    	UPDATE vdlm_product 
+        SET price = (
+            SELECT 
+               IFNULL(min(price),0)
+            FROM
+                vdlm_sku 
+            WHERE archive = false 
+            AND is_display = 'SHOW' 
+            AND product_id = #{productId}
+        ) , updated_at = now() 
+        <where>
+            id = #{productId}
+        </where>
+    </update>    
+    
+    <select id="loadInfo" resultType="java.util.Map">
+      select * from vdlm_product_info
+      where product_id=#{productId,jdbcType=BIGINT} 
+    </select>    
+    <select id="selectProductListByShopId" resultMap="BaseResultMap">
+        SELECT 
+            <include refid="Base_Column_List" />
+        FROM
+            vdlm_product 
+        <where>
+            shop_id = #{shopId} 
+        </where>
+    </select>    
+  <update id="updateForInstock">
+    update vdlm_product set status = 'INSTOCK',
+    instock_at = now(),updated_at = now()
+    where id = #{id} and archive=false
+  </update>    
+  <update id="updateForOnsale">
+    update vdlm_product set status = 'ONSALE', onsale_at = now(), updated_at = now()
+    where id = #{id} and
+    archive=false
+  </update>  
+
+  <select id="listProductsBySales" resultMap="BaseResultMap">
+    select
+    <include refid="List_Column_List" />
+        ,
+    <include refid="Blob_Column_List" />
+    from vdlm_product
+    where 1=1 
+    <include refid="onsales_cond"/>
+    order by sales ${direction}, updated_at desc
+    limit #{page.offset}, #{page.size}
+  </select>
+  <select id="listProductsByAmount" resultMap="BaseResultMap">
+    select
+    <include refid="List_Column_List" />
+        ,
+    <include refid="Blob_Column_List" />
+    from vdlm_product
+    where 1=1
+    <include refid="onamount_cond"/>
+    order by amount ${direction}, updated_at desc
+    limit #{page.offset}, #{page.size}
+  </select>
+  
+  <select id="listProductsBySoldout" resultMap="BaseResultMap">
+    select
+    <include refid="List_Column_List" />
+        ,
+    <include refid="Blob_Column_List" />
+    from vdlm_product
+    where 1=1
+    <include refid="onsoldout_cond"/>
+    order by instock_at ${direction}, updated_at desc
+    limit #{page.offset}, #{page.size}
+  </select>
+  <select id="listProductsByStatusDraft" resultMap="BaseResultMap">
+    select
+    <include refid="List_Column_List" />
+        ,
+    <include refid="Blob_Column_List" />
+    from vdlm_product
+    where 1=1
+    <include refid="ondraft_cond"/>
+    order by updated_at desc
+    limit #{page.offset}, #{page.size}
+  </select>
+  
+  <select id="listProductsByOutOfStock" resultMap="BaseResultMap">
+    select
+    <include refid="List_Column_List" />
+      ,
+    <include refid="Blob_Column_List" />
+    from vdlm_product
+    where 1=1
+    <include refid="onoutofstock_cond"/>
+    order by onsale_at desc, updated_at desc
+    limit #{page.offset}, #{page.size}
+  </select>
+
+  <select id="listProductsByOnsaleAt" resultMap="BaseResultMap">
+    select
+    <include refid="List_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from vdlm_product
+    where 1=1 
+    <include refid="onstock_cond"/>
+    order by onsale_at desc, updated_at desc
+      <if test="page != null" >
+        limit #{page.offset}, #{page.size}
+      </if>
+  </select>
+  <select id="selectLastCnt"  resultType="Long">
+    select count(*) from vdlm_product
+    where 1=1
+      <choose>
+        <when test="catType == 'sales'">
+          <include refid="onsales_cond"/>
+        </when>
+        <when test="catType == 'amount'">
+          <include refid="onamount_cond"/>
+        </when>
+        <when test="catType == 'soldout'">
+          <include refid="onsoldout_cond"/>
+        </when>
+        <when test="catType == 'statusDraft'">
+          <include refid="ondraft_cond"/>
+        </when>
+        <when test="catType == 'outofstock'">
+          <include refid="onoutofstock_cond"/>
+        </when>
+        <when test="catType == 'forsale'">
+          <include refid="onforsale_cond"/>
+        </when>
+        <otherwise>
+          <include refid="onstock_cond"/>
+        </otherwise>
+      </choose>
+  </select>
+  <!-- 按销量获取商品列表 -->
+  <sql id="onsales_cond">
+    and shop_id = #{shopId} and
+    status = 'ONSALE'
+    and archive = false
+  </sql>
+  <!-- 按库存取商品列表 -->
+  <sql id="onamount_cond">
+    and shop_id = #{shopId} and
+    status = 'ONSALE'
+    and archive = false
+  </sql>
+  <!-- 按下架时间获取商品列表 -->
+  <sql id="onsoldout_cond">
+    and shop_id = #{shopId} and status = 'INSTOCK'
+    and archive=false
+  </sql>
+  <!-- 草稿商品列表 -->
+  <sql id="ondraft_cond">
+    and shop_id = #{shopId} and
+    status = 'DRAFT'
+    and archive = false
+  </sql>
+  <!-- 缺货列表 -->
+  <sql id="onoutofstock_cond">
+    and shop_id = #{shopId} and
+    status = 'ONSALE' and amount = 0 and archive = false
+  </sql>           
+    
+  <!-- 按上架时间获取商品列表 -->
+  <sql id="onstock_cond">
+    and shop_id = #{shopId}
+    and status = 'ONSALE'
+    and archive = false
+    <!-- 首页商品发布取最近发布的商品时用到(按查询)-->
+    <!-- 先group by y -->
+    <if test="params != null">
+      <if test="params.onsaleAt1 != null">
+      and (onsale_at &gt;= #{params.onsaleAt1,jdbcType=DATE} and onsale_at &lt; #{params.onsaleAt2,jdbcType=DATE})
+      </if>
+    </if>
+  </sql>      
+  <!-- 计划发布列表 -->
+  <sql id="onforsale_cond">
+    and shop_id = #{shopId} and
+    status = 'FORSALE'
+    and archive = false
+  </sql>          
+  
+  <!-- 查询商品列表 -->
+  <select id="selectProductList" resultMap="ResultMapWithBLOBs">
+  	select 
+    <include refid="Base_Column_List" />
+	from vdlm_product 
+	where archive = 0
+	<if test="onlyOnSale==null or onlyOnSale==1">
+		and status = 'ONSALE' 
+	</if>
+	<if test="shopId!=null">
+		and shop_id =#{shopId}
+	</if>
+	<if test="productName!=null and productName !=''">
+		and name like concat('%',#{productName},'%')
+	</if>
+  </select>
+         
+  
+  <select id="searchProduct" resultMap="ResultMapWithBLOBs">
+    SELECT 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    FROM vdlm_product
+    <where>
+    	archive = false
+	    <if test="params.shopId != null">
+	    	and shop_id = #{params.shopId, jdbcType=BIGINT}
+		</if>
+	    <if test="params.productStatus != null">
+	    	and status = #{params.productStatus, jdbcType=VARCHAR}
+		</if>
+	    <if test="params.amountMax != null">
+	    	and amount <![CDATA[ <= ]]> #{params.amountMax, jdbcType=BIGINT}
+	    	and status != 'DRAFT'
+		</if>
+	 	<if test="params.name != null">
+	    	and name like concat('%', #{params.name,jdbcType=VARCHAR}, '%')
+		</if>    			
+    </where> 
+    ORDER BY ${params.order} ${params.direction}, updated_at DESC
+    LIMIT #{page.beginId}, #{page.pageSize}
+  </select>
+    
+  <select id="countProductBySearchParmas" resultType="java.lang.Long">
+    select count(*)
+    from vdlm_product
+    <where>
+    	archive = false
+	    <if test="params.shopId != null">
+	    	and shop_id = #{params.shopId, jdbcType=BIGINT}
+		</if>
+	    <if test="params.productStatus != null">
+	    	and status = #{params.productStatus, jdbcType=VARCHAR}
+		</if>		
+	    <if test="params.amountMax != null">
+	    	and amount <![CDATA[ <= ]]> #{params.amountMax, jdbcType=BIGINT}
+	    	and status != 'DRAFT'	    	
+		</if>
+	 	<if test="params.name != null">
+	    	and name like concat('%', #{params.name,jdbcType=VARCHAR}, '%')
+		</if>    			
+    </where> 
+  </select>
+      
+      
+      
+
+  <select id="selectOnSaleProductCount" resultType="Integer" >
+    select count(1) from vdlm_product
+    where  
+    	status='ONSALE'
+    	and archive=false
+	<if test="sellerId != null" >
+		and	user_id=#{sellerId}
+	</if>
+  </select>
+  
+  <select id="selectSoldOutProductCount" resultType="Integer">
+    select COUNT(1) from (
+		select 
+		 s.product_id, SUM(s.amount) as sku_amount
+		from vdlm_product p join vdlm_sku s on p.id=s.product_id
+		where 
+			p.status='ONSALE'
+			and p.archive=false
+			and s.archive=false
+			<if test="sellerId != null" >
+				and	p.user_id=#{sellerId}
+			</if>
+		group by s.product_id
+		HAVING sku_amount = 0
+	) t
+  </select>
+
+	<!-- 增加更新时间戳 -->
+	<update id="updateFakeSales">
+        update vdlm_product set
+        <if test="count!=null">
+            fake_sales =
+            #{count,jdbcType=BIGINT} ,
+        </if>
+        <if test="count==null">
+            fake_sales = 0 ,
+        </if>
+         updated_at = now()
+        where id = #{id}
+    </update>             
+</mapper>

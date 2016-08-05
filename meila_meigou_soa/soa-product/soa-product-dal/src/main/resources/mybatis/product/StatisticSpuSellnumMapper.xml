@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.meila.soa.product.dal.dao.product.StatisticSpuSellnumMapper" >
+  <resultMap id="BaseResultMap" type="com.meila.soa.product.dal.entity.product.StatisticSpuSellnum" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="shop_id" property="shopId" jdbcType="BIGINT" />
+    <result column="product_id" property="productId" jdbcType="BIGINT" />
+    <result column="sell_num" property="sellNum" jdbcType="INTEGER" />
+    <result column="archive" property="archive" jdbcType="BIT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, shop_id, product_id, sell_num, archive, create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from vdlm_statistic_spu_sellnum
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from vdlm_statistic_spu_sellnum
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+    <delete id="deleteByProductId" parameterType="java.lang.Long" >
+    delete from vdlm_statistic_spu_sellnum
+    where product_id = #{productId,jdbcType=BIGINT}
+  </delete>  
+  <insert id="insert" parameterType="com.meila.soa.product.dal.entity.product.StatisticSpuSellnum" >
+    insert into vdlm_statistic_spu_sellnum (id, shop_id, product_id, 
+      sell_num, archive, create_time
+      )
+    values (#{id,jdbcType=BIGINT}, #{shopId,jdbcType=BIGINT}, #{productId,jdbcType=BIGINT}, 
+      #{sellNum,jdbcType=INTEGER}, #{archive,jdbcType=BIT}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.meila.soa.product.dal.entity.product.StatisticSpuSellnum" >
+    insert into vdlm_statistic_spu_sellnum
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="shopId != null" >
+        shop_id,
+      </if>
+      <if test="productId != null" >
+        product_id,
+      </if>
+      <if test="sellNum != null" >
+        sell_num,
+      </if>
+      <if test="archive != null" >
+        archive,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="shopId != null" >
+        #{shopId,jdbcType=BIGINT},
+      </if>
+      <if test="productId != null" >
+        #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="sellNum != null" >
+        #{sellNum,jdbcType=INTEGER},
+      </if>
+      <if test="archive != null" >
+        #{archive,jdbcType=BIT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.meila.soa.product.dal.entity.product.StatisticSpuSellnum" >
+    update vdlm_statistic_spu_sellnum
+    <set >
+      <if test="shopId != null" >
+        shop_id = #{shopId,jdbcType=BIGINT},
+      </if>
+      <if test="productId != null" >
+        product_id = #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="sellNum != null" >
+        sell_num = #{sellNum,jdbcType=INTEGER},
+      </if>
+      <if test="archive != null" >
+        archive = #{archive,jdbcType=BIT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.meila.soa.product.dal.entity.product.StatisticSpuSellnum" >
+    update vdlm_statistic_spu_sellnum
+    set shop_id = #{shopId,jdbcType=BIGINT},
+      product_id = #{productId,jdbcType=BIGINT},
+      sell_num = #{sellNum,jdbcType=INTEGER},
+      archive = #{archive,jdbcType=BIT},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByProductList" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from vdlm_statistic_spu_sellnum
+    where product_id in 
+	<foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+		#{item,jdbcType=BIGINT}
+	</foreach>
+	order by sell_num desc
+	<if test="page.beginId != null and page.pageSize != null">
+		LIMIT #{page.beginId},#{page.pageSize}
+	</if>
+  </select>
+  <select id="countByProductList" resultType="java.lang.Long">
+  	select 
+    count(*)
+    from vdlm_statistic_spu_sellnum
+    where product_id in 
+	<foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+		#{item,jdbcType=BIGINT}
+	</foreach>
+  </select>  
+</mapper>

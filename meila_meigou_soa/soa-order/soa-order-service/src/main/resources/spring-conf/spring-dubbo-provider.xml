@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans        
+    http://www.springframework.org/schema/beans/spring-beans.xsd        
+    http://code.alibabatech.com/schema/dubbo        
+    http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+	<!-- 提供方应用信息，用于计算依赖关系 -->
+	<dubbo:application name="${dubbo.application.name}"  logger="slf4j"/>
+
+	<!-- 使用multicast广播注册中心暴露服务地址 -->
+	<!-- <dubbo:registry address="multicast://224.5.6.7:1234" /> -->
+
+	<dubbo:monitor protocol="registry" />
+
+	<!-- 使用zookeeper注册中心暴露服务地址 -->
+	<dubbo:registry address="${dubbo.registry.address}" />
+
+	<!-- 用dubbo协议在20880端口暴露服务 -->
+	<dubbo:protocol name="dubbo" serialization="dubbo" port="${dubbo.protocol.port}" />
+
+	<!--<dubbo:protocol name="dubbo" serialization="nativejava"/> -->
+	<!--<dubbo:protocol name="dubbo" serialization="hessian2"/> -->
+	<!--<dubbo:protocol name="dubbo" serialization="fastjson"/> -->
+	<!--<dubbo:protocol name="dubbo" serialization="dubbo"/> -->
+
+	<!-- 订单相关服务 -->
+	<dubbo:service interface="com.meila.soa.order.api.DubboOrderService" ref="dubboOrderService" validation="true" version="${dubbo.service.version}"/>
+	<bean id="dubboOrderService" class="com.meila.soa.order.service.dubboservice.DubboOrderServiceImpl" />
+	<!-- 订单工作流相关服务 -->
+	<dubbo:service interface="com.meila.soa.order.api.DubboOrderWorkFlowService" ref="dubboOrderWorkFlowService" validation="true" version="${dubbo.service.version}"/>
+	<bean id="dubboOrderWorkFlowService" class="com.meila.soa.order.service.dubboservice.DubboOrderWorkFlowServiceImpl" />
+	<!-- 订单地址相关服务 -->
+	<dubbo:service interface="com.meila.soa.order.api.DubboOrderAddressService" ref="dubboOrderAddressService" validation="true" version="${dubbo.service.version}"/>
+	<bean id="dubboOrderAddressService" class="com.meila.soa.order.service.dubboservice.DubboOrderAddressServiceImpl" />
+	
+	<!-- 订单统计相关服务 -->
+	<dubbo:service interface="com.meila.soa.order.api.DubboOrderStatService" ref="dubboOrderStatService" validation="true" version="${dubbo.service.version}"/>
+	<bean id="dubboOrderStatService" class="com.meila.soa.order.service.dubboservice.DubboOrderStatServiceImpl" />
+	<!-- 订单支付服务 -->
+	<dubbo:service interface="com.meila.soa.order.api.DubboOrderPayService" ref="dubboOrderPayService" validation="true" version="${dubbo.service.version}"/>
+	<bean id="dubboOrderPayService" class="com.meila.soa.order.service.dubboservice.DubboOrderPayServiceImpl" />
+	
+</beans>

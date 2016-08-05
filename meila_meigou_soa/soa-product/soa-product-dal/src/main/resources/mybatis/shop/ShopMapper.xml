@@ -1,0 +1,558 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.meila.soa.product.dal.dao.shop.ShopMapper" >
+  <resultMap id="BaseResultMap" type="com.meila.soa.product.dal.entity.shop.Shop" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="owner_id" property="ownerId" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="wechat" property="wechat" jdbcType="VARCHAR" />
+    <result column="banner" property="banner" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="img" property="img" jdbcType="VARCHAR" />
+    <result column="danbao" property="danbao" jdbcType="TINYINT" />
+    <result column="bulletin" property="bulletin" jdbcType="VARCHAR" />
+    <result column="bulletin_at" property="bulletinAt" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="archive" property="archive" jdbcType="BIT" />
+    <result column="op_remark" property="opRemark" jdbcType="VARCHAR" />
+    <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+    <result column="commision_rate" property="commisionRate" jdbcType="DECIMAL" />
+    <result column="province_id" property="provinceId" jdbcType="BIGINT" />
+    <result column="city_id" property="cityId" jdbcType="BIGINT" />
+    <result column="postage_status" property="postageStatus" jdbcType="BIT" />
+    <result column="free_zone_id" property="freeZoneId" jdbcType="BIGINT" />
+    <result column="postage" property="postage" jdbcType="DECIMAL" />
+    <result column="free_zone" property="freeZone" jdbcType="VARCHAR" />
+    <result column="fragment_status" property="fragmentStatus" jdbcType="TINYINT" />
+    <result column="sku_remind_amount" property="skuRemindAmount" jdbcType="INTEGER" />
+    <result column="open_sku_remind" property="openSkuRemind" jdbcType="TINYINT" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="seller_source" property="sellerSource" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="AdminMap" type="com.meila.soa.product.dal.entity.shop.ShopAdmin" extends="BaseResultMap">
+    <result column="op_remark" property="opRemark" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR"  />
+    <result column="qq" property="qq" jdbcType="VARCHAR" />
+    <result column="balance_type" property="balanceType" jdbcType="VARCHAR" />
+    <result column="balance_bank_id" property="balanceBankId" jdbcType="TINYINT" />
+    <result column="balance_account" property="balanceAccount" jdbcType="VARCHAR" />
+    <result column="delivery_type" property="deliveryType" jdbcType="VARCHAR" />
+    <result column="seller_type" property="sellerType" jdbcType="SMALLINT" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR"  />
+    <result column="receiver_name" property="receiverName" jdbcType="VARCHAR" />
+    <result column="open_bank" property="openBank" jdbcType="VARCHAR" />
+    <result column="create_user_name" property="createUserName" jdbcType="VARCHAR" />
+    <result column="selfhood_name" property="selfhoodName" jdbcType="VARCHAR" />
+  </resultMap>  
+  <sql id="Base_Column_List" >
+    id, owner_id, name, wechat, banner, description, img, danbao, bulletin, bulletin_at, 
+    status, archive, op_remark, created_at, updated_at, commision_rate, province_id, 
+    city_id, postage_status, free_zone_id, postage, free_zone, fragment_status, sku_remind_amount, 
+    open_sku_remind, code, seller_source
+  </sql>
+  
+  <sql id="condByAdmin">
+    <if test="params.archive != null">
+        and s.archive = #{params.archive}
+      </if>
+      <if test="params.shopName != null">
+        and s.name like #{params.shopName}
+      </if>   
+      <if test="params.phone != null">
+        and e.phone like #{params.phone}
+      </if>
+      <if test="params.commision != null">
+      <choose>
+          <when test="params.commision == 1">and s.commision_rate > 0</when>
+          <otherwise>and (commision_rate = 0 or commision_rate is null)</otherwise>
+        </choose>
+      </if>
+      <if test="params.danbao != null">
+        <choose>
+          <when test="params.danbao == 1">and s.danbao = true
+          </when>
+          <otherwise>and (s.danbao = false or s.danbao is null)</otherwise>
+        </choose>
+      </if>
+        <if test="params.created1 != null">
+        and s.created_at >= #{params.created1}
+        </if>
+        <if test="params.created2 != null">
+          <![CDATA[ 
+          and s.created_at < #{params.created2}
+        ]]>
+        </if>
+            
+            <if test="params.sellerType != null">
+                and e.seller_type = #{params.sellerType}
+            </if>
+            <if test="params.deliveryType != null">
+                and e.delivery_type = #{params.deliveryType}
+            </if>
+            <if test="params.balanceType != null">
+                and e.balance_type = #{params.balanceType}
+            </if>
+            <if test="params.balanceBankId != null">
+                and e.balance_bank_Id = #{params.balanceBankId}
+            </if>
+            <if test="params.wechat != null">
+                and s.wechat like #{params.wechat}
+            </if>
+            <if test="params.qq != null">
+                and e.qq like #{params.qq}
+            </if>
+            <if test="params.ownerId != null">
+                and s.owner_id like #{params.ownerId}
+            </if>
+            <if test="params.userName != null">
+                and u.name like #{params.userName}
+            </if>
+            <if test="params.shopId != null">
+                and s.id = #{params.shopId}
+            </if>
+            <if test="params.sellerSource != null">
+              and s.seller_source = #{params.sellerSource}
+            </if>
+			<if test="params.shopStatus != null">
+				and s.status = #{params.shopStatus}
+			</if>            
+    </sql>  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from vdlm_shop
+    where id = #{id,jdbcType=BIGINT} and archive = 0
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from vdlm_shop
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.meila.soa.product.dal.entity.shop.Shop" >
+    <selectKey resultType="long" keyProperty="id">
+		SELECT LAST_INSERT_ID() AS id
+	</selectKey>
+    insert into vdlm_shop (owner_id, img, name, wechat, banner, description,
+      bulletin, bulletin_at, status, commision_rate, archive, danbao,
+      created_at, updated_at, fragment_status,code,
+      seller_source)
+    values (#{ownerId}, #{img,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{wechat,jdbcType=VARCHAR},#{banner,jdbcType=VARCHAR},#{description,jdbcType=VARCHAR},
+      #{bulletin,jdbcType=VARCHAR}, now(), #{status,jdbcType=VARCHAR}, #{commisionRate}, false, #{danbao}, now(), 
+      now(), 1, #{code,jdbcType=VARCHAR},
+      #{sellerSource,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.meila.soa.product.dal.entity.shop.Shop" >
+    insert into vdlm_shop
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="ownerId != null" >
+        owner_id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="wechat != null" >
+        wechat,
+      </if>
+      <if test="banner != null" >
+        banner,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="img != null" >
+        img,
+      </if>
+      <if test="danbao != null" >
+        danbao,
+      </if>
+      <if test="bulletin != null" >
+        bulletin,
+      </if>
+      <if test="bulletinAt != null" >
+        bulletin_at,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="archive != null" >
+        archive,
+      </if>
+      <if test="opRemark != null" >
+        op_remark,
+      </if>
+      <if test="createdAt != null" >
+        created_at,
+      </if>
+      <if test="updatedAt != null" >
+        updated_at,
+      </if>
+      <if test="commisionRate != null" >
+        commision_rate,
+      </if>
+      <if test="provinceId != null" >
+        province_id,
+      </if>
+      <if test="cityId != null" >
+        city_id,
+      </if>
+      <if test="postageStatus != null" >
+        postage_status,
+      </if>
+      <if test="freeZoneId != null" >
+        free_zone_id,
+      </if>
+      <if test="postage != null" >
+        postage,
+      </if>
+      <if test="freeZone != null" >
+        free_zone,
+      </if>
+      <if test="fragmentStatus != null" >
+        fragment_status,
+      </if>
+      <if test="skuRemindAmount != null" >
+        sku_remind_amount,
+      </if>
+      <if test="openSkuRemind != null" >
+        open_sku_remind,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="sellerSource != null" >
+        seller_source,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="ownerId != null" >
+        #{ownerId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="wechat != null" >
+        #{wechat,jdbcType=VARCHAR},
+      </if>
+      <if test="banner != null" >
+        #{banner,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="img != null" >
+        #{img,jdbcType=VARCHAR},
+      </if>
+      <if test="danbao != null" >
+        #{danbao,jdbcType=TINYINT},
+      </if>
+      <if test="bulletin != null" >
+        #{bulletin,jdbcType=VARCHAR},
+      </if>
+      <if test="bulletinAt != null" >
+        #{bulletinAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="archive != null" >
+        #{archive,jdbcType=BIT},
+      </if>
+      <if test="opRemark != null" >
+        #{opRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="createdAt != null" >
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null" >
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="commisionRate != null" >
+        #{commisionRate,jdbcType=DECIMAL},
+      </if>
+      <if test="provinceId != null" >
+        #{provinceId,jdbcType=BIGINT},
+      </if>
+      <if test="cityId != null" >
+        #{cityId,jdbcType=BIGINT},
+      </if>
+      <if test="postageStatus != null" >
+        #{postageStatus,jdbcType=BIT},
+      </if>
+      <if test="freeZoneId != null" >
+        #{freeZoneId,jdbcType=BIGINT},
+      </if>
+      <if test="postage != null" >
+        #{postage,jdbcType=DECIMAL},
+      </if>
+      <if test="freeZone != null" >
+        #{freeZone,jdbcType=VARCHAR},
+      </if>
+      <if test="fragmentStatus != null" >
+        #{fragmentStatus,jdbcType=TINYINT},
+      </if>
+      <if test="skuRemindAmount != null" >
+        #{skuRemindAmount,jdbcType=INTEGER},
+      </if>
+      <if test="openSkuRemind != null" >
+        #{openSkuRemind,jdbcType=TINYINT},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="sellerSource != null" >
+        #{sellerSource,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.meila.soa.product.dal.entity.shop.Shop" >
+    update vdlm_shop
+    <set >
+      id = id,
+      <if test="ownerId != null" >
+        owner_id = #{ownerId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="wechat != null" >
+        wechat = #{wechat,jdbcType=VARCHAR},
+      </if>
+      <if test="banner != null" >
+        banner = #{banner,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="img != null" >
+        img = #{img,jdbcType=VARCHAR},
+      </if>
+      <if test="danbao != null" >
+        danbao = #{danbao,jdbcType=TINYINT},
+      </if>
+      <if test="bulletin != null" >
+        bulletin = #{bulletin,jdbcType=VARCHAR},
+      </if>
+      <if test="bulletinAt != null" >
+        bulletin_at = #{bulletinAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="archive != null" >
+        archive = #{archive,jdbcType=BIT},
+      </if>
+      <if test="opRemark != null" >
+        op_remark = #{opRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="createdAt != null" >
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null" >
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="commisionRate != null" >
+        commision_rate = #{commisionRate,jdbcType=DECIMAL},
+      </if>
+      <if test="provinceId != null" >
+        province_id = #{provinceId,jdbcType=BIGINT},
+      </if>
+      <if test="cityId != null" >
+        city_id = #{cityId,jdbcType=BIGINT},
+      </if>
+      <if test="postageStatus != null" >
+        postage_status = #{postageStatus,jdbcType=BIT},
+      </if>
+      <if test="freeZoneId != null" >
+        free_zone_id = #{freeZoneId,jdbcType=BIGINT},
+      </if>
+      <if test="postage != null" >
+        postage = #{postage,jdbcType=DECIMAL},
+      </if>
+      <if test="freeZone != null" >
+        free_zone = #{freeZone,jdbcType=VARCHAR},
+      </if>
+      <if test="fragmentStatus != null" >
+        fragment_status = #{fragmentStatus,jdbcType=TINYINT},
+      </if>
+      <if test="skuRemindAmount != null" >
+        sku_remind_amount = #{skuRemindAmount,jdbcType=INTEGER},
+      </if>
+      <if test="openSkuRemind != null" >
+        open_sku_remind = #{openSkuRemind,jdbcType=TINYINT},
+      </if>
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="sellerSource != null" >
+        seller_source = #{sellerSource,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.meila.soa.product.dal.entity.shop.Shop" >
+    update vdlm_shop
+    set owner_id = #{ownerId,jdbcType=BIGINT},
+      name = #{name,jdbcType=VARCHAR},
+      wechat = #{wechat,jdbcType=VARCHAR},
+      banner = #{banner,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      img = #{img,jdbcType=VARCHAR},
+      danbao = #{danbao,jdbcType=TINYINT},
+      bulletin = #{bulletin,jdbcType=VARCHAR},
+      bulletin_at = #{bulletinAt,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=VARCHAR},
+      archive = #{archive,jdbcType=BIT},
+      op_remark = #{opRemark,jdbcType=VARCHAR},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      commision_rate = #{commisionRate,jdbcType=DECIMAL},
+      province_id = #{provinceId,jdbcType=BIGINT},
+      city_id = #{cityId,jdbcType=BIGINT},
+      postage_status = #{postageStatus,jdbcType=BIT},
+      free_zone_id = #{freeZoneId,jdbcType=BIGINT},
+      postage = #{postage,jdbcType=DECIMAL},
+      free_zone = #{freeZone,jdbcType=VARCHAR},
+      fragment_status = #{fragmentStatus,jdbcType=TINYINT},
+      sku_remind_amount = #{skuRemindAmount,jdbcType=INTEGER},
+      open_sku_remind = #{openSkuRemind,jdbcType=TINYINT},
+      code = #{code,jdbcType=VARCHAR},
+      seller_source = #{sellerSource,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByList" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from vdlm_shop
+    where id in
+    <foreach collection="list" index="index" item="item" open="(" separator="," close=")">   
+       	#{item, jdbcType=BIGINT}   
+   	</foreach>    	
+  </select>    
+  
+  <select id="selectBySelective" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from vdlm_shop
+    <where>
+      <if test="id != null" >
+        id = #{id,jdbcType=BIGINT}
+      </if>
+      <if test="ownerId != null" >
+        AND owner_id = #{ownerId,jdbcType=BIGINT}
+      </if>
+      <if test="name != null" >
+        AND name = #{name,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+  
+  <select id="selectByCode" resultMap="BaseResultMap" parameterType="String" >
+    select 
+    <include refid="Base_Column_List" />
+    from vdlm_shop
+    where code = #{code}
+  </select>
+  
+    <select id="selectByIdList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from vdlm_shop
+        where id in 
+            <foreach collection="ids" item="id" open="(" close=")" separator=",">
+                #{id}
+            </foreach> 
+    </select>  
+  <select id="selectByShopName" resultMap="BaseResultMap" parameterType="String" >
+    select 
+    <include refid="Base_Column_List" />
+    from vdlm_shop
+    where name = #{name} and archive=false
+  </select>   
+  
+  <select id="selectByPage" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from vdlm_shop
+    <where>
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT}
+      </if>
+      <if test="record.ownerId != null" >
+        AND owner_id = #{record.ownerId,jdbcType=BIGINT}
+      </if>
+      <if test="record.name != null" >
+        AND name = #{record.name,jdbcType=VARCHAR}
+      </if>
+      <if test="record.status != null" >
+        AND status = #{record.status,jdbcType=VARCHAR}
+      </if>      
+    </where>    
+    limit #{param.beginId}, #{param.pageSize}
+  </select>   
+
+  
+   <select id="listShopsByAdmin" resultMap="AdminMap">
+      select s.id, s.name, e.phone, s.commision_rate, s.danbao, s.op_remark, s.created_at, s.updated_at, s.wechat,
+        s.province_id , s.city_id,e.delivery_type, e.balance_type, e.balance_bank_id, e.balance_account, e.qq, e.seller_type, s.description,
+            s.owner_id, u.name as user_name,s.status,e.receiver_name ,e.open_bank,e.selfhood_name,s.seller_source
+    from vdlm_shop s left join vdlm_shop_ext e on s.id = e.shop_id inner join vdlm_user u on s.owner_id = u.id
+    where 1 = 1
+    <include refid="condByAdmin"/>
+    order by s.created_at desc, s.updated_at desc
+    limit #{page.beginId}, #{page.pageSize}
+  </select>
+    
+   <select id="checkShopNameExistsList" resultMap="BaseResultMap">
+      SELECT 
+        <include refid="Base_Column_List" />
+    FROM vdlm_shop
+        <where>
+            <if test="shopName != null">
+                AND name = #{shopName,jdbcType=VARCHAR} 
+            </if>
+            <if test="shopId != null">
+                AND id != #{shopId} 
+            </if>
+        </where> 
+  </select>  
+
+  <select id="countShopsByAdmin" resultType="Long">
+    select count(*) as c
+    from vdlm_shop s left join vdlm_shop_ext e on s.id = e.shop_id inner join vdlm_user u on s.owner_id = u.id
+    where 1 = 1
+    <include refid="condByAdmin"/>
+</select>
+
+
+
+  <select id="selectByUserId" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from vdlm_shop
+    where owner_id = #{userId} and archive=false
+  </select>  
+  
+  <select id="selectbyUserIdList" resultMap="BaseResultMap">
+      SELECT 
+        <include refid="Base_Column_List" />
+    FROM vdlm_shop
+    WHERE owner_id in
+    <foreach collection="list" index="index" item="item" open="(" separator="," close=")">   
+        #{item, jdbcType=BIGINT}   
+    </foreach>   
+  </select>
+    <select id="countByCode" resultType="Long">
+    select count(1) as c
+    from vdlm_shop s
+    where code = #{code,jdbcType=VARCHAR}
+    </select>  
+
+</mapper>

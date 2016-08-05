@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.meila.soa.order.dal.dao.order.OrderItemPromotionEntityMapper" >
+  <resultMap id="BaseResultMap" type="com.meila.soa.order.dal.entity.order.OrderItemPromotionEntity" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="order_item_id" property="orderItemId" jdbcType="BIGINT" />
+    <result column="activity_idstr" property="activityIdstr" jdbcType="VARCHAR" />
+    <result column="discount_fee" property="discountFee" jdbcType="DECIMAL" />
+    <result column="reduction_type" property="reductionType" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, order_item_id, activity_idstr, discount_fee, reduction_type
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from vdlm_order_item_promotion
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from vdlm_order_item_promotion
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insertSelective" parameterType="com.meila.soa.order.dal.entity.order.OrderItemPromotionEntity" >
+    insert into vdlm_order_item_promotion
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="orderItemId != null" >
+        order_item_id,
+      </if>
+      <if test="activityIdstr != null" >
+        activity_idstr,
+      </if>
+      <if test="discountFee != null" >
+        discount_fee,
+      </if>
+      <if test="reductionType != null" >
+        reduction_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="orderItemId != null" >
+        #{orderItemId,jdbcType=BIGINT},
+      </if>
+      <if test="activityIdstr != null" >
+        #{activityIdstr,jdbcType=VARCHAR},
+      </if>
+      <if test="discountFee != null" >
+        #{discountFee,jdbcType=DECIMAL},
+      </if>
+      <if test="reductionType != null" >
+        #{reductionType,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.meila.soa.order.dal.entity.order.OrderItemPromotionEntity" >
+    update vdlm_order_item_promotion
+    <set >
+      <if test="orderItemId != null" >
+        order_item_id = #{orderItemId,jdbcType=BIGINT},
+      </if>
+      <if test="activityIdstr != null" >
+        activity_idstr = #{activityIdstr,jdbcType=VARCHAR},
+      </if>
+      <if test="discountFee != null" >
+        discount_fee = #{discountFee,jdbcType=DECIMAL},
+      </if>
+      <if test="reductionType != null" >
+        reduction_type = #{reductionType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <!-- 自定义SQL -->
+  <select id="selectByOrderNos" resultMap="BaseResultMap">
+    select 
+    t3.id, t3.order_item_id, t3.activity_idstr, t3.discount_fee, t3.reduction_type
+    from      vdlm_order                     t1
+    join      vdlm_order_item                t2 on t2.order_id = t1.id     
+    join      vdlm_order_item_promotion      t3 on t3.order_item_id = t2.id
+    where t1.order_no in
+    	<foreach collection="list" index="index" item="item" open="("
+				separator="," close=")">
+				#{item,jdbcType=VARCHAR}
+		</foreach>
+  </select>
+</mapper>

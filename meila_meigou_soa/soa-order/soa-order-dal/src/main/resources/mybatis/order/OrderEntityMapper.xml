@@ -1,0 +1,730 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.meila.soa.order.dal.dao.order.OrderEntityMapper">
+	<resultMap id="BaseResultMap"
+		type="com.meila.soa.order.dal.entity.order.OrderEntity">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+		<result column="pay_no" property="payNo" jdbcType="VARCHAR" />
+		<result column="type" property="type" jdbcType="VARCHAR" />
+		<result column="pay_type" property="payType" jdbcType="VARCHAR" />
+		<result column="buyer_id" property="buyerId" jdbcType="BIGINT" />
+		<result column="shop_id" property="shopId" jdbcType="BIGINT" />
+		<result column="seller_id" property="sellerId" jdbcType="BIGINT" />
+		<result column="logistics_fee" property="logisticsFee"
+			jdbcType="DECIMAL" />
+		<result column="total_fee" property="totalFee" jdbcType="DECIMAL" />
+		<result column="refund_fee" property="refundFee" jdbcType="DECIMAL" />
+		<result column="refund_goods_fee" property="refundGoodsFee"
+			jdbcType="DECIMAL" />
+		<result column="refund_logistics_fee" property="refundLogisticsFee"
+			jdbcType="DECIMAL" />
+		<result column="refund_platform_fee" property="refundPlatformFee"
+			jdbcType="DECIMAL" />
+		<result column="paid_fee" property="paidFee" jdbcType="DECIMAL" />
+		<result column="discount_fee" property="discountFee" jdbcType="DECIMAL" />
+		<result column="goods_fee" property="goodsFee" jdbcType="DECIMAL" />
+		<result column="paid_at" property="paidAt" jdbcType="TIMESTAMP" />
+		<result column="paid_status" property="paidStatus" jdbcType="VARCHAR" />
+		<result column="shipped_at" property="shippedAt" jdbcType="TIMESTAMP" />
+		<result column="refund_at" property="refundAt" jdbcType="TIMESTAMP" />
+		<result column="logistics_company" property="logisticsCompany"
+			jdbcType="VARCHAR" />
+		<result column="logistics_order_no" property="logisticsOrderNo"
+			jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="archive" property="archive" jdbcType="BIT" />
+		<result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+		<result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+		<result column="union_id" property="unionId" jdbcType="BIGINT" />
+		<result column="refund_type" property="refundType" jdbcType="VARCHAR" />
+		<result column="vip" property="vip" jdbcType="BIT" />
+		<result column="promotion_id" property="promotionId" jdbcType="VARCHAR" />
+		<result column="coupon_id" property="couponId" jdbcType="VARCHAR" />
+		<result column="partner_type" property="partnerType" jdbcType="VARCHAR" />
+		<result column="checking_at" property="checkingAt" jdbcType="TIMESTAMP" />
+		<result column="cancelled_at" property="cancelledAt" jdbcType="TIMESTAMP" />
+		<result column="succeed_at" property="succeedAt" jdbcType="TIMESTAMP" />
+		<result column="latest_sign_at" property="latestSignAt"
+			jdbcType="TIMESTAMP" />
+		<result column="remind_ship_at" property="remindShipAt"
+			jdbcType="TIMESTAMP" />
+		<result column="remark_admin" property="remarkAdmin" jdbcType="VARCHAR" />
+		<result column="cancel_reason" property="cancelReason"
+			jdbcType="VARCHAR" />
+	</resultMap>
+	<resultMap id="OrderVOResultMap" type="com.meila.soa.order.dal.vo.order.OrderVO" extends="BaseResultMap">
+	  	<result column="buyer_name" property="buyerName" jdbcType="VARCHAR"  />
+  	</resultMap>
+  	
+	<resultMap id="OrderStatResultMap" type="com.meila.soa.order.dal.vo.order.OrderStatVO" >
+	  	<result column="status" property="status" jdbcType="VARCHAR"  />
+	  	<result column="count" property="count" jdbcType="BIGINT"  />
+  	</resultMap>
+  	
+	<sql id="Base_Column_List">
+		id, order_no, pay_no, type, pay_type, buyer_id, shop_id, seller_id,
+		logistics_fee,
+		total_fee, refund_fee, refund_goods_fee, refund_logistics_fee,
+		refund_platform_fee,
+		paid_fee, discount_fee, goods_fee, paid_at, paid_status, shipped_at, refund_at,
+		logistics_company,
+		logistics_order_no, status, remark, archive, created_at, updated_at, union_id,
+		refund_type,
+		vip, promotion_id, coupon_id, partner_type, checking_at, cancelled_at,
+		succeed_at,
+		latest_sign_at, remind_ship_at, remark_admin, cancel_reason
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from vdlm_order
+		where id = #{id,jdbcType=BIGINT}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from vdlm_order
+		where id = #{id,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert" parameterType="com.meila.soa.order.dal.entity.order.OrderEntity">
+		insert into vdlm_order (id, order_no, pay_no,
+		type, pay_type, buyer_id,
+		shop_id, seller_id, logistics_fee,
+		total_fee, refund_fee, refund_goods_fee,
+		refund_logistics_fee, refund_platform_fee,
+		paid_fee, discount_fee, goods_fee,
+		paid_at, paid_status, shipped_at,
+		refund_at, logistics_company, logistics_order_no,
+		status, remark, archive,
+		created_at, updated_at, union_id,
+		refund_type, vip, promotion_id,
+		coupon_id, partner_type, checking_at,
+		cancelled_at, succeed_at, latest_sign_at,
+		remind_ship_at, remark_admin, cancel_reason
+		)
+		values (#{id,jdbcType=BIGINT}, #{orderNo,jdbcType=VARCHAR},
+		#{payNo,jdbcType=VARCHAR},
+		#{type,jdbcType=VARCHAR}, #{payType,jdbcType=VARCHAR}, #{buyerId,jdbcType=BIGINT},
+		#{shopId,jdbcType=BIGINT}, #{sellerId,jdbcType=BIGINT},
+		#{logisticsFee,jdbcType=DECIMAL},
+		#{totalFee,jdbcType=DECIMAL}, #{refundFee,jdbcType=DECIMAL}, #{refundGoodsFee,jdbcType=DECIMAL},
+		#{refundLogisticsFee,jdbcType=DECIMAL},
+		#{refundPlatformFee,jdbcType=DECIMAL},
+		#{paidFee,jdbcType=DECIMAL}, #{discountFee,jdbcType=DECIMAL}, #{goodsFee,jdbcType=DECIMAL},
+		#{paidAt,jdbcType=TIMESTAMP}, #{paidStatus,jdbcType=VARCHAR},
+		#{shippedAt,jdbcType=TIMESTAMP},
+		#{refundAt,jdbcType=TIMESTAMP}, #{logisticsCompany,jdbcType=VARCHAR},
+		#{logisticsOrderNo,jdbcType=VARCHAR},
+		#{status,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{archive,jdbcType=BIT},
+		#{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP},
+		#{unionId,jdbcType=BIGINT},
+		#{refundType,jdbcType=VARCHAR}, #{vip,jdbcType=BIT}, #{promotionId,jdbcType=VARCHAR},
+		#{couponId,jdbcType=VARCHAR}, #{partnerType,jdbcType=VARCHAR},
+		#{checkingAt,jdbcType=TIMESTAMP},
+		#{cancelledAt,jdbcType=TIMESTAMP}, #{succeedAt,jdbcType=TIMESTAMP}, #{latestSignAt,jdbcType=TIMESTAMP},
+		#{remindShipAt,jdbcType=TIMESTAMP}, #{remarkAdmin,jdbcType=VARCHAR},
+		#{cancelReason,jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.meila.soa.order.dal.entity.order.OrderEntity">
+		insert into vdlm_order
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="orderNo != null">
+				order_no,
+			</if>
+			<if test="payNo != null">
+				pay_no,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="payType != null">
+				pay_type,
+			</if>
+			<if test="buyerId != null">
+				buyer_id,
+			</if>
+			<if test="shopId != null">
+				shop_id,
+			</if>
+			<if test="sellerId != null">
+				seller_id,
+			</if>
+			<if test="logisticsFee != null">
+				logistics_fee,
+			</if>
+			<if test="totalFee != null">
+				total_fee,
+			</if>
+			<if test="refundFee != null">
+				refund_fee,
+			</if>
+			<if test="refundGoodsFee != null">
+				refund_goods_fee,
+			</if>
+			<if test="refundLogisticsFee != null">
+				refund_logistics_fee,
+			</if>
+			<if test="refundPlatformFee != null">
+				refund_platform_fee,
+			</if>
+			<if test="paidFee != null">
+				paid_fee,
+			</if>
+			<if test="discountFee != null">
+				discount_fee,
+			</if>
+			<if test="goodsFee != null">
+				goods_fee,
+			</if>
+			<if test="paidAt != null">
+				paid_at,
+			</if>
+			<if test="paidStatus != null">
+				paid_status,
+			</if>
+			<if test="shippedAt != null">
+				shipped_at,
+			</if>
+			<if test="refundAt != null">
+				refund_at,
+			</if>
+			<if test="logisticsCompany != null">
+				logistics_company,
+			</if>
+			<if test="logisticsOrderNo != null">
+				logistics_order_no,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+			<if test="archive != null">
+				archive,
+			</if>
+			<if test="createdAt != null">
+				created_at,
+			</if>
+			<if test="updatedAt != null">
+				updated_at,
+			</if>
+			<if test="unionId != null">
+				union_id,
+			</if>
+			<if test="refundType != null">
+				refund_type,
+			</if>
+			<if test="vip != null">
+				vip,
+			</if>
+			<if test="promotionId != null">
+				promotion_id,
+			</if>
+			<if test="couponId != null">
+				coupon_id,
+			</if>
+			<if test="partnerType != null">
+				partner_type,
+			</if>
+			<if test="checkingAt != null">
+				checking_at,
+			</if>
+			<if test="cancelledAt != null">
+				cancelled_at,
+			</if>
+			<if test="succeedAt != null">
+				succeed_at,
+			</if>
+			<if test="latestSignAt != null">
+				latest_sign_at,
+			</if>
+			<if test="remindShipAt != null">
+				remind_ship_at,
+			</if>
+			<if test="remarkAdmin != null">
+				remark_admin,
+			</if>
+			<if test="cancelReason != null">
+				cancel_reason,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=BIGINT},
+			</if>
+			<if test="orderNo != null">
+				#{orderNo,jdbcType=VARCHAR},
+			</if>
+			<if test="payNo != null">
+				#{payNo,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				#{type,jdbcType=VARCHAR},
+			</if>
+			<if test="payType != null">
+				#{payType,jdbcType=VARCHAR},
+			</if>
+			<if test="buyerId != null">
+				#{buyerId,jdbcType=BIGINT},
+			</if>
+			<if test="shopId != null">
+				#{shopId,jdbcType=BIGINT},
+			</if>
+			<if test="sellerId != null">
+				#{sellerId,jdbcType=BIGINT},
+			</if>
+			<if test="logisticsFee != null">
+				#{logisticsFee,jdbcType=DECIMAL},
+			</if>
+			<if test="totalFee != null">
+				#{totalFee,jdbcType=DECIMAL},
+			</if>
+			<if test="refundFee != null">
+				#{refundFee,jdbcType=DECIMAL},
+			</if>
+			<if test="refundGoodsFee != null">
+				#{refundGoodsFee,jdbcType=DECIMAL},
+			</if>
+			<if test="refundLogisticsFee != null">
+				#{refundLogisticsFee,jdbcType=DECIMAL},
+			</if>
+			<if test="refundPlatformFee != null">
+				#{refundPlatformFee,jdbcType=DECIMAL},
+			</if>
+			<if test="paidFee != null">
+				#{paidFee,jdbcType=DECIMAL},
+			</if>
+			<if test="discountFee != null">
+				#{discountFee,jdbcType=DECIMAL},
+			</if>
+			<if test="goodsFee != null">
+				#{goodsFee,jdbcType=DECIMAL},
+			</if>
+			<if test="paidAt != null">
+				#{paidAt,jdbcType=TIMESTAMP},
+			</if>
+			<if test="paidStatus != null">
+				#{paidStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="shippedAt != null">
+				#{shippedAt,jdbcType=TIMESTAMP},
+			</if>
+			<if test="refundAt != null">
+				#{refundAt,jdbcType=TIMESTAMP},
+			</if>
+			<if test="logisticsCompany != null">
+				#{logisticsCompany,jdbcType=VARCHAR},
+			</if>
+			<if test="logisticsOrderNo != null">
+				#{logisticsOrderNo,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="archive != null">
+				#{archive,jdbcType=BIT},
+			</if>
+			<if test="createdAt != null">
+				#{createdAt,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updatedAt != null">
+				#{updatedAt,jdbcType=TIMESTAMP},
+			</if>
+			<if test="unionId != null">
+				#{unionId,jdbcType=BIGINT},
+			</if>
+			<if test="refundType != null">
+				#{refundType,jdbcType=VARCHAR},
+			</if>
+			<if test="vip != null">
+				#{vip,jdbcType=BIT},
+			</if>
+			<if test="promotionId != null">
+				#{promotionId,jdbcType=VARCHAR},
+			</if>
+			<if test="couponId != null">
+				#{couponId,jdbcType=VARCHAR},
+			</if>
+			<if test="partnerType != null">
+				#{partnerType,jdbcType=VARCHAR},
+			</if>
+			<if test="checkingAt != null">
+				#{checkingAt,jdbcType=TIMESTAMP},
+			</if>
+			<if test="cancelledAt != null">
+				#{cancelledAt,jdbcType=TIMESTAMP},
+			</if>
+			<if test="succeedAt != null">
+				#{succeedAt,jdbcType=TIMESTAMP},
+			</if>
+			<if test="latestSignAt != null">
+				#{latestSignAt,jdbcType=TIMESTAMP},
+			</if>
+			<if test="remindShipAt != null">
+				#{remindShipAt,jdbcType=TIMESTAMP},
+			</if>
+			<if test="remarkAdmin != null">
+				#{remarkAdmin,jdbcType=VARCHAR},
+			</if>
+			<if test="cancelReason != null">
+				#{cancelReason,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.meila.soa.order.dal.entity.order.OrderEntity">
+		update vdlm_order
+		<set>
+			<if test="orderNo != null">
+				order_no = #{orderNo,jdbcType=VARCHAR},
+			</if>
+			<if test="payNo != null">
+				pay_no = #{payNo,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				type = #{type,jdbcType=VARCHAR},
+			</if>
+			<if test="payType != null">
+				pay_type = #{payType,jdbcType=VARCHAR},
+			</if>
+			<if test="buyerId != null">
+				buyer_id = #{buyerId,jdbcType=BIGINT},
+			</if>
+			<if test="shopId != null">
+				shop_id = #{shopId,jdbcType=BIGINT},
+			</if>
+			<if test="sellerId != null">
+				seller_id = #{sellerId,jdbcType=BIGINT},
+			</if>
+			<if test="logisticsFee != null">
+				logistics_fee = #{logisticsFee,jdbcType=DECIMAL},
+			</if>
+			<if test="totalFee != null">
+				total_fee = #{totalFee,jdbcType=DECIMAL},
+			</if>
+			<if test="refundFee != null">
+				refund_fee = #{refundFee,jdbcType=DECIMAL},
+			</if>
+			<if test="refundGoodsFee != null">
+				refund_goods_fee = #{refundGoodsFee,jdbcType=DECIMAL},
+			</if>
+			<if test="refundLogisticsFee != null">
+				refund_logistics_fee = #{refundLogisticsFee,jdbcType=DECIMAL},
+			</if>
+			<if test="refundPlatformFee != null">
+				refund_platform_fee = #{refundPlatformFee,jdbcType=DECIMAL},
+			</if>
+			<if test="paidFee != null">
+				paid_fee = #{paidFee,jdbcType=DECIMAL},
+			</if>
+			<if test="discountFee != null">
+				discount_fee = #{discountFee,jdbcType=DECIMAL},
+			</if>
+			<if test="goodsFee != null">
+				goods_fee = #{goodsFee,jdbcType=DECIMAL},
+			</if>
+			<if test="paidAt != null">
+				paid_at = #{paidAt,jdbcType=TIMESTAMP},
+			</if>
+			<if test="paidStatus != null">
+				paid_status = #{paidStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="shippedAt != null">
+				shipped_at = #{shippedAt,jdbcType=TIMESTAMP},
+			</if>
+			<if test="refundAt != null">
+				refund_at = #{refundAt,jdbcType=TIMESTAMP},
+			</if>
+			<if test="logisticsCompany != null">
+				logistics_company = #{logisticsCompany,jdbcType=VARCHAR},
+			</if>
+			<if test="logisticsOrderNo != null">
+				logistics_order_no = #{logisticsOrderNo,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				remark = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="archive != null">
+				archive = #{archive,jdbcType=BIT},
+			</if>
+			<if test="createdAt != null">
+				created_at = #{createdAt,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updatedAt != null">
+				updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+			</if>
+			<if test="unionId != null">
+				union_id = #{unionId,jdbcType=BIGINT},
+			</if>
+			<if test="refundType != null">
+				refund_type = #{refundType,jdbcType=VARCHAR},
+			</if>
+			<if test="vip != null">
+				vip = #{vip,jdbcType=BIT},
+			</if>
+			<if test="promotionId != null">
+				promotion_id = #{promotionId,jdbcType=VARCHAR},
+			</if>
+			<if test="couponId != null">
+				coupon_id = #{couponId,jdbcType=VARCHAR},
+			</if>
+			<if test="partnerType != null">
+				partner_type = #{partnerType,jdbcType=VARCHAR},
+			</if>
+			<if test="checkingAt != null">
+				checking_at = #{checkingAt,jdbcType=TIMESTAMP},
+			</if>
+			<if test="cancelledAt != null">
+				cancelled_at = #{cancelledAt,jdbcType=TIMESTAMP},
+			</if>
+			<if test="succeedAt != null">
+				succeed_at = #{succeedAt,jdbcType=TIMESTAMP},
+			</if>
+			<if test="latestSignAt != null">
+				latest_sign_at = #{latestSignAt,jdbcType=TIMESTAMP},
+			</if>
+			<if test="remindShipAt != null">
+				remind_ship_at = #{remindShipAt,jdbcType=TIMESTAMP},
+			</if>
+			<if test="remarkAdmin != null">
+				remark_admin = #{remarkAdmin,jdbcType=VARCHAR},
+			</if>
+			<if test="cancelReason != null">
+				cancel_reason = #{cancelReason,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.meila.soa.order.dal.entity.order.OrderEntity">
+		update vdlm_order
+		set order_no = #{orderNo,jdbcType=VARCHAR},
+		pay_no = #{payNo,jdbcType=VARCHAR},
+		type = #{type,jdbcType=VARCHAR},
+		pay_type = #{payType,jdbcType=VARCHAR},
+		buyer_id = #{buyerId,jdbcType=BIGINT},
+		shop_id = #{shopId,jdbcType=BIGINT},
+		seller_id = #{sellerId,jdbcType=BIGINT},
+		logistics_fee = #{logisticsFee,jdbcType=DECIMAL},
+		total_fee = #{totalFee,jdbcType=DECIMAL},
+		refund_fee = #{refundFee,jdbcType=DECIMAL},
+		refund_goods_fee = #{refundGoodsFee,jdbcType=DECIMAL},
+		refund_logistics_fee = #{refundLogisticsFee,jdbcType=DECIMAL},
+		refund_platform_fee = #{refundPlatformFee,jdbcType=DECIMAL},
+		paid_fee = #{paidFee,jdbcType=DECIMAL},
+		discount_fee = #{discountFee,jdbcType=DECIMAL},
+		goods_fee = #{goodsFee,jdbcType=DECIMAL},
+		paid_at = #{paidAt,jdbcType=TIMESTAMP},
+		paid_status = #{paidStatus,jdbcType=VARCHAR},
+		shipped_at = #{shippedAt,jdbcType=TIMESTAMP},
+		refund_at = #{refundAt,jdbcType=TIMESTAMP},
+		logistics_company = #{logisticsCompany,jdbcType=VARCHAR},
+		logistics_order_no = #{logisticsOrderNo,jdbcType=VARCHAR},
+		status = #{status,jdbcType=VARCHAR},
+		remark = #{remark,jdbcType=VARCHAR},
+		archive = #{archive,jdbcType=BIT},
+		created_at = #{createdAt,jdbcType=TIMESTAMP},
+		updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+		union_id = #{unionId,jdbcType=BIGINT},
+		refund_type = #{refundType,jdbcType=VARCHAR},
+		vip = #{vip,jdbcType=BIT},
+		promotion_id = #{promotionId,jdbcType=VARCHAR},
+		coupon_id = #{couponId,jdbcType=VARCHAR},
+		partner_type = #{partnerType,jdbcType=VARCHAR},
+		checking_at = #{checkingAt,jdbcType=TIMESTAMP},
+		cancelled_at = #{cancelledAt,jdbcType=TIMESTAMP},
+		succeed_at = #{succeedAt,jdbcType=TIMESTAMP},
+		latest_sign_at = #{latestSignAt,jdbcType=TIMESTAMP},
+		remind_ship_at = #{remindShipAt,jdbcType=TIMESTAMP},
+		remark_admin = #{remarkAdmin,jdbcType=VARCHAR},
+		cancel_reason = #{cancelReason,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+
+	<!-- 开始自定义部分 -->
+	<select id="selectByBuyerIds" resultMap="BaseResultMap">
+		SELECT buyer_id,order_no,status,created_at,min(succeed_at) as
+		succeed_at
+		FROM vdlm_order
+		where buyer_id in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item,jdbcType=BIGINT}
+		</foreach>
+		and status='SUCCESS'
+		GROUP BY buyer_id
+	</select>
+	<select id="selectByCondition" resultMap="OrderVOResultMap">
+		select
+		t1.id, t1.order_no, t1.pay_no, t1.type, t1.pay_type, t1.buyer_id, t1.shop_id, t1.seller_id,
+		t1.logistics_fee,
+		t1.total_fee, t1.refund_fee, t1.refund_goods_fee, t1.refund_logistics_fee,
+		t1.refund_platform_fee,
+		t1.paid_fee, t1.discount_fee, t1.goods_fee, t1.paid_at, t1.paid_status, t1.shipped_at, t1.refund_at,
+		t1.logistics_company,
+		t1.logistics_order_no, t1.status, t1.remark, t1.archive, t1.created_at, t1.updated_at, t1.union_id,
+		t1.refund_type,
+		t1.vip, t1.promotion_id, t1.coupon_id, t1.partner_type, t1.checking_at, t1.cancelled_at,
+		t1.succeed_at,
+		t1.latest_sign_at, t1.remind_ship_at, t1.remark_admin, t1.cancel_reason,
+		t2.name AS buyer_name
+		from      vdlm_order          t1
+		left join vdlm_user           t2 on t1.buyer_id = t2.id
+		
+		<if test="params.consignee != null" >
+		left join vdlm_order_address  t3 on t1.id = t3.order_id
+		</if>
+		
+		where t1.archive=0 and t2.archive=0
+		<if test="params.sellerId != null" >
+		and t1.seller_id=#{params.sellerId, jdbcType=BIGINT}
+		</if>
+		<if test="params.orderNo != null" >
+		and t1.order_no=#{params.orderNo,jdbcType=VARCHAR}
+		</if>
+		<if test="params.consignee != null" >
+		and t3.consignee=#{params.consignee,jdbcType=VARCHAR}
+		and t3.archive=0
+		</if>
+		<if test="params.buyerName != null" >
+		and t2.name like #{params.buyerName,jdbcType=VARCHAR}
+		</if>
+		<if test="params.status != null" >
+		and t1.status=#{params.status,jdbcType=VARCHAR}
+		</if>
+		<if test="params.startCreateAt != null" >
+		and t1.created_at between #{params.startCreateAt,jdbcType=TIMESTAMP} and #{params.endCreateAt,jdbcType=TIMESTAMP}
+		</if>
+		<if test="params.startPaidAt != null" >
+		and t1.paid_at between #{params.startPaidAt,jdbcType=TIMESTAMP} and #{params.endPaidAt,jdbcType=TIMESTAMP}
+		</if>
+		<if test="params.orderIds != null" >
+		and t1.id in 
+			<foreach collection="params.orderIds" index="index" item="item" open="("
+				separator="," close=")">
+				#{item,jdbcType=BIGINT}
+			</foreach>
+		</if>
+		ORDER BY t1.created_at DESC
+		limit #{params.beginId,jdbcType=BIGINT},#{params.pageSize,jdbcType=BIGINT}
+		
+	</select>
+	<select id="countByCondition" resultType="java.lang.Long">
+		select
+		count(1)
+		from      vdlm_order          t1
+		left join vdlm_user           t2 on t1.buyer_id = t2.id
+		
+		<if test="params.consignee != null" >
+		left join vdlm_order_address  t3 on t1.id = t3.order_id
+		</if>
+		
+		where t1.archive=0 and t2.archive=0
+		<if test="params.sellerId != null" >
+		and t1.seller_id=#{params.sellerId,jdbcType=BIGINT}
+		</if>
+		<if test="params.orderNo != null" >
+		and t1.order_no=#{params.orderNo,jdbcType=VARCHAR}
+		</if>
+		<if test="params.consignee != null" >
+		and t3.consignee=#{params.consignee,jdbcType=VARCHAR}
+		and t3.archive=0
+		</if>
+		<if test="params.buyerName != null" >
+		and t2.name like #{params.buyerName,jdbcType=VARCHAR}
+		</if>
+		<if test="params.status != null" >
+		and t1.status=#{params.status,jdbcType=VARCHAR}
+		</if>
+		<if test="params.startCreateAt != null" >
+		and t1.created_at between #{params.startCreateAt,jdbcType=TIMESTAMP} and #{params.endCreateAt,jdbcType=TIMESTAMP}
+		</if>
+		<if test="params.startPaidAt != null" >
+		and t1.paid_at between #{params.startPaidAt,jdbcType=TIMESTAMP} and #{params.endPaidAt,jdbcType=TIMESTAMP}
+		</if>
+	</select>
+	<update id="updateByExecuteCondition">
+		update vdlm_order
+		set 
+		<if test="params.latestSignAt != null" >
+		latest_sign_at = #{params.latestSignAt,jdbcType=TIMESTAMP},
+		</if>
+		<if test="params.logisticsCompany != null" >
+		logistics_company = #{params.logisticsCompany,jdbcType=VARCHAR},
+		</if>
+		<if test="params.logisticsOrderNo != null" >
+		logistics_order_no = #{params.logisticsOrderNo,jdbcType=VARCHAR},
+		</if>
+		<if test="params.shippedAt != null" >
+		shipped_at = #{params.shippedAt,jdbcType=TIMESTAMP},
+		</if>
+		<if test="params.status != null" >
+		status = #{params.status,jdbcType=VARCHAR},
+		</if>
+		<if test="params.cancelledAt != null" >
+		cancelled_at = #{params.cancelledAt,jdbcType=TIMESTAMP},
+		</if>
+		updated_at = #{params.updatedAt,jdbcType=TIMESTAMP}
+		where id = #{id,jdbcType=BIGINT} and status=#{status,jdbcType=VARCHAR}
+	</update>
+
+	<select id="selectStatByStatus" resultMap="OrderStatResultMap">
+		select status, COUNT(1) as count 
+		from vdlm_order 
+		<where>
+			<if test="sellerId != null" >
+				seller_id=#{sellerId}
+			</if>
+		</where>
+		GROUP BY status
+	</select>
+
+	<select id="selectYesterdayOrder" resultType="Integer" >
+		select COUNT(1) from vdlm_order 
+		<where>
+			<if test="params.sellerId != null" >
+				seller_id=#{params.sellerId}
+			</if>
+			<if test="params.status != null" >
+				and status in 
+           		<foreach collection="params.status" item="st" open="(" separator="," close=")">
+           		#{st}
+				</foreach>
+			</if>
+			<if test="params.startStr != null" >
+				and paid_at >= #{params.startStr}
+			</if>
+			<if test="params.endStr != null" >
+				<![CDATA[
+				and paid_at <= #{params.endStr}
+				]]>
+			</if>
+		</where>
+	</select>
+	<select id="countOrderByExport" resultType="Integer" >
+		select COUNT(1) from vdlm_order 
+		<where>
+			<if test="params.sellerId != null" >
+				seller_id=#{params.sellerId}
+			</if>
+			<if test="params.status != null" >
+				and status = #{params.status}
+			</if>
+			<if test="params.startPaidDate != null" >
+				and paid_at between #{params.startPaidDate,jdbcType=TIMESTAMP} and #{params.endPaidDate,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+	</select>
+	
+	
+</mapper>

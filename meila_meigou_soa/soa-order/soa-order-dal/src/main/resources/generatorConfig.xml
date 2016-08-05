@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration >
+
+ <classPathEntry location="D:\repository\mysql\mysql-connector-java\5.1.33\mysql-connector-java-5.1.33.jar" />
+  <context id="context1" >
+  <commentGenerator>  
+    <!-- 是否去除自动生成的注释 true：是 ： false:否 -->  
+    <property name="suppressAllComments" value="true" />    
+  </commentGenerator>
+  
+    <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://172.18.5.65:3306/vdlm_data_new" userId="vdlm" password="vdlm" />
+    <!-- entity.java -->
+    <javaModelGenerator targetPackage="com.meila.soa.order.dal.entity.order" targetProject="soa-order-dal/src/main/java" />
+    <!-- mapper.xml -->
+    <sqlMapGenerator targetPackage="mybatis.order" targetProject="soa-order-dal/src/main/resources" />
+    <!-- mapper.java -->
+    <javaClientGenerator targetPackage="com.meila.soa.order.dal.dao.order" targetProject="soa-order-dal/src/main/java" type="XMLMAPPER" />
+	
+	<table  tableName="vdlm_sku_bom" domainObjectName="SkuBomEntity" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+    </table>
+  </context>
+</generatorConfiguration>

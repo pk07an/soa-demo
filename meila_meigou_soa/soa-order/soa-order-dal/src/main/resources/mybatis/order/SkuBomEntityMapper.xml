@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.meila.soa.order.dal.dao.order.SkuBomEntityMapper">
+	<resultMap id="BaseResultMap"
+		type="com.meila.soa.order.dal.entity.order.SkuBomEntity">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="spu_id" property="spuId" jdbcType="BIGINT" />
+		<result column="sub_sku_id" property="subSkuId" jdbcType="BIGINT" />
+		<result column="match_count" property="matchCount" jdbcType="INTEGER" />
+		<result column="clearance_price" property="clearancePrice"
+			jdbcType="DECIMAL" />
+		<result column="archive" property="archive" jdbcType="BIT" />
+		<result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+		<result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, spu_id, sub_sku_id, match_count, clearance_price, archive,
+		created_at, updated_at
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from vdlm_sku_bom
+		where id = #{id,jdbcType=BIGINT}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from vdlm_sku_bom
+		where id = #{id,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert" parameterType="com.meila.soa.order.dal.entity.order.SkuBomEntity">
+		insert into vdlm_sku_bom (id, spu_id, sub_sku_id,
+		match_count, clearance_price, archive,
+		created_at, updated_at)
+		values (#{id,jdbcType=BIGINT}, #{spuId,jdbcType=BIGINT},
+		#{subSkuId,jdbcType=BIGINT},
+		#{matchCount,jdbcType=INTEGER}, #{clearancePrice,jdbcType=DECIMAL}, #{archive,jdbcType=BIT},
+		#{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP})
+	</insert>
+	<insert id="insertSelective" parameterType="com.meila.soa.order.dal.entity.order.SkuBomEntity">
+		insert into vdlm_sku_bom
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="spuId != null">
+				spu_id,
+			</if>
+			<if test="subSkuId != null">
+				sub_sku_id,
+			</if>
+			<if test="matchCount != null">
+				match_count,
+			</if>
+			<if test="clearancePrice != null">
+				clearance_price,
+			</if>
+			<if test="archive != null">
+				archive,
+			</if>
+			<if test="createdAt != null">
+				created_at,
+			</if>
+			<if test="updatedAt != null">
+				updated_at,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=BIGINT},
+			</if>
+			<if test="spuId != null">
+				#{spuId,jdbcType=BIGINT},
+			</if>
+			<if test="subSkuId != null">
+				#{subSkuId,jdbcType=BIGINT},
+			</if>
+			<if test="matchCount != null">
+				#{matchCount,jdbcType=INTEGER},
+			</if>
+			<if test="clearancePrice != null">
+				#{clearancePrice,jdbcType=DECIMAL},
+			</if>
+			<if test="archive != null">
+				#{archive,jdbcType=BIT},
+			</if>
+			<if test="createdAt != null">
+				#{createdAt,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updatedAt != null">
+				#{updatedAt,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.meila.soa.order.dal.entity.order.SkuBomEntity">
+		update vdlm_sku_bom
+		<set>
+			<if test="spuId != null">
+				spu_id = #{spuId,jdbcType=BIGINT},
+			</if>
+			<if test="subSkuId != null">
+				sub_sku_id = #{subSkuId,jdbcType=BIGINT},
+			</if>
+			<if test="matchCount != null">
+				match_count = #{matchCount,jdbcType=INTEGER},
+			</if>
+			<if test="clearancePrice != null">
+				clearance_price = #{clearancePrice,jdbcType=DECIMAL},
+			</if>
+			<if test="archive != null">
+				archive = #{archive,jdbcType=BIT},
+			</if>
+			<if test="createdAt != null">
+				created_at = #{createdAt,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updatedAt != null">
+				updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.meila.soa.order.dal.entity.order.SkuBomEntity">
+		update vdlm_sku_bom
+		set spu_id = #{spuId,jdbcType=BIGINT},
+		sub_sku_id = #{subSkuId,jdbcType=BIGINT},
+		match_count = #{matchCount,jdbcType=INTEGER},
+		clearance_price = #{clearancePrice,jdbcType=DECIMAL},
+		archive = #{archive,jdbcType=BIT},
+		created_at = #{createdAt,jdbcType=TIMESTAMP},
+		updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+
+	<!-- 以下为自定义 -->
+	<select id="selectBySkuId" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from vdlm_sku_bom
+		where spu_id in
+		<foreach collection="skuIds" index="index" item="item" open="("
+			separator="," close=")">
+			#{item,jdbcType=BIGINT}
+		</foreach>
+		and archive=0
+	</select>
+</mapper>

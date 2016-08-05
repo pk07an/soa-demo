@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<substitutionProperty name="log.base" value="../logs/meila" />
+	<jmxConfigurator />
+	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%date [%thread] %-5level %logger{80} - TID:%X{TID}|%msg%n</pattern>
+		</layout>
+	</appender>
+	<appender name="logfile"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Encoding>UTF-8</Encoding>
+		<File>${log.base}/meila.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${log.base}/meila-%d{yyyy-MM-dd}.%i.log
+			</FileNamePattern>
+			<MaxHistory>10</MaxHistory>
+			<TimeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<MaxFileSize>10MB</MaxFileSize>
+			</TimeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%date [%thread] %-5level %logger{80} - TID:%X{TID}|%msg%n</pattern>
+		</layout>
+	</appender>
+
+	<logger name="org.springframework"><level value="INFO" /></logger>
+	<logger name="org.hibernate.cache"><level value="INFO" /></logger>
+	<logger name="org.apache.zookeeper.ClientCnxn">	<level value="ERROR" /></logger>	
+	<logger name="org.dozer"><level value="ERROR" /></logger>
+	<logger name="org.apache.commons.beanutils.converters"><level value="ERROR" /></logger>
+	<logger name="com.alibaba.dubbo.common.extension.ExtensionLoader"><level value="ERROR" /></logger>
+				
+	<root>
+		<level value="DEBUG" />
+		<appender-ref ref="logfile" />
+        <appender-ref ref="stdout" />		
+    </root>
+</configuration>

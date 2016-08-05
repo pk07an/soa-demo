@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.meila.soa.proxy.dal.dao.ErpResponseLog.ErpResponseLogEntityMapper" >
+  <resultMap id="BaseResultMap" type="com.meila.soa.proxy.dal.entity.ErpResponseLog.ErpResponseLogEntity" >
+    <id column="erp_resp_id" property="erpRespId" jdbcType="BIGINT" />
+    <result column="erp_req_id" property="erpReqId" jdbcType="BIGINT" />
+    <result column="erp_req_type" property="erpReqType" jdbcType="VARCHAR" />
+    <result column="erp_resp_remark" property="erpRespRemark" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="archive" property="archive" jdbcType="TINYINT" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.meila.soa.proxy.dal.entity.ErpResponseLog.ErpResponseLogEntity" extends="BaseResultMap" >
+    <result column="erp_resp_detail" property="erpRespDetail" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    erp_resp_id, erp_req_id, erp_req_type, erp_resp_remark, create_time, update_time, 
+    archive
+  </sql>
+  <sql id="Blob_Column_List" >
+    erp_resp_detail
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from erp_response_log
+    where erp_resp_id = #{erpRespId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from erp_response_log
+    where erp_resp_id = #{erpRespId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.meila.soa.proxy.dal.entity.ErpResponseLog.ErpResponseLogEntity" >
+    insert into erp_response_log (erp_resp_id, erp_req_id, erp_req_type, 
+      erp_resp_remark, create_time, update_time, 
+      archive, erp_resp_detail)
+    values (#{erpRespId,jdbcType=BIGINT}, #{erpReqId,jdbcType=BIGINT}, #{erpReqType,jdbcType=VARCHAR}, 
+      #{erpRespRemark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{archive,jdbcType=TINYINT}, #{erpRespDetail,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.meila.soa.proxy.dal.entity.ErpResponseLog.ErpResponseLogEntity" >
+    insert into erp_response_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="erpRespId != null" >
+        erp_resp_id,
+      </if>
+      <if test="erpReqId != null" >
+        erp_req_id,
+      </if>
+      <if test="erpReqType != null" >
+        erp_req_type,
+      </if>
+      <if test="erpRespRemark != null" >
+        erp_resp_remark,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="archive != null" >
+        archive,
+      </if>
+      <if test="erpRespDetail != null" >
+        erp_resp_detail,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="erpRespId != null" >
+        #{erpRespId,jdbcType=BIGINT},
+      </if>
+      <if test="erpReqId != null" >
+        #{erpReqId,jdbcType=BIGINT},
+      </if>
+      <if test="erpReqType != null" >
+        #{erpReqType,jdbcType=VARCHAR},
+      </if>
+      <if test="erpRespRemark != null" >
+        #{erpRespRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="archive != null" >
+        #{archive,jdbcType=TINYINT},
+      </if>
+      <if test="erpRespDetail != null" >
+        #{erpRespDetail,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.meila.soa.proxy.dal.entity.ErpResponseLog.ErpResponseLogEntity" >
+    update erp_response_log
+    <set >
+      <if test="erpReqId != null" >
+        erp_req_id = #{erpReqId,jdbcType=BIGINT},
+      </if>
+      <if test="erpReqType != null" >
+        erp_req_type = #{erpReqType,jdbcType=VARCHAR},
+      </if>
+      <if test="erpRespRemark != null" >
+        erp_resp_remark = #{erpRespRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="archive != null" >
+        archive = #{archive,jdbcType=TINYINT},
+      </if>
+      <if test="erpRespDetail != null" >
+        erp_resp_detail = #{erpRespDetail,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where erp_resp_id = #{erpRespId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.meila.soa.proxy.dal.entity.ErpResponseLog.ErpResponseLogEntity" >
+    update erp_response_log
+    set erp_req_id = #{erpReqId,jdbcType=BIGINT},
+      erp_req_type = #{erpReqType,jdbcType=VARCHAR},
+      erp_resp_remark = #{erpRespRemark,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      archive = #{archive,jdbcType=TINYINT},
+      erp_resp_detail = #{erpRespDetail,jdbcType=LONGVARCHAR}
+    where erp_resp_id = #{erpRespId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.meila.soa.proxy.dal.entity.ErpResponseLog.ErpResponseLogEntity" >
+    update erp_response_log
+    set erp_req_id = #{erpReqId,jdbcType=BIGINT},
+      erp_req_type = #{erpReqType,jdbcType=VARCHAR},
+      erp_resp_remark = #{erpRespRemark,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      archive = #{archive,jdbcType=TINYINT}
+    where erp_resp_id = #{erpRespId,jdbcType=BIGINT}
+  </update>
+</mapper>

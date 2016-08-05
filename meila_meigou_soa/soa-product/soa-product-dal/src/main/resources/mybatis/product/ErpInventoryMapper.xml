@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.meila.soa.product.dal.dao.erp.ErpInventoryMapper">
+	<resultMap id="BaseResultMap"
+		type="com.meila.soa.product.dal.entity.erp.ErpInventory">
+		<id column="erp_inve_id" property="erpInveId" jdbcType="BIGINT" />
+		<result column="erp_sku_id" property="erpSkuId" jdbcType="VARCHAR" />
+		<result column="real_amount" property="realAmount" jdbcType="INTEGER" />
+		<result column="warehouse" property="warehouse" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="archive" property="archive" jdbcType="BIT" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		erp_inve_id, erp_sku_id, real_amount, warehouse, create_time, update_time, archive
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from erp_inventory
+		where erp_inve_id = #{erpInveId,jdbcType=BIGINT}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from erp_inventory
+		where erp_inve_id = #{erpInveId,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert" parameterType="com.meila.soa.product.dal.entity.erp.ErpInventory">
+		insert into erp_inventory (erp_inve_id, erp_sku_id, real_amount,
+		warehouse, create_time, update_time,
+		archive)
+		values (#{erpInveId,jdbcType=BIGINT}, #{erpSkuId,jdbcType=VARCHAR},
+		#{realAmount,jdbcType=INTEGER},
+		#{warehouse,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+		#{archive,jdbcType=TINYINT})
+	</insert>
+	<insert id="insertSelective" parameterType="com.meila.soa.product.dal.entity.erp.ErpInventory">
+		insert into erp_inventory
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="erpInveId != null">
+				erp_inve_id,
+			</if>
+			<if test="erpSkuId != null">
+				erp_sku_id,
+			</if>
+			<if test="realAmount != null">
+				real_amount,
+			</if>
+			<if test="warehouse != null">
+				warehouse,
+			</if>
+			<if test="archive != null">
+				archive,
+			</if>
+			create_time,
+			update_time
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="erpInveId != null">
+				#{erpInveId,jdbcType=BIGINT},
+			</if>
+			<if test="erpSkuId != null">
+				#{erpSkuId,jdbcType=VARCHAR},
+			</if>
+			<if test="realAmount != null">
+				#{realAmount,jdbcType=INTEGER},
+			</if>
+			<if test="warehouse != null">
+				#{warehouse,jdbcType=VARCHAR},
+			</if>
+			<if test="archive != null">
+				#{archive,jdbcType=TINYINT},
+			</if>
+			now(),
+			now()
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.meila.soa.product.dal.entity.erp.ErpInventory">
+		update erp_inventory
+		<set>
+			<if test="erpSkuId != null">
+				erp_sku_id = #{erpSkuId,jdbcType=VARCHAR},
+			</if>
+			<if test="realAmount != null">
+				real_amount = #{realAmount,jdbcType=INTEGER},
+			</if>
+			<if test="warehouse != null">
+				warehouse = #{warehouse,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="archive != null">
+				archive = #{archive,jdbcType=TINYINT},
+			</if>
+		</set>
+		where erp_inve_id = #{erpInveId,jdbcType=BIGINT}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.meila.soa.product.dal.entity.erp.ErpInventory">
+		update erp_inventory
+		set erp_sku_id = #{erpSkuId,jdbcType=VARCHAR},
+		real_amount = #{realAmount,jdbcType=INTEGER},
+		warehouse = #{warehouse,jdbcType=VARCHAR},
+		create_time = #{createTime,jdbcType=TIMESTAMP},
+		update_time = #{updateTime,jdbcType=TIMESTAMP},
+		archive = #{archive,jdbcType=TINYINT}
+		where erp_inve_id = #{erpInveId,jdbcType=BIGINT}
+	</update>
+	<insert id="insertList">
+		insert into erp_inventory
+		(erp_sku_id, real_amount, warehouse, archive,create_time,update_time)
+		values
+		<foreach collection="list" item="item" index="index" separator=",">
+			(#{item.erpSkuId,jdbcType=BIGINT},
+			#{item.realAmount,jdbcType=INTEGER},
+			#{item.warehouse,jdbcType=VARCHAR},
+			#{item.archive,jdbcType=TINYINT},
+			now(),
+			now())
+		</foreach>
+	</insert>
+	<select id="selectPageBySelective" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from erp_inventory
+		<where>
+			<if test="erpInveId != null">
+				erp_inve_id = #{erpInveId,jdbcType=BIGINT},
+			</if>
+			<if test="erpSkuId != null">
+				erp_sku_id = #{erpSkuId,jdbcType=VARCHAR},
+			</if>
+			<if test="realAmount != null">
+				real_amount = #{realAmount,jdbcType=INTEGER},
+			</if>
+			<if test="warehouse != null">
+				warehouse = #{warehouse,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="archive != null">
+				archive = #{archive,jdbcType=TINYINT},
+			</if>
+		</where>
+		order by create_time desc
+		<if test="beginId != null and pageSize != null">
+			LIMIT #{beginId},#{pageSize}
+		</if>
+	</select>
+	<delete id="deleteByIdList">
+		delete from erp_inventory where
+	    <foreach collection="list" index="index" item="item" separator="or">   
+        	erp_sku_id = #{item.erpSkuId,jdbcType=VARCHAR} and
+        	warehouse = #{item.warehouse,jdbcType=VARCHAR}
+    	</foreach>  
+	</delete>		
+</mapper>

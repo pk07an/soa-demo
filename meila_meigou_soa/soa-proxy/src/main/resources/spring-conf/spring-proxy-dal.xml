@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://mybatis.org/schema/mybatis-spring
+        http://mybatis.org/schema/mybatis-spring.xsd">
+
+
+	<!-- 配置数据源 -->
+	<bean name="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean" >
+		<property name="jndiName">
+			<value>java:comp/env/jndi/meila_oms_db</value>
+		</property>
+	</bean>
+	
+	<bean name="dataSourceSlave" class="org.springframework.jndi.JndiObjectFactoryBean" >
+		<property name="jndiName">
+			<value>java:comp/env/jndi/meila_oms_db_slave</value>
+		</property>
+	</bean>
+	
+	<!-- 配置事务管理器 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- 注解方式配置事物 -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<!-- 拦截器方式配置事物 -->
+	<tx:advice id="transactionAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="get*" read-only="true" />
+			<tx:method name="query*" read-only="true" />
+			<tx:method name="find*" read-only="true" />
+			<tx:method name="list*" read-only="true" />
+			<tx:method name="count*" read-only="true" />
+			<tx:method name="select*" read-only="true" />
+			<tx:method name="*" propagation="REQUIRED" />
+		</tx:attributes>
+	</tx:advice>
+
+	<!-- 配置druid监控spring jdbc -->
+<!-- 	<bean id="druid-stat-interceptor" class="com.alibaba.druid.support.spring.stat.DruidStatInterceptor">
+	</bean>
+	<bean id="druid-stat-pointcut" class="org.springframework.aop.support.JdkRegexpMethodPointcut" scope="prototype">
+		<property name="patterns">
+			<list>
+				<value>com.meila.proxy.service.*Service</value>
+			</list>
+		</property>
+	</bean>
+	<aop:config>
+		<aop:advisor advice-ref="druid-stat-interceptor" pointcut-ref="druid-stat-pointcut" />
+	</aop:config> -->
+	
+	
+	<!-- 读写分离配置  start-->
+	<bean id="masterSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:/mybatis-config.xml" />
+		<property name="mapperLocations" value="classpath:mybatis/*/*Mapper.xml" />
+	</bean>
+	<bean id="slave01SqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSourceSlave" />
+		<property name="configLocation" value="classpath:/mybatis-config.xml" />
+		<property name="mapperLocations" value="classpath:mybatis/*/*Mapper.xml" />
+	</bean>
+	<bean id="slave02SqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSourceSlave" />
+		<property name="configLocation" value="classpath:/mybatis-config.xml" />
+		<property name="mapperLocations" value="classpath:mybatis/*/*Mapper.xml" />
+	</bean>
+	
+	<!-- 读写分离 -->
+	<bean id="sqlSessionTemplate" class="com.meila.meigou.dbhelper.ReadWriteSqlSessionTemplate" scope="prototype">
+		<constructor-arg ref="masterSqlSessionFactory" />
+        <property name="slaveSqlSessionFactorys">
+        	<list>
+				<ref bean="slave01SqlSessionFactory" />
+				<ref bean="slave02SqlSessionFactory" />
+			</list>
+        </property>
+        <property name="selector" ref="sqlSessionFactorySelector"></property>
+    </bean>
+	<bean id="sqlSessionFactorySelector" class="com.meila.meigou.dbhelper.SequenceSqlSessionFactorySelector" />
+	
+	<mybatis:scan base-package="com.meila.soa.proxy.dal.dao" template-ref="sqlSessionTemplate" />
+	
+	<aop:config expose-proxy="true">
+		<aop:pointcut id="pointcutDao"
+			expression="execution(* com.meila.soa.proxy.dal.dao.*.*Mapper.*(..))" />
+    	<aop:aspect order="-2147483648" ref="readWriteProcessor">  
+       		<aop:around pointcut-ref="pointcutDao" method="determineReadOrWrite"/>  
+    	</aop:aspect> 
+	</aop:config>
+	<bean id="readWriteProcessor" class="com.meila.meigou.dbhelper.DataSourceReadWriteProcessor">  
+	    <property name="forceReadOnMaster" value="false"/>  
+ 	</bean> 
+	<!-- 读写分离配置  end-->
+</beans>

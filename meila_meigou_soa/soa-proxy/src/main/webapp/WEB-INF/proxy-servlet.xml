@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/task
+        http://www.springframework.org/schema/task/spring-task-3.0.xsd"
+	default-autowire="byType">
+
+	<!-- 开启注解配置 -->
+	<context:annotation-config />
+	<!-- 开启定时任务 -->
+	<task:annotation-driven />
+
+	<context:property-placeholder
+		location="classpath*:config/proxy-config-*.properties"
+		ignore-unresolvable="true" />
+
+	<context:component-scan base-package="com.meila.soa.proxy">
+		<context:include-filter type="regex"
+			expression="com\.meila\.soa\.proxy\.controller\..*" />
+		<context:exclude-filter type="regex"
+			expression=".*.*\.service\..*" />
+	</context:component-scan>
+
+<!-- 	<aop:aspectj-autoproxy proxy-target-class="true" /> -->
+
+	<!-- 对转向页面的路径解析。prefix：前缀， suffix：后缀 -->
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass">
+			<value>org.springframework.web.servlet.view.JstlView</value>
+		</property>
+		<property name="prefix">
+			<value>/jsp/</value>
+		</property>
+		<property name="suffix">
+			<value>.jsp</value>
+		</property>
+	</bean>
+
+	<bean id="DisableCircularReferenceDetect"
+		class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">
+		<property name="staticField"
+			value="com.alibaba.fastjson.serializer.SerializerFeature.DisableCircularReferenceDetect"></property>
+	</bean>
+	<mvc:annotation-driven>
+		<mvc:message-converters>
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<property name="supportedMediaTypes">
+					<list>
+						<value>text/plain;charset=UTF-8</value>
+						<value>application/text;charset=UTF-8</value>
+						<value>application/x-www-form-urlencoded;charset=UTF-8</value>
+					</list>
+				</property>
+			</bean>
+			<!-- 避免IE执行AJAX时,返回JSON出现下载文件 -->
+			<bean id="fastJsonHttpMessageConverter"
+				class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+				<property name="supportedMediaTypes">
+					<list>
+						<!-- 这里顺序不能反，一定先写text/html,不然ie下出现下载提示 -->
+						<value>text/html;charset=UTF-8</value>
+						<value>application/json;charset=UTF-8</value>
+					</list>
+				</property>
+				<property name="features">
+					<list>
+						<value>DisableCircularReferenceDetect</value>
+						<!-- <value>WriteMapNullValue</value> -->
+						<!-- <value>WriteNullListAsEmpty</value> -->
+						<!-- <value>WriteNullNumberAsZero</value> -->
+						<!-- <value>WriteNullBooleanAsFalse</value> -->
+						<!-- <value>WriteNullStringAsEmpty</value> -->
+						<value>DisableCheckSpecialChar</value>
+					</list>
+				</property>
+			</bean>
+
+
+			<bean class="org.springframework.http.converter.FormHttpMessageConverter" />
+			<bean
+				class="org.springframework.http.converter.ByteArrayHttpMessageConverter">
+				<property name="supportedMediaTypes">
+					<list>
+						<value>image/jpeg</value>
+						<value>image/png</value>
+					</list>
+				</property>
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<mvc:exclude-mapping path="/" />
+			<mvc:exclude-mapping path="/jsp/**" />
+			<mvc:exclude-mapping path="/jsp/css/**" />
+			<mvc:exclude-mapping path="/jsp/js/**" />
+			<bean class="com.meila.soa.proxy.interceptor.AuthenticationInterceptor" />
+		</mvc:interceptor>
+
+	</mvc:interceptors>
+
+	<mvc:default-servlet-handler
+		default-servlet-name="default" />
+
+</beans>

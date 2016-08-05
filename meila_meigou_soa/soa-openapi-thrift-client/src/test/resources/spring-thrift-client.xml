@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd"
+	default-autowire="byType">
+	
+	<context:property-placeholder location="classpath*:config.properties" order="1" ignore-unresolvable="true" />
+	
+	<bean id="thriftClientConfig" class="com.meila.soa.openapi.thrift.client.ThriftClientConfig">
+		<property name="serverIp" value="${thrift.client.serverIp}" />
+		<property name="serverPort" value="${thrift.client.serverPort}" />
+		<property name="timeout" value="${thrift.client.timeout}" />
+		<property name="frame" value="${thrift.client.frame}" />
+	</bean>
+	
+	<bean id="thriftClientPool" class="com.meila.soa.openapi.thrift.client.ThriftClientPool">
+		<property name="config" ref="thriftClientConfig" />
+		<property name="maxActive" value="20" />
+		<property name="minIdle" value="5" />
+		<property name="maxIdle" value="20" />
+		<property name="maxWait" value="50" />
+		<property name="testWhileIdle" value="true" />
+	</bean>
+	
+	<bean id="thriftClientProxy" class="com.meila.soa.openapi.thrift.client.ThriftClientProxy">
+		<!-- 当不使用线程池时，这里取消pool配置项，打开config配置项 -->
+		<property name="pool" ref="thriftClientPool" />
+		<!-- <property name="config" ref="thriftClientConfig" /> -->
+	</bean>
+	
+	<bean id="productClient" class="com.meila.soa.openapi.thrift.client.ThriftClientFactory" factory-method="createProxy">
+		<constructor-arg ref="thriftClientProxy"></constructor-arg>
+		<constructor-arg>
+				<value>com.meila.soa.openapi.thrift.product.ThriftProductService</value>
+		</constructor-arg>
+	</bean>
+	
+	
+
+</beans> 

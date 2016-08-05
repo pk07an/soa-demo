@@ -1,0 +1,601 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.meila.soa.product.dal.dao.erp.ErpSkuMapper" >
+  <resultMap id="BaseResultMap" type="com.meila.soa.product.dal.entity.erp.ErpSku" >
+    <id column="prd_sku_id" property="prdSkuId" jdbcType="BIGINT" />
+    <result column="erp_sku_id" property="erpSkuId" jdbcType="VARCHAR" />
+    <result column="sku_id" property="skuId" jdbcType="BIGINT" />
+    <result column="erp_sku_code" property="erpSkuCode" jdbcType="VARCHAR" />
+    <result column="sku_name_cn" property="skuNameCn" jdbcType="VARCHAR" />
+    <result column="sku_name_en" property="skuNameEn" jdbcType="VARCHAR" />
+    <result column="belong_account" property="belongAccount" jdbcType="VARCHAR" />
+    <result column="sku_str" property="skuStr" jdbcType="VARCHAR" />
+    <result column="erp_sync_time" property="erpSyncTime" jdbcType="TIMESTAMP" />
+    <result column="wms_status" property="wmsStatus" jdbcType="VARCHAR" />
+    <result column="sale_price" property="salePrice" jdbcType="DECIMAL" />
+    <result column="sku_bar_code" property="skuBarCode" jdbcType="VARCHAR" />
+    <result column="purchase_place" property="purchasePlace" jdbcType="VARCHAR" />
+    <result column="production_place" property="productionPlace" jdbcType="VARCHAR" />
+    <result column="brand_name_cn" property="brandNameCn" jdbcType="VARCHAR" />
+    <result column="brand_name_en" property="brandNameEn" jdbcType="VARCHAR" />
+    <result column="spec1_name" property="spec1Name" jdbcType="VARCHAR" />
+    <result column="spec1_value" property="spec1Value" jdbcType="VARCHAR" />
+    <result column="spec2_name" property="spec2Name" jdbcType="VARCHAR" />
+    <result column="spec2_value" property="spec2Value" jdbcType="VARCHAR" />
+    <result column="spec3_name" property="spec3Name" jdbcType="VARCHAR" />
+    <result column="spec3_value" property="spec3Value" jdbcType="VARCHAR" />
+    <result column="spec4_name" property="spec4Name" jdbcType="VARCHAR" />
+    <result column="spec4_value" property="spec4Value" jdbcType="VARCHAR" />
+    <result column="spec5_name" property="spec5Name" jdbcType="VARCHAR" />
+    <result column="spec5_value" property="spec5Value" jdbcType="VARCHAR" />
+    <result column="category_code" property="categoryCode" jdbcType="VARCHAR" />
+    <result column="warehouse_code" property="warehouseCode" jdbcType="VARCHAR" />
+    <result column="wms_sync_time" property="wmsSyncTime" jdbcType="TIMESTAMP" />
+    <result column="wms_remark" property="wmsRemark" jdbcType="VARCHAR" />
+    <result column="unit_name" property="unitName" jdbcType="VARCHAR" />
+    <result column="archive" property="archive" jdbcType="BIT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    prd_sku_id, erp_sku_id, sku_id, erp_sku_code, sku_name_cn, sku_name_en, belong_account, 
+    sku_str, erp_sync_time, wms_status, sale_price, sku_bar_code, purchase_place, production_place, 
+    brand_name_cn, brand_name_en, spec1_name, spec1_value, spec2_name, spec2_value, spec3_name, 
+    spec3_value, spec4_name, spec4_value, spec5_name, spec5_value, category_code, warehouse_code, 
+    wms_sync_time, wms_remark, archive, unit_name, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from erp_product_sku
+    where prd_sku_id = #{prdSkuId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from erp_product_sku
+    where prd_sku_id = #{prdSkuId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.meila.soa.product.dal.entity.erp.ErpSku" >
+    insert into erp_product_sku (prd_sku_id, erp_sku_id, sku_id, 
+      erp_sku_code, sku_name_cn, sku_name_en, 
+      belong_account, sku_str, erp_sync_time, 
+      wms_status, sale_price, sku_bar_code, 
+      purchase_place, production_place, brand_name_cn, 
+      brand_name_en, spec1_name, spec1_value, 
+      spec2_name, spec2_value, spec3_name, 
+      spec3_value, spec4_name, spec4_value, 
+      spec5_name, spec5_value, category_code, 
+      warehouse_code, wms_sync_time, wms_remark, 
+      archive, unit_name, create_time, update_time
+      )
+    values (#{prdSkuId,jdbcType=BIGINT}, #{erpSkuId,jdbcType=VARCHAR}, #{skuId,jdbcType=BIGINT}, 
+      #{erpSkuCode,jdbcType=VARCHAR}, #{skuNameCn,jdbcType=VARCHAR}, #{skuNameEn,jdbcType=VARCHAR}, 
+      #{belongAccount,jdbcType=VARCHAR}, #{skuStr,jdbcType=VARCHAR}, #{erpSyncTime,jdbcType=TIMESTAMP}, 
+      #{wmsStatus,jdbcType=VARCHAR}, #{salePrice,jdbcType=DECIMAL}, #{skuBarCode,jdbcType=VARCHAR}, 
+      #{purchasePlace,jdbcType=VARCHAR}, #{productionPlace,jdbcType=VARCHAR}, #{brandNameCn,jdbcType=VARCHAR}, 
+      #{brandNameEn,jdbcType=VARCHAR}, #{spec1Name,jdbcType=VARCHAR}, #{spec1Value,jdbcType=VARCHAR}, 
+      #{spec2Name,jdbcType=VARCHAR}, #{spec2Value,jdbcType=VARCHAR}, #{spec3Name,jdbcType=VARCHAR}, 
+      #{spec3Value,jdbcType=VARCHAR}, #{spec4Name,jdbcType=VARCHAR}, #{spec4Value,jdbcType=VARCHAR}, 
+      #{spec5Name,jdbcType=VARCHAR}, #{spec5Value,jdbcType=VARCHAR}, #{categoryCode,jdbcType=VARCHAR}, 
+      #{warehouseCode,jdbcType=VARCHAR}, #{wmsSyncTime,jdbcType=TIMESTAMP}, #{wmsRemark,jdbcType=VARCHAR}, 
+      #{archive,jdbcType=BIT}, #{unitName,jdbcType=VARCHAR}, now(), now()
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.meila.soa.product.dal.entity.erp.ErpSku" >
+    insert into erp_product_sku
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="prdSkuId != null" >
+        prd_sku_id,
+      </if>
+      <if test="erpSkuId != null" >
+        erp_sku_id,
+      </if>
+      <if test="skuId != null" >
+        sku_id,
+      </if>
+      <if test="erpSkuCode != null" >
+        erp_sku_code,
+      </if>
+      <if test="skuNameCn != null" >
+        sku_name_cn,
+      </if>
+      <if test="skuNameEn != null" >
+        sku_name_en,
+      </if>
+      <if test="belongAccount != null" >
+        belong_account,
+      </if>
+      <if test="skuStr != null" >
+        sku_str,
+      </if>
+      <if test="erpSyncTime != null" >
+        erp_sync_time,
+      </if>
+      <if test="wmsStatus != null" >
+        wms_status,
+      </if>
+      <if test="salePrice != null" >
+        sale_price,
+      </if>
+      <if test="skuBarCode != null" >
+        sku_bar_code,
+      </if>
+      <if test="purchasePlace != null" >
+        purchase_place,
+      </if>
+      <if test="productionPlace != null" >
+        production_place,
+      </if>
+      <if test="brandNameCn != null" >
+        brand_name_cn,
+      </if>
+      <if test="brandNameEn != null" >
+        brand_name_en,
+      </if>
+      <if test="spec1Name != null" >
+        spec1_name,
+      </if>
+      <if test="spec1Value != null" >
+        spec1_value,
+      </if>
+      <if test="spec2Name != null" >
+        spec2_name,
+      </if>
+      <if test="spec2Value != null" >
+        spec2_value,
+      </if>
+      <if test="spec3Name != null" >
+        spec3_name,
+      </if>
+      <if test="spec3Value != null" >
+        spec3_value,
+      </if>
+      <if test="spec4Name != null" >
+        spec4_name,
+      </if>
+      <if test="spec4Value != null" >
+        spec4_value,
+      </if>
+      <if test="spec5Name != null" >
+        spec5_name,
+      </if>
+      <if test="spec5Value != null" >
+        spec5_value,
+      </if>
+      <if test="categoryCode != null" >
+        category_code,
+      </if>
+      <if test="warehouseCode != null" >
+        warehouse_code,
+      </if>
+      <if test="wmsSyncTime != null" >
+        wms_sync_time,
+      </if>
+      <if test="wmsRemark != null" >
+        wms_remark,
+      </if>
+      <if test="archive != null" >
+        archive,
+      </if>
+      <if test="unitName != null" >
+        unit_name,
+      </if>      
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="prdSkuId != null" >
+        #{prdSkuId,jdbcType=BIGINT},
+      </if>
+      <if test="erpSkuId != null" >
+        #{erpSkuId,jdbcType=VARCHAR},
+      </if>
+      <if test="skuId != null" >
+        #{skuId,jdbcType=BIGINT},
+      </if>
+      <if test="erpSkuCode != null" >
+        #{erpSkuCode,jdbcType=VARCHAR},
+      </if>
+      <if test="skuNameCn != null" >
+        #{skuNameCn,jdbcType=VARCHAR},
+      </if>
+      <if test="skuNameEn != null" >
+        #{skuNameEn,jdbcType=VARCHAR},
+      </if>
+      <if test="belongAccount != null" >
+        #{belongAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="skuStr != null" >
+        #{skuStr,jdbcType=VARCHAR},
+      </if>
+      <if test="erpSyncTime != null" >
+        #{erpSyncTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="wmsStatus != null" >
+        #{wmsStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="salePrice != null" >
+        #{salePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="skuBarCode != null" >
+        #{skuBarCode,jdbcType=VARCHAR},
+      </if>
+      <if test="purchasePlace != null" >
+        #{purchasePlace,jdbcType=VARCHAR},
+      </if>
+      <if test="productionPlace != null" >
+        #{productionPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="brandNameCn != null" >
+        #{brandNameCn,jdbcType=VARCHAR},
+      </if>
+      <if test="brandNameEn != null" >
+        #{brandNameEn,jdbcType=VARCHAR},
+      </if>
+      <if test="spec1Name != null" >
+        #{spec1Name,jdbcType=VARCHAR},
+      </if>
+      <if test="spec1Value != null" >
+        #{spec1Value,jdbcType=VARCHAR},
+      </if>
+      <if test="spec2Name != null" >
+        #{spec2Name,jdbcType=VARCHAR},
+      </if>
+      <if test="spec2Value != null" >
+        #{spec2Value,jdbcType=VARCHAR},
+      </if>
+      <if test="spec3Name != null" >
+        #{spec3Name,jdbcType=VARCHAR},
+      </if>
+      <if test="spec3Value != null" >
+        #{spec3Value,jdbcType=VARCHAR},
+      </if>
+      <if test="spec4Name != null" >
+        #{spec4Name,jdbcType=VARCHAR},
+      </if>
+      <if test="spec4Value != null" >
+        #{spec4Value,jdbcType=VARCHAR},
+      </if>
+      <if test="spec5Name != null" >
+        #{spec5Name,jdbcType=VARCHAR},
+      </if>
+      <if test="spec5Value != null" >
+        #{spec5Value,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryCode != null" >
+        #{categoryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="warehouseCode != null" >
+        #{warehouseCode,jdbcType=VARCHAR},
+      </if>
+      <if test="wmsSyncTime != null" >
+        #{wmsSyncTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="wmsRemark != null" >
+        #{wmsRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="archive != null" >
+        #{archive,jdbcType=BIT},
+      </if>
+      <if test="unit_name != null" >
+        #{unitName,jdbcType=VARCHAR},
+      </if>      
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.meila.soa.product.dal.entity.erp.ErpSku" >
+    update erp_product_sku
+    <set >
+      <if test="erpSkuId != null" >
+        erp_sku_id = #{erpSkuId,jdbcType=VARCHAR},
+      </if>
+      <if test="skuId != null" >
+        sku_id = #{skuId,jdbcType=BIGINT},
+      </if>
+      <if test="erpSkuCode != null" >
+        erp_sku_code = #{erpSkuCode,jdbcType=VARCHAR},
+      </if>
+      <if test="skuNameCn != null" >
+        sku_name_cn = #{skuNameCn,jdbcType=VARCHAR},
+      </if>
+      <if test="skuNameEn != null" >
+        sku_name_en = #{skuNameEn,jdbcType=VARCHAR},
+      </if>
+      <if test="belongAccount != null" >
+        belong_account = #{belongAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="skuStr != null" >
+        sku_str = #{skuStr,jdbcType=VARCHAR},
+      </if>
+      <if test="erpSyncTime != null" >
+        erp_sync_time = #{erpSyncTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="wmsStatus != null" >
+        wms_status = #{wmsStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="salePrice != null" >
+        sale_price = #{salePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="skuBarCode != null" >
+        sku_bar_code = #{skuBarCode,jdbcType=VARCHAR},
+      </if>
+      <if test="purchasePlace != null" >
+        purchase_place = #{purchasePlace,jdbcType=VARCHAR},
+      </if>
+      <if test="productionPlace != null" >
+        production_place = #{productionPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="brandNameCn != null" >
+        brand_name_cn = #{brandNameCn,jdbcType=VARCHAR},
+      </if>
+      <if test="brandNameEn != null" >
+        brand_name_en = #{brandNameEn,jdbcType=VARCHAR},
+      </if>
+      <if test="spec1Name != null" >
+        spec1_name = #{spec1Name,jdbcType=VARCHAR},
+      </if>
+      <if test="spec1Value != null" >
+        spec1_value = #{spec1Value,jdbcType=VARCHAR},
+      </if>
+      <if test="spec2Name != null" >
+        spec2_name = #{spec2Name,jdbcType=VARCHAR},
+      </if>
+      <if test="spec2Value != null" >
+        spec2_value = #{spec2Value,jdbcType=VARCHAR},
+      </if>
+      <if test="spec3Name != null" >
+        spec3_name = #{spec3Name,jdbcType=VARCHAR},
+      </if>
+      <if test="spec3Value != null" >
+        spec3_value = #{spec3Value,jdbcType=VARCHAR},
+      </if>
+      <if test="spec4Name != null" >
+        spec4_name = #{spec4Name,jdbcType=VARCHAR},
+      </if>
+      <if test="spec4Value != null" >
+        spec4_value = #{spec4Value,jdbcType=VARCHAR},
+      </if>
+      <if test="spec5Name != null" >
+        spec5_name = #{spec5Name,jdbcType=VARCHAR},
+      </if>
+      <if test="spec5Value != null" >
+        spec5_value = #{spec5Value,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryCode != null" >
+        category_code = #{categoryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="warehouseCode != null" >
+        warehouse_code = #{warehouseCode,jdbcType=VARCHAR},
+      </if>
+      <if test="wmsSyncTime != null" >
+        wms_sync_time = #{wmsSyncTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="wmsRemark != null" >
+        wms_remark = #{wmsRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="archive != null" >
+        archive = #{archive,jdbcType=BIT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where prd_sku_id = #{prdSkuId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.meila.soa.product.dal.entity.erp.ErpSku" >
+    update erp_product_sku
+    set erp_sku_id = #{erpSkuId,jdbcType=VARCHAR},
+      sku_id = #{skuId,jdbcType=BIGINT},
+      erp_sku_code = #{erpSkuCode,jdbcType=VARCHAR},
+      sku_name_cn = #{skuNameCn,jdbcType=VARCHAR},
+      sku_name_en = #{skuNameEn,jdbcType=VARCHAR},
+      belong_account = #{belongAccount,jdbcType=VARCHAR},
+      sku_str = #{skuStr,jdbcType=VARCHAR},
+      erp_sync_time = #{erpSyncTime,jdbcType=TIMESTAMP},
+      wms_status = #{wmsStatus,jdbcType=VARCHAR},
+      sale_price = #{salePrice,jdbcType=DECIMAL},
+      sku_bar_code = #{skuBarCode,jdbcType=VARCHAR},
+      purchase_place = #{purchasePlace,jdbcType=VARCHAR},
+      production_place = #{productionPlace,jdbcType=VARCHAR},
+      brand_name_cn = #{brandNameCn,jdbcType=VARCHAR},
+      brand_name_en = #{brandNameEn,jdbcType=VARCHAR},
+      spec1_name = #{spec1Name,jdbcType=VARCHAR},
+      spec1_value = #{spec1Value,jdbcType=VARCHAR},
+      spec2_name = #{spec2Name,jdbcType=VARCHAR},
+      spec2_value = #{spec2Value,jdbcType=VARCHAR},
+      spec3_name = #{spec3Name,jdbcType=VARCHAR},
+      spec3_value = #{spec3Value,jdbcType=VARCHAR},
+      spec4_name = #{spec4Name,jdbcType=VARCHAR},
+      spec4_value = #{spec4Value,jdbcType=VARCHAR},
+      spec5_name = #{spec5Name,jdbcType=VARCHAR},
+      spec5_value = #{spec5Value,jdbcType=VARCHAR},
+      category_code = #{categoryCode,jdbcType=VARCHAR},
+      warehouse_code = #{warehouseCode,jdbcType=VARCHAR},
+      wms_sync_time = #{wmsSyncTime,jdbcType=TIMESTAMP},
+      wms_remark = #{wmsRemark,jdbcType=VARCHAR},
+      archive = #{archive,jdbcType=BIT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where prd_sku_id = #{prdSkuId,jdbcType=BIGINT}
+  </update>
+	<insert id="insertList">
+		insert into erp_product_sku
+		(erp_sku_id, sku_id, erp_sku_code, sku_name_cn, sku_name_en, belong_account, 
+    	sku_str, erp_sync_time, wms_status, sale_price, sku_bar_code, purchase_place, production_place, 
+    	brand_name_cn, brand_name_en, spec1_name, spec1_value, spec2_name, spec2_value, spec3_name, 
+    	spec3_value, spec4_name, spec4_value, spec5_name, spec5_value, category_code, warehouse_code, 
+    	wms_sync_time, wms_remark, archive, unit_name,create_time, update_time)
+		values
+		<foreach collection="list" item="item" index="index" separator=",">
+			(#{item.erpSkuId,jdbcType=VARCHAR}, #{item.skuId,jdbcType=BIGINT}, 
+		      #{item.erpSkuCode,jdbcType=VARCHAR}, #{item.skuNameCn,jdbcType=VARCHAR}, #{item.skuNameEn,jdbcType=VARCHAR}, 
+		      #{item.belongAccount,jdbcType=VARCHAR}, #{item.skuStr,jdbcType=VARCHAR}, #{item.erpSyncTime,jdbcType=TIMESTAMP}, 
+		      #{item.wmsStatus,jdbcType=VARCHAR}, #{item.salePrice,jdbcType=DECIMAL}, #{item.skuBarCode,jdbcType=VARCHAR}, 
+		      #{item.purchasePlace,jdbcType=VARCHAR}, #{item.productionPlace,jdbcType=VARCHAR}, #{item.brandNameCn,jdbcType=VARCHAR}, 
+		      #{item.brandNameEn,jdbcType=VARCHAR}, #{item.spec1Name,jdbcType=VARCHAR}, #{item.spec1Value,jdbcType=VARCHAR}, 
+		      #{item.spec2Name,jdbcType=VARCHAR}, #{item.spec2Value,jdbcType=VARCHAR}, #{item.spec3Name,jdbcType=VARCHAR}, 
+		      #{item.spec3Value,jdbcType=VARCHAR}, #{item.spec4Name,jdbcType=VARCHAR}, #{item.spec4Value,jdbcType=VARCHAR}, 
+		      #{item.spec5Name,jdbcType=VARCHAR}, #{item.spec5Value,jdbcType=VARCHAR}, #{item.categoryCode,jdbcType=VARCHAR}, 
+		      #{item.warehouseCode,jdbcType=VARCHAR}, #{item.wmsSyncTime,jdbcType=TIMESTAMP}, #{item.wmsRemark,jdbcType=VARCHAR}, 
+		      #{item.archive,jdbcType=BIT},#{item.unitName,jdbcType=VARCHAR},now(), now())
+		</foreach>
+	</insert>
+	<select id="selectPageBySelective" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from erp_product_sku
+		<where>
+	      <if test="record.erpSkuId != null" >
+	        erp_sku_id = #{record.erpSkuId,jdbcType=VARCHAR}
+	      </if>
+	      <if test="record.skuId != null" >
+	         and sku_id = #{record.skuId,jdbcType=BIGINT} 
+	      </if>
+	      <if test="record.erpSkuCode != null" >
+	        and erp_sku_code = #{record.erpSkuCode,jdbcType=VARCHAR} 
+	      </if>
+	      <if test="record.skuNameCn != null" >
+	        and 
+            (
+              sku_name_cn like concat('%',#{record.skuNameCn},'%')
+              or
+              erp_sku_id like concat('%',#{record.skuNameCn},'%')
+             )
+	      </if>
+	      <if test="record.skuNameEn != null" >
+	        and sku_name_en like concat(#{record.skuNameEn},'%')
+	      </if>
+	      <if test="record.belongAccount != null" >
+	        and belong_account = #{record.belongAccount,jdbcType=VARCHAR} 
+	      </if>
+	      <if test="record.skuStr != null" >
+	        and sku_str = #{record.skuStr,jdbcType=VARCHAR} 
+	      </if>
+	      <if test="param.erpSyncTimeBegin != null" >
+	        and erp_sync_time <![CDATA[>=]]> #{param.erpSyncTimeBegin,jdbcType=TIMESTAMP} 
+	      </if>	  
+	      <if test="param.erpSyncTimeEnd != null" >
+	        and erp_sync_time <![CDATA[<=]]> #{param.erpSyncTimeEnd,jdbcType=TIMESTAMP} 
+	      </if>	  	          
+	      <if test="record.wmsStatus != null" >
+	        and wms_status = #{record.wmsStatus,jdbcType=VARCHAR} 
+	      </if>
+	      <if test="record.salePrice != null" >
+	        and sale_price = #{record.salePrice,jdbcType=DECIMAL} 
+	      </if>
+	      <if test="record.skuBarCode != null" >
+	        and sku_bar_code = #{record.skuBarCode,jdbcType=VARCHAR}
+	      </if>
+	      <if test="record.purchasePlace != null" >
+	        and purchase_place like concat(#{record.purchasePlace},'%') 
+	      </if>
+	      <if test="record.productionPlace != null" >
+	        and production_place like concat(#{record.productionPlace},'%') 
+	      </if>
+	      <if test="record.brandNameCn != null" >
+	        and brand_name_cn like concat(#{record.brandNameCn},'%')  
+	      </if>
+	      <if test="record.brandNameEn != null" >
+	        and brand_name_en like concat(#{record.brandNameEn},'%') 
+	      </if>
+	      <if test="record.categoryCode != null" >
+	        and category_code = #{record.categoryCode,jdbcType=VARCHAR}
+	      </if>
+	      <if test="record.warehouseCode != null" >
+	        and warehouse_code = #{record.warehouseCode,jdbcType=VARCHAR}
+	      </if>
+	      <if test="record.archive != null" >
+	        and archive = #{record.archive,jdbcType=BIT}
+	      </if>
+		</where>
+		<if test="param.beginId != null and param.pageSize != null">
+			LIMIT #{param.beginId},#{param.pageSize}
+		</if>
+	</select>  
+	<select id="selectPageTotalNumBySelective" resultType="java.lang.Long" >
+		select
+		count(*)
+		from erp_product_sku
+		<where>
+	      <if test="record.erpSkuId != null" >
+	        erp_sku_id = #{record.erpSkuId,jdbcType=VARCHAR}
+	      </if>
+	      <if test="record.skuId != null" >
+	         and sku_id = #{record.skuId,jdbcType=BIGINT} 
+	      </if>
+	      <if test="record.erpSkuCode != null" >
+	        and erp_sku_code = #{record.erpSkuCode,jdbcType=VARCHAR} 
+	      </if>
+	      <if test="record.skuNameCn != null" >
+	        and 
+            (
+              sku_name_cn like concat('%',#{record.skuNameCn},'%')
+              or
+              erp_sku_id like concat('%',#{record.skuNameCn},'%')
+             )
+	      </if>
+	      <if test="record.skuNameEn != null" >
+	        and sku_name_en like concat(#{record.skuNameEn},'%')
+	      </if>
+	      <if test="record.belongAccount != null" >
+	        and belong_account = #{record.belongAccount,jdbcType=VARCHAR} 
+	      </if>
+	      <if test="record.skuStr != null" >
+	        and sku_str = #{record.skuStr,jdbcType=VARCHAR} 
+	      </if>
+	      <if test="param.erpSyncTimeBegin != null" >
+	        and erp_sync_time <![CDATA[>=]]> #{param.erpSyncTimeBegin,jdbcType=TIMESTAMP} 
+	      </if>	  
+	      <if test="param.erpSyncTimeEnd != null" >
+	        and erp_sync_time <![CDATA[<=]]> #{param.erpSyncTimeEnd,jdbcType=TIMESTAMP} 
+	      </if>	  	          
+	      <if test="record.wmsStatus != null" >
+	        and wms_status = #{record.wmsStatus,jdbcType=VARCHAR} 
+	      </if>
+	      <if test="record.salePrice != null" >
+	        and sale_price = #{record.salePrice,jdbcType=DECIMAL} 
+	      </if>
+	      <if test="record.skuBarCode != null" >
+	        and sku_bar_code = #{record.skuBarCode,jdbcType=VARCHAR}
+	      </if>
+	      <if test="record.purchasePlace != null" >
+	        and purchase_place like concat(#{record.purchasePlace},'%') 
+	      </if>
+	      <if test="record.productionPlace != null" >
+	        and production_place like concat(#{record.productionPlace},'%') 
+	      </if>
+	      <if test="record.brandNameCn != null" >
+	        and brand_name_cn like concat(#{record.brandNameCn},'%')  
+	      </if>
+	      <if test="record.brandNameEn != null" >
+	        and brand_name_en like concat(#{record.brandNameEn},'%') 
+	      </if>
+	      <if test="record.categoryCode != null" >
+	        and category_code = #{record.categoryCode,jdbcType=VARCHAR}
+	      </if>
+	      <if test="record.warehouseCode != null" >
+	        and warehouse_code = #{record.warehouseCode,jdbcType=VARCHAR}
+	      </if>
+	      <if test="record.archive != null" >
+	        and archive = #{record.archive,jdbcType=BIT}
+	      </if>
+		</where>
+	</select>  	
+	<delete id="deleteByIdList">
+		delete from erp_product_sku where erp_sku_id in 
+	    <foreach collection="list" index="index" item="item" open="(" separator="," close=")">   
+        	#{item.erpSkuId,jdbcType=VARCHAR}   
+    	</foreach>  
+	</delete>
+</mapper>

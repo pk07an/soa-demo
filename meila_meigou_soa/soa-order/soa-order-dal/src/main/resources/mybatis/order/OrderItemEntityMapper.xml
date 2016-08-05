@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.meila.soa.order.dal.dao.order.OrderItemEntityMapper">
+	<resultMap id="BaseResultMap"
+		type="com.meila.soa.order.dal.entity.order.OrderItemEntity">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="order_id" property="orderId" jdbcType="BIGINT" />
+		<result column="product_id" property="productId" jdbcType="BIGINT" />
+		<result column="sku_id" property="skuId" jdbcType="BIGINT" />
+		<result column="product_name" property="productName" jdbcType="VARCHAR" />
+		<result column="sku_str" property="skuStr" jdbcType="VARCHAR" />
+		<result column="product_img" property="productImg" jdbcType="VARCHAR" />
+		<result column="price" property="price" jdbcType="DECIMAL" />
+		<result column="market_price" property="marketPrice" jdbcType="DECIMAL" />
+		<result column="amount" property="amount" jdbcType="INTEGER" />
+		<result column="archive" property="archive" jdbcType="BIT" />
+		<result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+		<result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+		<result column="product_img_width" property="productImgWidth"
+			jdbcType="INTEGER" />
+		<result column="product_img_height" property="productImgHeight"
+			jdbcType="INTEGER" />
+		<result column="refund_flag" property="refundFlag" jdbcType="BIT" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, order_id, product_id, sku_id, product_name, sku_str, product_img,
+		price, market_price,
+		amount, archive, created_at, updated_at, product_img_width,
+		product_img_height, refund_flag
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from vdlm_order_item
+		where id = #{id,jdbcType=BIGINT}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from vdlm_order_item
+		where id = #{id,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert"
+		parameterType="com.meila.soa.order.dal.entity.order.OrderItemEntity">
+		insert into vdlm_order_item (id, order_id, product_id,
+		sku_id, product_name, sku_str,
+		product_img, price, market_price,
+		amount, archive, created_at,
+		updated_at, product_img_width, product_img_height,
+		refund_flag)
+		values (#{id,jdbcType=BIGINT}, #{orderId,jdbcType=BIGINT},
+		#{productId,jdbcType=BIGINT},
+		#{skuId,jdbcType=BIGINT}, #{productName,jdbcType=VARCHAR}, #{skuStr,jdbcType=VARCHAR},
+		#{productImg,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL},
+		#{marketPrice,jdbcType=DECIMAL},
+		#{amount,jdbcType=INTEGER}, #{archive,jdbcType=BIT}, #{createdAt,jdbcType=TIMESTAMP},
+		#{updatedAt,jdbcType=TIMESTAMP}, #{productImgWidth,jdbcType=INTEGER},
+		#{productImgHeight,jdbcType=INTEGER},
+		#{refundFlag,jdbcType=BIT})
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.meila.soa.order.dal.entity.order.OrderItemEntity">
+		insert into vdlm_order_item
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="orderId != null">
+				order_id,
+			</if>
+			<if test="productId != null">
+				product_id,
+			</if>
+			<if test="skuId != null">
+				sku_id,
+			</if>
+			<if test="productName != null">
+				product_name,
+			</if>
+			<if test="skuStr != null">
+				sku_str,
+			</if>
+			<if test="productImg != null">
+				product_img,
+			</if>
+			<if test="price != null">
+				price,
+			</if>
+			<if test="marketPrice != null">
+				market_price,
+			</if>
+			<if test="amount != null">
+				amount,
+			</if>
+			<if test="archive != null">
+				archive,
+			</if>
+			<if test="createdAt != null">
+				created_at,
+			</if>
+			<if test="updatedAt != null">
+				updated_at,
+			</if>
+			<if test="productImgWidth != null">
+				product_img_width,
+			</if>
+			<if test="productImgHeight != null">
+				product_img_height,
+			</if>
+			<if test="refundFlag != null">
+				refund_flag,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=BIGINT},
+			</if>
+			<if test="orderId != null">
+				#{orderId,jdbcType=BIGINT},
+			</if>
+			<if test="productId != null">
+				#{productId,jdbcType=BIGINT},
+			</if>
+			<if test="skuId != null">
+				#{skuId,jdbcType=BIGINT},
+			</if>
+			<if test="productName != null">
+				#{productName,jdbcType=VARCHAR},
+			</if>
+			<if test="skuStr != null">
+				#{skuStr,jdbcType=VARCHAR},
+			</if>
+			<if test="productImg != null">
+				#{productImg,jdbcType=VARCHAR},
+			</if>
+			<if test="price != null">
+				#{price,jdbcType=DECIMAL},
+			</if>
+			<if test="marketPrice != null">
+				#{marketPrice,jdbcType=DECIMAL},
+			</if>
+			<if test="amount != null">
+				#{amount,jdbcType=INTEGER},
+			</if>
+			<if test="archive != null">
+				#{archive,jdbcType=BIT},
+			</if>
+			<if test="createdAt != null">
+				#{createdAt,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updatedAt != null">
+				#{updatedAt,jdbcType=TIMESTAMP},
+			</if>
+			<if test="productImgWidth != null">
+				#{productImgWidth,jdbcType=INTEGER},
+			</if>
+			<if test="productImgHeight != null">
+				#{productImgHeight,jdbcType=INTEGER},
+			</if>
+			<if test="refundFlag != null">
+				#{refundFlag,jdbcType=BIT},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.meila.soa.order.dal.entity.order.OrderItemEntity">
+		update vdlm_order_item
+		<set>
+			<if test="orderId != null">
+				order_id = #{orderId,jdbcType=BIGINT},
+			</if>
+			<if test="productId != null">
+				product_id = #{productId,jdbcType=BIGINT},
+			</if>
+			<if test="skuId != null">
+				sku_id = #{skuId,jdbcType=BIGINT},
+			</if>
+			<if test="productName != null">
+				product_name = #{productName,jdbcType=VARCHAR},
+			</if>
+			<if test="skuStr != null">
+				sku_str = #{skuStr,jdbcType=VARCHAR},
+			</if>
+			<if test="productImg != null">
+				product_img = #{productImg,jdbcType=VARCHAR},
+			</if>
+			<if test="price != null">
+				price = #{price,jdbcType=DECIMAL},
+			</if>
+			<if test="marketPrice != null">
+				market_price = #{marketPrice,jdbcType=DECIMAL},
+			</if>
+			<if test="amount != null">
+				amount = #{amount,jdbcType=INTEGER},
+			</if>
+			<if test="archive != null">
+				archive = #{archive,jdbcType=BIT},
+			</if>
+			<if test="createdAt != null">
+				created_at = #{createdAt,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updatedAt != null">
+				updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+			</if>
+			<if test="productImgWidth != null">
+				product_img_width = #{productImgWidth,jdbcType=INTEGER},
+			</if>
+			<if test="productImgHeight != null">
+				product_img_height = #{productImgHeight,jdbcType=INTEGER},
+			</if>
+			<if test="refundFlag != null">
+				refund_flag = #{refundFlag,jdbcType=BIT},
+			</if>
+		</set>
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.meila.soa.order.dal.entity.order.OrderItemEntity">
+		update vdlm_order_item
+		set order_id = #{orderId,jdbcType=BIGINT},
+		product_id = #{productId,jdbcType=BIGINT},
+		sku_id = #{skuId,jdbcType=BIGINT},
+		product_name = #{productName,jdbcType=VARCHAR},
+		sku_str = #{skuStr,jdbcType=VARCHAR},
+		product_img = #{productImg,jdbcType=VARCHAR},
+		price = #{price,jdbcType=DECIMAL},
+		market_price = #{marketPrice,jdbcType=DECIMAL},
+		amount = #{amount,jdbcType=INTEGER},
+		archive = #{archive,jdbcType=BIT},
+		created_at = #{createdAt,jdbcType=TIMESTAMP},
+		updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+		product_img_width = #{productImgWidth,jdbcType=INTEGER},
+		product_img_height = #{productImgHeight,jdbcType=INTEGER},
+		refund_flag = #{refundFlag,jdbcType=BIT}
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+
+	<!-- 开始自定义部分 -->
+
+	<select id="selectBySkuIds" resultMap="BaseResultMap">
+		SELECT a.id, a.order_id, a.product_id,
+		a.sku_id, a.product_name, a.sku_str,
+		a.product_img, a.price, a.market_price,
+		a.amount, a.archive, a.created_at,
+		a.updated_at, a.product_img_width, a.product_img_height,
+		a.refund_flag
+		FROM vdlm_order_item a
+		LEFT JOIN vdlm_order b on
+		b.id=a.order_id
+		WHERE a.archive=0 and b.archive=0
+		<if test="beginTime != null">
+		<![CDATA[ and b.created_at >= #{beginTime,jdbcType=TIMESTAMP} ]]>  
+		</if>
+		<if test="endTime != null">
+		<![CDATA[ and b.created_at < #{endTime,jdbcType=TIMESTAMP} ]]>  
+		</if>
+		and b.status=#{orderStatus,jdbcType=VARCHAR}
+		and a.sku_id IN
+		<foreach collection="skuIds" index="index" item="item" open="("
+			separator="," close=")">
+			#{item,jdbcType=BIGINT}
+		</foreach>
+	</select>
+	<select id="selectByOrderIds" resultMap="BaseResultMap">
+		SELECT 
+		<include refid="Base_Column_List" />
+		FROM vdlm_order_item
+		WHERE archive=0
+		and order_id IN
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item,jdbcType=BIGINT}
+		</foreach>
+	</select>
+</mapper>

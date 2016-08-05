@@ -1,0 +1,723 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.meila.soa.product.dal.dao.product.ProductInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.meila.soa.product.dal.entity.product.ProductInfo" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="product_id" property="productId" jdbcType="BIGINT" />
+    <result column="property" property="property" jdbcType="BIT" />
+    <result column="ms_price" property="msPrice" jdbcType="DECIMAL" />
+    <result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
+    <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="short_intro" property="shortIntro" jdbcType="VARCHAR" />
+    <result column="short_name" property="shortName" jdbcType="VARCHAR" />
+    <result column="total_count" property="totalCount" jdbcType="INTEGER" />
+    <result column="comment_count" property="commentCount" jdbcType="INTEGER" />
+    <result column="badges" property="badges" jdbcType="VARCHAR" />
+    <result column="presale_text" property="presaleText" jdbcType="VARCHAR" />
+    <result column="presale_jump_label" property="presaleJumpLabel" jdbcType="VARCHAR" />
+    <result column="presale_jump_data" property="presaleJumpData" jdbcType="VARCHAR" />
+    <result column="verify" property="verify" jdbcType="SMALLINT" />
+    <result column="need_mcode" property="needMcode" jdbcType="BIT" />
+    <result column="mcode_tip" property="mcodeTip" jdbcType="VARCHAR" />
+    <result column="buy_limit_count" property="buyLimitCount" jdbcType="SMALLINT" />
+    <result column="vtalk_id" property="vtalkId" jdbcType="INTEGER" />
+    <result column="appraisal_vtalk_id" property="appraisalVtalkId" jdbcType="INTEGER" />
+    <result column="appraisal_text" property="appraisalText" jdbcType="VARCHAR" />
+    <result column="coin_limit" property="coinLimit" jdbcType="SMALLINT" />
+    <result column="distrib_status" property="distribStatus" jdbcType="SMALLINT" />
+    <result column="post_mode" property="postMode" jdbcType="BIT" />
+    <result column="star" property="star" jdbcType="DECIMAL" />
+    <result column="star_sum" property="starSum" jdbcType="INTEGER" />
+    <result column="star_users_count" property="starUsersCount" jdbcType="INTEGER" />
+    <result column="collected_count" property="collectedCount" jdbcType="INTEGER" />
+    <result column="commented_count" property="commentedCount" jdbcType="INTEGER" />
+    <result column="top_comments" property="topComments" jdbcType="VARCHAR" />
+    <result column="brand_name" property="brandName" jdbcType="VARCHAR" />
+    <result column="discuss_count" property="discussCount" jdbcType="INTEGER" />
+    <result column="share_img" property="shareImg" jdbcType="VARCHAR" />
+    <result column="share_img_width" property="shareImgWidth" jdbcType="INTEGER" />
+    <result column="share_img_height" property="shareImgHeight" jdbcType="INTEGER" />
+    <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+    <result column="purchase_source" property="purchaseSource" jdbcType="VARCHAR" />
+    <result column="storage_type" property="storageType" jdbcType="VARCHAR" />
+    <result column="product_prepare_days" property="productPrepareDays" jdbcType="TINYINT" />
+    <result column="logistics_interna_days" property="logisticsInternaDays" jdbcType="TINYINT" />
+    <result column="delivery_type" property="deliveryType" jdbcType="VARCHAR" />
+    <result column="warehouse" property="warehouse" jdbcType="VARCHAR" />
+    <result column="product_type" property="productType" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, product_id, property, ms_price, start_time, end_time, short_intro, short_name, 
+    total_count, comment_count, badges, presale_text, presale_jump_label, presale_jump_data, 
+    verify, need_mcode, mcode_tip, buy_limit_count, vtalk_id, appraisal_vtalk_id, appraisal_text, 
+    coin_limit, distrib_status, post_mode, star, star_sum, star_users_count, collected_count, 
+    commented_count, top_comments, brand_name, discuss_count, share_img, share_img_width, 
+    share_img_height, created_at, updated_at, purchase_source, storage_type, product_prepare_days, 
+    logistics_interna_days, delivery_type, warehouse, product_type
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.meila.soa.product.dal.entity.product.ProductInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from vdlm_product_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from vdlm_product_info
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from vdlm_product_info
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.meila.soa.product.dal.entity.product.ProductInfoExample" >
+    delete from vdlm_product_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.meila.soa.product.dal.entity.product.ProductInfo" >
+    insert into vdlm_product_info (id, product_id, property, 
+      ms_price, start_time, end_time, 
+      short_intro, short_name, total_count, 
+      comment_count, badges, presale_text, 
+      presale_jump_label, presale_jump_data, verify, 
+      need_mcode, mcode_tip, buy_limit_count, 
+      vtalk_id, appraisal_vtalk_id, appraisal_text, 
+      coin_limit, distrib_status, post_mode, 
+      star, star_sum, star_users_count, 
+      collected_count, commented_count, top_comments, 
+      brand_name, discuss_count, share_img, 
+      share_img_width, share_img_height, created_at, 
+      updated_at, purchase_source, storage_type, 
+      product_prepare_days, logistics_interna_days, 
+      delivery_type, warehouse, product_type)
+    values (#{id,jdbcType=BIGINT}, #{productId,jdbcType=BIGINT}, #{property,jdbcType=BIT}, 
+      #{msPrice,jdbcType=DECIMAL}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
+      #{shortIntro,jdbcType=VARCHAR}, #{shortName,jdbcType=VARCHAR}, #{totalCount,jdbcType=INTEGER}, 
+      #{commentCount,jdbcType=INTEGER}, #{badges,jdbcType=VARCHAR}, #{presaleText,jdbcType=VARCHAR}, 
+      #{presaleJumpLabel,jdbcType=VARCHAR}, #{presaleJumpData,jdbcType=VARCHAR}, #{verify,jdbcType=SMALLINT}, 
+      #{needMcode,jdbcType=BIT}, #{mcodeTip,jdbcType=VARCHAR}, #{buyLimitCount,jdbcType=SMALLINT}, 
+      #{vtalkId,jdbcType=INTEGER}, #{appraisalVtalkId,jdbcType=INTEGER}, #{appraisalText,jdbcType=VARCHAR}, 
+      #{coinLimit,jdbcType=SMALLINT}, #{distribStatus,jdbcType=SMALLINT}, #{postMode,jdbcType=BIT}, 
+      #{star,jdbcType=DECIMAL}, #{starSum,jdbcType=INTEGER}, #{starUsersCount,jdbcType=INTEGER}, 
+      #{collectedCount,jdbcType=INTEGER}, #{commentedCount,jdbcType=INTEGER}, #{topComments,jdbcType=VARCHAR}, 
+      #{brandName,jdbcType=VARCHAR}, #{discussCount,jdbcType=INTEGER}, #{shareImg,jdbcType=VARCHAR}, 
+      #{shareImgWidth,jdbcType=INTEGER}, #{shareImgHeight,jdbcType=INTEGER}, #{createdAt,jdbcType=TIMESTAMP}, 
+      #{updatedAt,jdbcType=TIMESTAMP}, #{purchaseSource,jdbcType=VARCHAR}, #{storageType,jdbcType=VARCHAR}, 
+      #{productPrepareDays,jdbcType=TINYINT}, #{logisticsInternaDays,jdbcType=TINYINT}, 
+      #{deliveryType,jdbcType=VARCHAR}, #{warehouse,jdbcType=VARCHAR}, #{productType,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.meila.soa.product.dal.entity.product.ProductInfo" >
+    insert into vdlm_product_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="productId != null" >
+        product_id,
+      </if>
+      <if test="property != null" >
+        property,
+      </if>
+      <if test="msPrice != null" >
+        ms_price,
+      </if>
+      <if test="startTime != null" >
+        start_time,
+      </if>
+      <if test="endTime != null" >
+        end_time,
+      </if>
+      <if test="shortIntro != null" >
+        short_intro,
+      </if>
+      <if test="shortName != null" >
+        short_name,
+      </if>
+      <if test="totalCount != null" >
+        total_count,
+      </if>
+      <if test="commentCount != null" >
+        comment_count,
+      </if>
+      <if test="badges != null" >
+        badges,
+      </if>
+      <if test="presaleText != null" >
+        presale_text,
+      </if>
+      <if test="presaleJumpLabel != null" >
+        presale_jump_label,
+      </if>
+      <if test="presaleJumpData != null" >
+        presale_jump_data,
+      </if>
+      <if test="verify != null" >
+        verify,
+      </if>
+      <if test="needMcode != null" >
+        need_mcode,
+      </if>
+      <if test="mcodeTip != null" >
+        mcode_tip,
+      </if>
+      <if test="buyLimitCount != null" >
+        buy_limit_count,
+      </if>
+      <if test="vtalkId != null" >
+        vtalk_id,
+      </if>
+      <if test="appraisalVtalkId != null" >
+        appraisal_vtalk_id,
+      </if>
+      <if test="appraisalText != null" >
+        appraisal_text,
+      </if>
+      <if test="coinLimit != null" >
+        coin_limit,
+      </if>
+      <if test="distribStatus != null" >
+        distrib_status,
+      </if>
+      <if test="postMode != null" >
+        post_mode,
+      </if>
+      <if test="star != null" >
+        star,
+      </if>
+      <if test="starSum != null" >
+        star_sum,
+      </if>
+      <if test="starUsersCount != null" >
+        star_users_count,
+      </if>
+      <if test="collectedCount != null" >
+        collected_count,
+      </if>
+      <if test="commentedCount != null" >
+        commented_count,
+      </if>
+      <if test="topComments != null" >
+        top_comments,
+      </if>
+      <if test="brandName != null" >
+        brand_name,
+      </if>
+      <if test="discussCount != null" >
+        discuss_count,
+      </if>
+      <if test="shareImg != null" >
+        share_img,
+      </if>
+      <if test="shareImgWidth != null" >
+        share_img_width,
+      </if>
+      <if test="shareImgHeight != null" >
+        share_img_height,
+      </if>
+      <if test="createdAt != null" >
+        created_at,
+      </if>
+      <if test="updatedAt != null" >
+        updated_at,
+      </if>
+      <if test="purchaseSource != null" >
+        purchase_source,
+      </if>
+      <if test="storageType != null" >
+        storage_type,
+      </if>
+      <if test="productPrepareDays != null" >
+        product_prepare_days,
+      </if>
+      <if test="logisticsInternaDays != null" >
+        logistics_interna_days,
+      </if>
+      <if test="deliveryType != null" >
+        delivery_type,
+      </if>
+      <if test="warehouse != null" >
+        warehouse,
+      </if>
+      <if test="productType != null" >
+        product_type,
+      </if>      
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="productId != null" >
+        #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="property != null" >
+        #{property,jdbcType=BIT},
+      </if>
+      <if test="msPrice != null" >
+        #{msPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="shortIntro != null" >
+        #{shortIntro,jdbcType=VARCHAR},
+      </if>
+      <if test="shortName != null" >
+        #{shortName,jdbcType=VARCHAR},
+      </if>
+      <if test="totalCount != null" >
+        #{totalCount,jdbcType=INTEGER},
+      </if>
+      <if test="commentCount != null" >
+        #{commentCount,jdbcType=INTEGER},
+      </if>
+      <if test="badges != null" >
+        #{badges,jdbcType=VARCHAR},
+      </if>
+      <if test="presaleText != null" >
+        #{presaleText,jdbcType=VARCHAR},
+      </if>
+      <if test="presaleJumpLabel != null" >
+        #{presaleJumpLabel,jdbcType=VARCHAR},
+      </if>
+      <if test="presaleJumpData != null" >
+        #{presaleJumpData,jdbcType=VARCHAR},
+      </if>
+      <if test="verify != null" >
+        #{verify,jdbcType=SMALLINT},
+      </if>
+      <if test="needMcode != null" >
+        #{needMcode,jdbcType=BIT},
+      </if>
+      <if test="mcodeTip != null" >
+        #{mcodeTip,jdbcType=VARCHAR},
+      </if>
+      <if test="buyLimitCount != null" >
+        #{buyLimitCount,jdbcType=SMALLINT},
+      </if>
+      <if test="vtalkId != null" >
+        #{vtalkId,jdbcType=INTEGER},
+      </if>
+      <if test="appraisalVtalkId != null" >
+        #{appraisalVtalkId,jdbcType=INTEGER},
+      </if>
+      <if test="appraisalText != null" >
+        #{appraisalText,jdbcType=VARCHAR},
+      </if>
+      <if test="coinLimit != null" >
+        #{coinLimit,jdbcType=SMALLINT},
+      </if>
+      <if test="distribStatus != null" >
+        #{distribStatus,jdbcType=SMALLINT},
+      </if>
+      <if test="postMode != null" >
+        #{postMode,jdbcType=BIT},
+      </if>
+      <if test="star != null" >
+        #{star,jdbcType=DECIMAL},
+      </if>
+      <if test="starSum != null" >
+        #{starSum,jdbcType=INTEGER},
+      </if>
+      <if test="starUsersCount != null" >
+        #{starUsersCount,jdbcType=INTEGER},
+      </if>
+      <if test="collectedCount != null" >
+        #{collectedCount,jdbcType=INTEGER},
+      </if>
+      <if test="commentedCount != null" >
+        #{commentedCount,jdbcType=INTEGER},
+      </if>
+      <if test="topComments != null" >
+        #{topComments,jdbcType=VARCHAR},
+      </if>
+      <if test="brandName != null" >
+        #{brandName,jdbcType=VARCHAR},
+      </if>
+      <if test="discussCount != null" >
+        #{discussCount,jdbcType=INTEGER},
+      </if>
+      <if test="shareImg != null" >
+        #{shareImg,jdbcType=VARCHAR},
+      </if>
+      <if test="shareImgWidth != null" >
+        #{shareImgWidth,jdbcType=INTEGER},
+      </if>
+      <if test="shareImgHeight != null" >
+        #{shareImgHeight,jdbcType=INTEGER},
+      </if>
+      <if test="createdAt != null" >
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null" >
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="purchaseSource != null" >
+        #{purchaseSource,jdbcType=VARCHAR},
+      </if>
+      <if test="storageType != null" >
+        #{storageType,jdbcType=VARCHAR},
+      </if>
+      <if test="productPrepareDays != null" >
+        #{productPrepareDays,jdbcType=TINYINT},
+      </if>
+      <if test="logisticsInternaDays != null" >
+        #{logisticsInternaDays,jdbcType=TINYINT},
+      </if>
+      <if test="deliveryType != null" >
+        #{deliveryType,jdbcType=VARCHAR},
+      </if>
+      <if test="warehouse != null" >
+        #{warehouse,jdbcType=VARCHAR},
+      </if>
+      <if test="productType != null" >
+        #{productType,jdbcType=VARCHAR},
+      </if>      
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.meila.soa.product.dal.entity.product.ProductInfoExample" resultType="java.lang.Integer" >
+    select count(*) from vdlm_product_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByPrimaryKeySelective" parameterType="com.meila.soa.product.dal.entity.product.ProductInfo" >
+    update vdlm_product_info
+    <set >
+      <if test="productId != null" >
+        product_id = #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="property != null" >
+        property = #{property,jdbcType=BIT},
+      </if>
+      <if test="msPrice != null" >
+        ms_price = #{msPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="startTime != null" >
+        start_time = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="shortIntro != null" >
+        short_intro = #{shortIntro,jdbcType=VARCHAR},
+      </if>
+      <if test="shortName != null" >
+        short_name = #{shortName,jdbcType=VARCHAR},
+      </if>
+      <if test="totalCount != null" >
+        total_count = #{totalCount,jdbcType=INTEGER},
+      </if>
+      <if test="commentCount != null" >
+        comment_count = #{commentCount,jdbcType=INTEGER},
+      </if>
+      <if test="badges != null" >
+        badges = #{badges,jdbcType=VARCHAR},
+      </if>
+      <if test="presaleText != null" >
+        presale_text = #{presaleText,jdbcType=VARCHAR},
+      </if>
+      <if test="presaleJumpLabel != null" >
+        presale_jump_label = #{presaleJumpLabel,jdbcType=VARCHAR},
+      </if>
+      <if test="presaleJumpData != null" >
+        presale_jump_data = #{presaleJumpData,jdbcType=VARCHAR},
+      </if>
+      <if test="verify != null" >
+        verify = #{verify,jdbcType=SMALLINT},
+      </if>
+      <if test="needMcode != null" >
+        need_mcode = #{needMcode,jdbcType=BIT},
+      </if>
+      <if test="mcodeTip != null" >
+        mcode_tip = #{mcodeTip,jdbcType=VARCHAR},
+      </if>
+      <if test="buyLimitCount != null" >
+        buy_limit_count = #{buyLimitCount,jdbcType=SMALLINT},
+      </if>
+      <if test="vtalkId != null" >
+        vtalk_id = #{vtalkId,jdbcType=INTEGER},
+      </if>
+      <if test="appraisalVtalkId != null" >
+        appraisal_vtalk_id = #{appraisalVtalkId,jdbcType=INTEGER},
+      </if>
+      <if test="appraisalText != null" >
+        appraisal_text = #{appraisalText,jdbcType=VARCHAR},
+      </if>
+      <if test="coinLimit != null" >
+        coin_limit = #{coinLimit,jdbcType=SMALLINT},
+      </if>
+      <if test="distribStatus != null" >
+        distrib_status = #{distribStatus,jdbcType=SMALLINT},
+      </if>
+      <if test="postMode != null" >
+        post_mode = #{postMode,jdbcType=BIT},
+      </if>
+      <if test="star != null" >
+        star = #{star,jdbcType=DECIMAL},
+      </if>
+      <if test="starSum != null" >
+        star_sum = #{starSum,jdbcType=INTEGER},
+      </if>
+      <if test="starUsersCount != null" >
+        star_users_count = #{starUsersCount,jdbcType=INTEGER},
+      </if>
+      <if test="collectedCount != null" >
+        collected_count = #{collectedCount,jdbcType=INTEGER},
+      </if>
+      <if test="commentedCount != null" >
+        commented_count = #{commentedCount,jdbcType=INTEGER},
+      </if>
+      <if test="topComments != null" >
+        top_comments = #{topComments,jdbcType=VARCHAR},
+      </if>
+      <if test="brandName != null" >
+        brand_name = #{brandName,jdbcType=VARCHAR},
+      </if>
+      <if test="discussCount != null" >
+        discuss_count = #{discussCount,jdbcType=INTEGER},
+      </if>
+      <if test="shareImg != null" >
+        share_img = #{shareImg,jdbcType=VARCHAR},
+      </if>
+      <if test="shareImgWidth != null" >
+        share_img_width = #{shareImgWidth,jdbcType=INTEGER},
+      </if>
+      <if test="shareImgHeight != null" >
+        share_img_height = #{shareImgHeight,jdbcType=INTEGER},
+      </if>
+      <if test="createdAt != null" >
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null" >
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="purchaseSource != null" >
+        purchase_source = #{purchaseSource,jdbcType=VARCHAR},
+      </if>
+      <if test="storageType != null" >
+        storage_type = #{storageType,jdbcType=VARCHAR},
+      </if>
+      <if test="productPrepareDays != null" >
+        product_prepare_days = #{productPrepareDays,jdbcType=TINYINT},
+      </if>
+      <if test="logisticsInternaDays != null" >
+        logistics_interna_days = #{logisticsInternaDays,jdbcType=TINYINT},
+      </if>
+      <if test="deliveryType != null" >
+        delivery_type = #{deliveryType,jdbcType=VARCHAR},
+      </if>
+      <if test="warehouse != null" >
+        warehouse = #{warehouse,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.meila.soa.product.dal.entity.product.ProductInfo" >
+    update vdlm_product_info
+    set product_id = #{productId,jdbcType=BIGINT},
+      property = #{property,jdbcType=BIT},
+      ms_price = #{msPrice,jdbcType=DECIMAL},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      short_intro = #{shortIntro,jdbcType=VARCHAR},
+      short_name = #{shortName,jdbcType=VARCHAR},
+      total_count = #{totalCount,jdbcType=INTEGER},
+      comment_count = #{commentCount,jdbcType=INTEGER},
+      badges = #{badges,jdbcType=VARCHAR},
+      presale_text = #{presaleText,jdbcType=VARCHAR},
+      presale_jump_label = #{presaleJumpLabel,jdbcType=VARCHAR},
+      presale_jump_data = #{presaleJumpData,jdbcType=VARCHAR},
+      verify = #{verify,jdbcType=SMALLINT},
+      need_mcode = #{needMcode,jdbcType=BIT},
+      mcode_tip = #{mcodeTip,jdbcType=VARCHAR},
+      buy_limit_count = #{buyLimitCount,jdbcType=SMALLINT},
+      vtalk_id = #{vtalkId,jdbcType=INTEGER},
+      appraisal_vtalk_id = #{appraisalVtalkId,jdbcType=INTEGER},
+      appraisal_text = #{appraisalText,jdbcType=VARCHAR},
+      coin_limit = #{coinLimit,jdbcType=SMALLINT},
+      distrib_status = #{distribStatus,jdbcType=SMALLINT},
+      post_mode = #{postMode,jdbcType=BIT},
+      star = #{star,jdbcType=DECIMAL},
+      star_sum = #{starSum,jdbcType=INTEGER},
+      star_users_count = #{starUsersCount,jdbcType=INTEGER},
+      collected_count = #{collectedCount,jdbcType=INTEGER},
+      commented_count = #{commentedCount,jdbcType=INTEGER},
+      top_comments = #{topComments,jdbcType=VARCHAR},
+      brand_name = #{brandName,jdbcType=VARCHAR},
+      discuss_count = #{discussCount,jdbcType=INTEGER},
+      share_img = #{shareImg,jdbcType=VARCHAR},
+      share_img_width = #{shareImgWidth,jdbcType=INTEGER},
+      share_img_height = #{shareImgHeight,jdbcType=INTEGER},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      purchase_source = #{purchaseSource,jdbcType=VARCHAR},
+      storage_type = #{storageType,jdbcType=VARCHAR},
+      product_prepare_days = #{productPrepareDays,jdbcType=TINYINT},
+      logistics_interna_days = #{logisticsInternaDays,jdbcType=TINYINT},
+      delivery_type = #{deliveryType,jdbcType=VARCHAR},
+      warehouse = #{warehouse,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+   <select id="selectByProductIdList" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from vdlm_product_info
+    where product_id in
+    <foreach collection="list" index="index" item="item" open="(" separator="," close=")">   
+       	#{item,jdbcType=VARCHAR}   
+   	</foreach>    	
+  </select>  
+  
+  <select id="selectByProductId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" /> 
+    from vdlm_product_info
+    where product_id = #{productId} 
+  </select>
+    
+ <update id="updateByProductId" parameterType="com.meila.soa.product.dal.entity.product.ProductInfo" >
+    update vdlm_product_info
+    <set>     
+      <if test="property != null" >
+        property = #{property,jdbcType=INTEGER},
+      </if>
+      <if test="msPrice != null" >
+        ms_price = #{msPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="startTime != null" >
+        start_time = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="buyLimitCount != null" >
+        buy_limit_count = #{buyLimitCount,jdbcType=INTEGER},
+      </if>   
+      <if test="shortName != null" >
+        short_name = #{shortName,jdbcType=VARCHAR},
+      </if>  
+      <if test="shortIntro != null" >
+        short_intro = #{shortIntro,jdbcType=VARCHAR},
+      </if>  
+      <if test="purchaseSource != null" >
+        purchase_source = #{purchaseSource,jdbcType=VARCHAR},
+      </if>
+      <if test="storageType != null" >
+        storage_type = #{storageType,jdbcType=VARCHAR},
+      </if>
+      <if test="productPrepareDays != null" >
+        product_prepare_days = #{productPrepareDays,jdbcType=TINYINT},
+      </if>
+      <if test="logisticsInternaDays != null" >
+        logistics_interna_days = #{logisticsInternaDays,jdbcType=TINYINT},
+      </if> 
+      <if test="deliveryType != null" >
+        delivery_type = #{deliveryType,jdbcType=VARCHAR},
+      </if>
+      <if test="warehouse != null" >
+        warehouse = #{warehouse,jdbcType=VARCHAR},
+      </if>
+      updated_at = now()
+    </set>
+    where product_id = #{productId} 
+  </update>    
+    <select id="selectProductInfoBySkuId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT 
+          p.* 
+        FROM
+          vdlm_product_info AS p,
+          vdlm_sku AS s 
+        <where>
+            p.product_id = s.product_id
+            <if test="skuId != null">
+                AND s.id = #{skuId}
+            </if>
+        </where> 
+    </select>
+    
+    <update id="updateDeliveryType">
+        UPDATE vdlm_product_info 
+        <set>
+            <if test="deliveryType != null" >
+                delivery_type = #{deliveryType,jdbcType=VARCHAR},
+            </if>
+            warehouse = #{warehouse,jdbcType=VARCHAR},
+            updated_at = now()
+        </set>
+        <where>
+            product_id IN 
+            <foreach collection="productIdList" item="id" open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+        </where>
+    </update>    
+    <select id="selectProductInfoListBySkuIdList" resultMap="BaseResultMap">
+        SELECT 
+          i.* 
+        FROM
+          vdlm_product_info i,
+          vdlm_product p,
+          vdlm_sku s 
+        <where>
+            i.product_id = p.id 
+            AND p.id = s.product_id 
+            AND s.id IN 
+            <foreach collection="list" item="id" open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+        </where> 
+    </select>    
+ <update id="updateShareImgByProductId" parameterType="com.meila.soa.product.dal.entity.product.ProductInfo" >
+    update vdlm_product_info set 
+        share_img = #{share_img,jdbcType=VARCHAR},
+        share_img_width = #{share_img_width,jdbcType=INTEGER},
+        share_img_height = #{share_img_height,jdbcType=INTEGER},
+      updated_at = now()
+    where product_id = #{product_id}
+  </update>    
+</mapper>

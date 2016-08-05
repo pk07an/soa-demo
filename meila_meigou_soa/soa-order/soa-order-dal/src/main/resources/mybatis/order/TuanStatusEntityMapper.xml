@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.meila.soa.order.dal.dao.order.TuanStatusEntityMapper" >
+  <resultMap id="BaseResultMap" type="com.meila.soa.order.dal.entity.order.TuanStatusEntity" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="tuan_no" property="tuanNo" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="act_id" property="actId" jdbcType="BIGINT" />
+    <result column="sku_id" property="skuId" jdbcType="BIGINT" />
+    <result column="product_id" property="productId" jdbcType="BIGINT" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="member_num" property="memberNum" jdbcType="INTEGER" />
+    <result column="refund_status" property="refundStatus" jdbcType="VARCHAR" />
+    <result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
+    <result column="alive_time" property="aliveTime" jdbcType="INTEGER" />
+    <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+    <result column="archive" property="archive" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, tuan_no, user_id, act_id, sku_id, product_id, status, member_num, refund_status, 
+    start_time, alive_time, created_at, updated_at, archive
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from vdlm_tuan_status
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from vdlm_tuan_status
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insertSelective" parameterType="com.meila.soa.order.dal.entity.order.TuanStatusEntity" >
+    insert into vdlm_tuan_status
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="tuanNo != null" >
+        tuan_no,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="actId != null" >
+        act_id,
+      </if>
+      <if test="skuId != null" >
+        sku_id,
+      </if>
+      <if test="productId != null" >
+        product_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="memberNum != null" >
+        member_num,
+      </if>
+      <if test="refundStatus != null" >
+        refund_status,
+      </if>
+      <if test="startTime != null" >
+        start_time,
+      </if>
+      <if test="aliveTime != null" >
+        alive_time,
+      </if>
+      <if test="createdAt != null" >
+        created_at,
+      </if>
+      <if test="updatedAt != null" >
+        updated_at,
+      </if>
+      <if test="archive != null" >
+        archive,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="tuanNo != null" >
+        #{tuanNo,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="actId != null" >
+        #{actId,jdbcType=BIGINT},
+      </if>
+      <if test="skuId != null" >
+        #{skuId,jdbcType=BIGINT},
+      </if>
+      <if test="productId != null" >
+        #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="memberNum != null" >
+        #{memberNum,jdbcType=INTEGER},
+      </if>
+      <if test="refundStatus != null" >
+        #{refundStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="aliveTime != null" >
+        #{aliveTime,jdbcType=INTEGER},
+      </if>
+      <if test="createdAt != null" >
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null" >
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="archive != null" >
+        #{archive,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.meila.soa.order.dal.entity.order.TuanStatusEntity" >
+    update vdlm_tuan_status
+    <set >
+      <if test="tuanNo != null" >
+        tuan_no = #{tuanNo,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="actId != null" >
+        act_id = #{actId,jdbcType=BIGINT},
+      </if>
+      <if test="skuId != null" >
+        sku_id = #{skuId,jdbcType=BIGINT},
+      </if>
+      <if test="productId != null" >
+        product_id = #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="memberNum != null" >
+        member_num = #{memberNum,jdbcType=INTEGER},
+      </if>
+      <if test="refundStatus != null" >
+        refund_status = #{refundStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null" >
+        start_time = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="aliveTime != null" >
+        alive_time = #{aliveTime,jdbcType=INTEGER},
+      </if>
+      <if test="createdAt != null" >
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null" >
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="archive != null" >
+        archive = #{archive,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <!-- 自定义SQL -->
+  
+  <select id="selectByTuanNo" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from vdlm_tuan_status
+    where tuan_no = #{tuanNo,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByTuanNos" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from vdlm_tuan_status
+    where archive = 0 and tuan_no in
+    <foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item,jdbcType=VARCHAR}
+	</foreach>
+  </select>
+</mapper>

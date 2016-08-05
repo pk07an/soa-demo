@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.meila.soa.product.dal.dao.product.SkuMapper" >
+  <resultMap id="BaseResultMap" type="com.meila.soa.product.dal.entity.product.Sku" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="product_id" property="productId" jdbcType="BIGINT" />
+    <result column="spec" property="spec" jdbcType="VARCHAR" />
+    <result column="market_price" property="marketPrice" jdbcType="DECIMAL" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="amount" property="amount" jdbcType="INTEGER" />
+    <result column="sku_order" property="skuOrder" jdbcType="INTEGER" />
+    <result column="archive" property="archive" jdbcType="BIT" />
+    <result column="spec1" property="spec1" jdbcType="VARCHAR" />
+    <result column="spec2" property="spec2" jdbcType="VARCHAR" />
+    <result column="spec3" property="spec3" jdbcType="VARCHAR" />
+    <result column="spec4" property="spec4" jdbcType="VARCHAR" />
+    <result column="spec5" property="spec5" jdbcType="VARCHAR" />
+    <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+    <result column="partner_product_id" property="partnerProductId" jdbcType="BIGINT" />
+    <result column="sales" property="sales" jdbcType="INTEGER" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="sku_type" property="skuType" jdbcType="VARCHAR" />
+    <result column="is_display" property="isDisplay" jdbcType="VARCHAR" />
+    <result column="img" property="img" jdbcType="VARCHAR" />
+    <result column="img_width" property="imgWidth" jdbcType="INTEGER" />
+    <result column="img_height" property="imgHeight" jdbcType="INTEGER" />
+    <result column="erp_sku_id" property="erpSkuId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  
+  <resultMap id="ResultMapWithBLOBs" type="com.meila.soa.product.dal.entity.product.Product" extends="BaseResultMap" >
+  	<result column="description" property="description" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  
+  <!-- <resultMap id="SkuVOMap" type="com.vdlm.dal.vo.SkuVO" extends="BaseResultMap">
+    <result column="productName" property="productName" jdbcType="VARCHAR" />
+    <result column="productImg" property="productImg" jdbcType="VARCHAR" />
+  </resultMap> -->
+  
+  
+  
+  <sql id="Base_Column_List" >
+    id, product_id, spec, market_price, price, amount, sku_order, archive, spec1, spec2, 
+    spec3, spec4, spec5, created_at, updated_at, partner_product_id, sales, 
+    code, sku_type, is_display, img, img_width, img_height, erp_sku_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from vdlm_sku
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from vdlm_sku
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.meila.soa.product.dal.entity.product.Sku" >
+	<selectKey resultType="long" keyProperty="id">
+		SELECT LAST_INSERT_ID() AS id
+	</selectKey>  
+    insert into vdlm_sku (product_id, spec, spec1, spec2, spec3, spec4, spec5, market_price, price, amount, sku_order, created_at, updated_at, sku_type, is_display, erp_sku_id,img, img_width, img_height)
+    values (#{productId}, #{spec,jdbcType=VARCHAR}, #{spec1,jdbcType=VARCHAR}, 
+    #{spec2,jdbcType=VARCHAR}, #{spec3,jdbcType=VARCHAR}, #{spec4,jdbcType=VARCHAR}, #{spec5,jdbcType=VARCHAR}, 
+    #{marketPrice,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL}, #{amount,jdbcType=INTEGER}, #{skuOrder,jdbcType=INTEGER}, now(), now(), 
+    #{skuType,jdbcType=VARCHAR}, #{isDisplay,jdbcType=VARCHAR}, #{erpSkuId,jdbcType=VARCHAR} , #{img,jdbcType=VARCHAR} , #{imgWidth,jdbcType=INTEGER} , #{imgHeight,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.meila.soa.product.dal.entity.product.Sku" >
+    insert into vdlm_sku
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="productId != null" >
+        product_id,
+      </if>
+      <if test="spec != null" >
+        spec,
+      </if>
+      <if test="marketPrice != null" >
+        market_price,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="skuOrder != null" >
+        sku_order,
+      </if>
+      <if test="archive != null" >
+        archive,
+      </if>
+      <if test="spec1 != null" >
+        spec1,
+      </if>
+      <if test="spec2 != null" >
+        spec2,
+      </if>
+      <if test="spec3 != null" >
+        spec3,
+      </if>
+      <if test="spec4 != null" >
+        spec4,
+      </if>
+      <if test="spec5 != null" >
+        spec5,
+      </if>
+      <if test="createdAt != null" >
+        created_at,
+      </if>
+      <if test="updatedAt != null" >
+        updated_at,
+      </if>
+      <if test="erpSkuId != null" >
+        erp_sku_id,
+      </if>
+      <if test="partnerProductId != null" >
+        partner_product_id,
+      </if>
+      <if test="sales != null" >
+        sales,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="skuType != null" >
+        sku_type,
+      </if>
+      <if test="isDisplay != null" >
+        is_display,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="productId != null" >
+        #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="spec != null" >
+        #{spec,jdbcType=VARCHAR},
+      </if>
+      <if test="marketPrice != null" >
+        #{marketPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=INTEGER},
+      </if>
+      <if test="skuOrder != null" >
+        #{skuOrder,jdbcType=INTEGER},
+      </if>
+      <if test="archive != null" >
+        #{archive,jdbcType=BIT},
+      </if>
+      <if test="spec1 != null" >
+        #{spec1,jdbcType=VARCHAR},
+      </if>
+      <if test="spec2 != null" >
+        #{spec2,jdbcType=VARCHAR},
+      </if>
+      <if test="spec3 != null" >
+        #{spec3,jdbcType=VARCHAR},
+      </if>
+      <if test="spec4 != null" >
+        #{spec4,jdbcType=VARCHAR},
+      </if>
+      <if test="spec5 != null" >
+        #{spec5,jdbcType=VARCHAR},
+      </if>
+      <if test="createdAt != null" >
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null" >
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="erpSkuId != null" >
+        #{erpSkuId,jdbcType=VARCHAR},
+      </if>
+      <if test="partnerProductId != null" >
+        #{partnerProductId,jdbcType=BIGINT},
+      </if>
+      <if test="sales != null" >
+        #{sales,jdbcType=INTEGER},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="skuType != null" >
+        #{skuType,jdbcType=VARCHAR},
+      </if>
+      <if test="isDisplay != null" >
+        #{isDisplay,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.meila.soa.product.dal.entity.product.Sku" >
+    update vdlm_sku
+    <set >
+      <if test="productId != null" >
+        product_id = #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="spec != null" >
+        spec = #{spec,jdbcType=VARCHAR},
+      </if>
+      <if test="marketPrice != null" >
+        market_price = #{marketPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=INTEGER},
+      </if>
+      <if test="skuOrder != null" >
+        sku_order = #{skuOrder,jdbcType=INTEGER},
+      </if>
+      <if test="archive != null" >
+        archive = #{archive,jdbcType=BIT},
+      </if>
+      <if test="spec1 != null" >
+        spec1 = #{spec1,jdbcType=VARCHAR},
+      </if>
+      <if test="spec2 != null" >
+        spec2 = #{spec2,jdbcType=VARCHAR},
+      </if>
+      <if test="spec3 != null" >
+        spec3 = #{spec3,jdbcType=VARCHAR},
+      </if>
+      <if test="spec4 != null" >
+        spec4 = #{spec4,jdbcType=VARCHAR},
+      </if>
+      <if test="spec5 != null" >
+        spec5 = #{spec5,jdbcType=VARCHAR},
+      </if>
+      <if test="createdAt != null" >
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null" >
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="erpSkuId != null" >
+        erp_sku_id = #{erpSkuId,jdbcType=VARCHAR},
+      </if>
+      <if test="partnerProductId != null" >
+        partner_product_id = #{partnerProductId,jdbcType=BIGINT},
+      </if>
+      <if test="sales != null" >
+        sales = #{sales,jdbcType=INTEGER},
+      </if>
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="skuType != null" >
+        sku_type = #{skuType,jdbcType=VARCHAR},
+      </if>
+      <if test="isDisplay != null" >
+        is_display = #{isDisplay,jdbcType=VARCHAR},
+      </if>
+      <if test="img != null" >
+        img = #{img,jdbcType=VARCHAR},
+      </if>
+      <if test="imgWidth != null" >
+        img_width = #{imgWidth,jdbcType=VARCHAR},
+      </if>
+      <if test="isDisplay != null" >
+        img_height = #{imgHeight,jdbcType=VARCHAR},
+      </if>                  
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.meila.soa.product.dal.entity.product.Sku" >
+    update vdlm_sku
+    set product_id = #{productId,jdbcType=BIGINT},
+      spec = #{spec,jdbcType=VARCHAR},
+      market_price = #{marketPrice,jdbcType=DECIMAL},
+      price = #{price,jdbcType=DECIMAL},
+      amount = #{amount,jdbcType=INTEGER},
+      sku_order = #{skuOrder,jdbcType=INTEGER},
+      archive = #{archive,jdbcType=BIT},
+      spec1 = #{spec1,jdbcType=VARCHAR},
+      spec2 = #{spec2,jdbcType=VARCHAR},
+      spec3 = #{spec3,jdbcType=VARCHAR},
+      spec4 = #{spec4,jdbcType=VARCHAR},
+      spec5 = #{spec5,jdbcType=VARCHAR},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      erp_sku_id = #{erpSkuId,jdbcType=VARCHAR},
+      partner_product_id = #{partnerProductId,jdbcType=BIGINT},
+      sales = #{sales,jdbcType=INTEGER},
+      code = #{code,jdbcType=VARCHAR},
+      sku_type = #{skuType,jdbcType=VARCHAR},
+      is_display = #{isDisplay,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByList" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from vdlm_sku
+    where archive=0 and product_id in
+    <foreach collection="list" index="index" item="item" open="(" separator="," close=")">   
+       	#{item, jdbcType=BIGINT}   
+   	</foreach>    	
+  </select>  
+  
+  <select id="selectByIdList" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from vdlm_sku
+    where archive=false and
+    	id in 
+    <foreach collection="ids" item="id" open="(" close=")" separator=",">
+    	#{id}
+    </foreach>
+  </select>
+  
+   <select id="selectOriginalById" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from vdlm_sku
+    where id = #{id}
+  </select>
+  
+   <select id="selectByCode" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from vdlm_sku
+    where code = #{code} and archive=false
+  </select>
+
+  <select id="selectByProductId" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from vdlm_sku
+    where product_id = #{id} and archive=false
+    order by sku_order
+  </select>
+
+  <select id="select" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from vdlm_sku
+    where product_id = #{0} and id = #{1} and archive=false
+  </select>
+
+  <delete id="updateForArchive">
+    update vdlm_sku set archive=true, updated_at = now()
+    where id = #{id}
+  </delete>
+  
+  <!-- 减库存 -->
+  <update id="updateAmount">
+    update vdlm_sku set amount = amount - #{1,jdbcType=INTEGER},updated_at = now()
+    where id = #{0} and amount - #{1,jdbcType=INTEGER} &gt;= 0
+  </update>
+  
+  <!-- 不减库存，增加sku销量-->
+  <update id="updateSaleBySkuId">
+    update vdlm_sku set sales = sales + #{sale,jdbcType=INTEGER},updated_at = now()
+    where id = #{skuId}
+  </update>
+  <!-- 无调用 by charon -->
+  <!-- <update id="deductAmountByOrderId">
+    update vdlm_sku vs
+    set amount = amount - (select amount from vdlm_order_item voi where voi.sku_id = vs.id),
+    	sales = sales + (select amount from vdlm_order_item voi where voi.sku_id = vs.id),
+      updated_at = now()
+    where voi.order_id = #{orderId}
+  </update> -->
+
+  <!-- 无调用 by charon -->
+  <!-- <update id="restoreAmountByOrderId">
+    update vdlm_sku set amount = amount + #{1,jdbcType=INTEGER},updated_at = now()
+    where id = #{0} and amount - #{1,jdbcType=INTEGER} &gt;= 0
+  </update> -->
+  
+  <update id="updatePriceDiscountByShop">
+  update vdlm_sku s, vdlm_product p
+  set s.market_price = s.price, s.price = s.price * #{discount}
+  where s.product_id = p.id 
+  and p.update_lock = 0
+  and p.shop_id = #{shopId} 
+  and p.archive = 0
+  </update>
+  
+  <update id="updatePriceDiscount">
+  update vdlm_sku s, vdlm_product p
+  set s.market_price = s.price, s.price = if (s.price * #{discount} &lt; 0.01, 0.01, s.price * #{discount})
+  where s.product_id = p.id 
+  and p.update_lock = 0
+  and p.id = #{productId} 
+  and p.archive = 0
+  </update>
+  
+  <update id="updatePriceReduction">
+  update vdlm_sku s, vdlm_product p
+  set s.market_price = s.price, s.price = if(s.price - #{reduction} &lt; 0.01, 0.01, s.price - #{reduction})
+  where s.product_id = p.id 
+  and p.update_lock = 0
+  and p.id = #{productId} 
+  and p.archive = 0
+  </update>
+  
+  <update id="updatePriceFromMarketPriceByShop">
+  update vdlm_sku s, vdlm_product p
+  set s.price = if(s.market_price is null or s.market_price &lt; s.price, s.price, s.market_price)
+  where s.product_id = p.id 
+  and p.shop_id = #{shopId} 
+  and p.archive = 0
+  </update>
+  
+  <update id="updatePriceFromMarketPrice">
+  update vdlm_sku s, vdlm_product p
+  set s.price = if(s.market_price is null or s.market_price &lt; s.price, s.price, s.market_price)
+  where s.product_id = p.id
+  and p.id = #{productId} 
+  </update>
+  
+  <update id="addCode">
+		update vdlm_sku set code = #{code, jdbcType=VARCHAR}
+		where id =#{id}
+	</update>
+  
+    <select id="findSpuByProductIdAndName" resultMap="BaseResultMap">
+        SELECT 
+            <include refid="Base_Column_List" />
+        FROM vdlm_sku
+        <where>
+            product_id = #{productId} 
+            AND archive = false 
+            AND sku_type = 'SPU' 
+            <if test="spuName != null and spuName != ''" >
+                AND spec1 = #{spuName, jdbcType=VARCHAR}
+            </if>
+        </where>
+        ORDER BY sku_order
+    </select>  
+    <select id="selectSkuListByProductId" resultMap="BaseResultMap">
+        SELECT 
+            <include refid="Base_Column_List" />
+        FROM vdlm_sku 
+        <where>
+            archive = false
+            <if test="productId != null">
+                AND product_id = #{productId}
+            </if>
+            <if test="skuType != null and skuType != ''">
+                AND sku_type = #{skuType}
+            </if>
+        </where>
+        ORDER BY id ASC
+    </select>    
+    
+    <!-- 查询sku列表按照商品Ids -->
+    <select id="querySkuByProductIds" resultMap="BaseResultMap">
+    	SELECT
+	    <include refid="Base_Column_List" />
+		from  vdlm_sku
+		where archive = false 
+        <if test="productIds != null and productIds.size() > 0">
+			and product_id in
+			<foreach collection="productIds" item="productId" open="(" separator="," close=")">
+				#{productId}
+			</foreach>
+		</if>
+    </select>
+    
+
+    <select id="querySku" resultMap="BaseResultMap">
+    	SELECT
+	    <include refid="Base_Column_List" />
+		from  vdlm_sku 
+		where archive = false 
+        <if test="productIds != null and productIds.size() > 0">
+			and product_id in
+			<foreach collection="productIds" item="productId" open="(" separator="," close=")">
+				#{productId}
+			</foreach>
+		</if>
+		<if test="skuType != null and skuType != ''">
+            and sku_type = #{skuType}
+        </if>
+    </select>
+    
+    <select id="searchSkuByProductIdList" resultMap="BaseResultMap">
+    	select 
+   	    <include refid="Base_Column_List" />
+    	from vdlm_sku
+    	<where>
+    		product_id in
+			<foreach collection="list" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+			<if test="params.skuType != null">
+    			and sku_type = #{params.skuType, jdbcType=VARCHAR}
+    		</if>
+			<if test='params.skuSource=="ERP"'>
+    			and erp_sku_id is not null
+    		</if>
+    		<if test='params.skuSource=="NORMAL"'>
+    			and erp_sku_id is null
+    		</if>    		    		
+    	</where>
+    	limit #{page.beginId}, #{page.pageSize}
+    </select>
+    <select id="countSkuByProductIdList" resultType="java.lang.Long">
+    	select 
+   	    count(*)
+    	from vdlm_sku
+    	<where>
+    		product_id in
+			<foreach collection="list" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+			<if test="params.skuType != null">
+    			and sku_type = #{params.skuType, jdbcType=VARCHAR}
+    		</if>
+			<if test='params.skuSource=="ERP"'>
+    			and erp_sku_id is not null
+    		</if>
+    		<if test='params.skuSource=="NORMAL"'>
+    			and erp_sku_id is null
+    		</if>     		
+    	</where>    
+    </select>
+</mapper>
